@@ -1,13 +1,12 @@
 package com.chrsrck.quakemap
 
-import android.app.Fragment
-import android.app.ListFragment
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
+import androidx.navigation.NavController
 import com.google.android.gms.maps.*
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -43,7 +42,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        bottom_menu.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         setupMapFragment()
     }
 
@@ -57,6 +56,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             addMarker(MarkerOptions().position(SYDNEY))
         }
     }
+
 
     private fun setupMapFragment() {
         if (isOnline()) {
