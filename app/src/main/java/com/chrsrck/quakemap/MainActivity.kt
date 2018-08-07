@@ -9,16 +9,8 @@ import android.widget.Toast
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.chrsrck.quakemap.dummy.DummyContent
-import com.google.android.gms.maps.*
-import kotlinx.android.synthetic.main.activity_main.*
-
-// google maps libraries
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 
 class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentInteractionListener {
-
-    //private lateinit var mMap: GoogleMap
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,9 +22,6 @@ class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentI
         findViewById<BottomNavigationView>(R.id.bottom_nav_menu)?.let { bottomNavView ->
             NavigationUI.setupWithNavController(bottomNavView, navHostFragment.navController)
         }
-
-        //bottom_nav_menu.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-
     }
 
 
