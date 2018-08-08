@@ -9,14 +9,13 @@ import android.view.ViewGroup
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 
 
-class EarthquakeMap : Fragment(), OnMapReadyCallback {
+class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
 
     companion object {
-        fun newInstance() = EarthquakeMap()
+        fun newInstance() = EarthquakeMapFragment()
     }
 
     private lateinit var viewModel: EarthquakeViewModel
