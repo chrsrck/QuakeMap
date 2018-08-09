@@ -61,16 +61,16 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         with(googleMap) {
             moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(SYDNEY, ZOOM_LEVEL))
             addMarker(com.google.android.gms.maps.model.MarkerOptions().position(SYDNEY))
-//            val mapObserver = Observer<Boolean> { darkMode ->
-//                // Update the UI, in this case, a TextView.
-//                if (darkMode!!) {
-//                    googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.dark_mode_style))
-//                }
-//                else {
-//                    googleMap.setMapStyle(MapStyleOptions("[]")) // "[]" is standard style
-//                }
-//            }
-//            viewModel.darkMode.observe(frag, mapObserver)
+            val mapObserver = Observer<Boolean> { darkMode ->
+                // Update the UI, in this case, a TextView.
+                if (darkMode!!) {
+                    googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.dark_mode_style))
+                }
+                else {
+                    googleMap.setMapStyle(MapStyleOptions("[]")) // "[]" is standard style
+                }
+            }
+            viewModel.darkMode.observe(frag, mapObserver)
         }
     }
 
