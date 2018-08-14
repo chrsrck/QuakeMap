@@ -1,7 +1,8 @@
 package com.chrsrck.quakemap
 
-class Earthquake(val magnitude: Double,
-                 val time: Double,
+class Earthquake(
+//        val magnitude: Double,
+//                 val time: Double,
                  val place: String,
                  val longitude: Double,
                  val latitude: Double) {

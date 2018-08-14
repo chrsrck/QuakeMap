@@ -11,12 +11,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.chrsrck.quakemap.databinding.EarthquakeMapFragmentBinding
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import android.databinding.adapters.TextViewBindingAdapter.setText
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.MarkerOptions
 
 
 class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
@@ -29,7 +28,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     private var mapView : MapView? = null
 
     val SYDNEY = LatLng(-33.862, 151.21)
-    val ZOOM_LEVEL = 13f
+    val ZOOM_LEVEL = 8f
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -59,8 +58,8 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         val frag : EarthquakeMapFragment = this
         googleMap ?: return
         with(googleMap) {
-            moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(SYDNEY, ZOOM_LEVEL))
-            addMarker(com.google.android.gms.maps.model.MarkerOptions().position(SYDNEY))
+//            moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(SYDNEY, ZOOM_LEVEL))
+//            addMarker(com.google.android.gms.maps.model.MarkerOptions().position(SYDNEY))
             val mapObserver = Observer<Boolean> { darkMode ->
                 // Update the UI, in this case, a TextView.
                 if (darkMode!!) {
@@ -70,7 +69,22 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
                     googleMap.setMapStyle(MapStyleOptions("[]")) // "[]" is standard style
                 }
             }
+
+            val quakeLiveDataObserver = Observer<HashMap<Double, Earthquake>> { quakeHashMap ->
+                //googleMap.clear()
+                quakeHashMap?.values?.map { earthquake: Earthquake ->
+                    googleMap.addMarker(MarkerOptions()
+                            .title(earthquake.place)
+                            .position(LatLng(earthquake.latitude, earthquake.longitude)))
+                }
+
+                if (quakeHashMap!!.size > 0) {
+                    val newEQ = quakeHashMap!!.get(viewModel.key)
+                    moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(newEQ!!.latitude, newEQ!!.longitude), ZOOM_LEVEL))
+                }
+            }
             viewModel.darkMode.observe(frag, mapObserver)
+            viewModel.quakeHashMapLiveData.observe(frag, quakeLiveDataObserver)
         }
     }
 
