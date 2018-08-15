@@ -27,7 +27,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     private var mapView : MapView? = null
 
     val SYDNEY = LatLng(-33.862, 151.21)
-    val ZOOM_LEVEL = 8f
+    val ZOOM_LEVEL = 4f
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
