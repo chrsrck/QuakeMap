@@ -1,13 +1,14 @@
-package com.chrsrck.quakemap
+package com.chrsrck.quakemap.ui
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.chrsrck.quakemap.R
 
 
-import com.chrsrck.quakemap.EarthquakeListFragment.OnListFragmentInteractionListener
+import com.chrsrck.quakemap.ui.EarthquakeListFragment.OnListFragmentInteractionListener
 import com.chrsrck.quakemap.dummy.DummyContent.DummyItem
 
 import kotlinx.android.synthetic.main.fragment_earthquake.view.*

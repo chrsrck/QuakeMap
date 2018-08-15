@@ -1,18 +1,17 @@
-package com.chrsrck.quakemap
+package com.chrsrck.quakemap.ui
 
-import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.renderscript.ScriptGroup
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.chrsrck.quakemap.viewmodel.EarthquakeViewModel
+import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.databinding.EarthquakeMapFragmentBinding
 import com.google.android.gms.maps.model.LatLng
-import android.databinding.adapters.TextViewBindingAdapter.setText
+import com.chrsrck.quakemap.model.Earthquake
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions

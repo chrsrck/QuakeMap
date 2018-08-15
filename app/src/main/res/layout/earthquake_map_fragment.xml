@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="viewmodel" type="com.chrsrck.quakemap.EarthquakeViewModel" />
+        <variable name="viewmodel" type="com.chrsrck.quakemap.viewmodel.EarthquakeViewModel" />
     </data>
 
 
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".EarthquakeMapFragment">
+        tools:context=".ui.EarthquakeMapFragment">
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/mapView"

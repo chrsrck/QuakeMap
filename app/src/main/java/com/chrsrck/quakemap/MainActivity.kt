@@ -1,7 +1,5 @@
 package com.chrsrck.quakemap
 
-import android.content.Context
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
@@ -9,6 +7,7 @@ import android.widget.Toast
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.chrsrck.quakemap.dummy.DummyContent
+import com.chrsrck.quakemap.ui.EarthquakeListFragment
 
 class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentInteractionListener {
 

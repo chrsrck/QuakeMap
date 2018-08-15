@@ -1,9 +1,9 @@
-package com.chrsrck.quakemap
+package com.chrsrck.quakemap.viewmodel
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel;
 import android.util.Log
+import com.chrsrck.quakemap.model.Earthquake
 
 class EarthquakeViewModel : ViewModel() {
     // TODO: Implement the ViewModel

@@ -1,4 +1,4 @@
-package com.chrsrck.quakemap
+package com.chrsrck.quakemap.model
 
 class Earthquake(
 //        val magnitude: Double,

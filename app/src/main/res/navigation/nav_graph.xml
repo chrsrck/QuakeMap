@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/map_fragment"
-        android:name="com.chrsrck.quakemap.EarthquakeMapFragment"
+        android:name="com.chrsrck.quakemap.ui.EarthquakeMapFragment"
         android:label="map_fragment">
 
         <action
@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/earthquake_list_fragment"
-        android:name="com.chrsrck.quakemap.EarthquakeListFragment"
+        android:name="com.chrsrck.quakemap.ui.EarthquakeListFragment"
         android:label="fragment_list"
         tools:layout="@layout/fragment_earthquake_list">
         <action
