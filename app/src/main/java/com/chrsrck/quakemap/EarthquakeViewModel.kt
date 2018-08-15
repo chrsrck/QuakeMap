@@ -42,8 +42,8 @@ class EarthquakeViewModel : ViewModel() {
      */
     private fun addEarthquake() {
         Log.d(this.javaClass.simpleName, "addEarthquake called")
+        key++
         quakeHashMap.put(key, Earthquake("Hello World", key, key))
         quakeHashMapLiveData.value = quakeHashMap
-        key++
     }
 }

@@ -80,7 +80,10 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
 
                 if (quakeHashMap!!.size > 0) {
                     val newEQ = quakeHashMap!!.get(viewModel.key)
-                    moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(newEQ!!.latitude, newEQ!!.longitude), ZOOM_LEVEL))
+                    moveCamera(CameraUpdateFactory
+                            .newLatLngZoom(LatLng(newEQ!!
+                                    .latitude, newEQ!!
+                                    .longitude), ZOOM_LEVEL))
                 }
             }
             viewModel.darkMode.observe(frag, mapObserver)
