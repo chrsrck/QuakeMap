@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId "com.chrsrck.quakemap"
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -31,6 +31,8 @@ dependencies {
     def lifecycle_version = "1.1.1"
     def play_version = "15.0.1"
     def support_version = "26.1.0"
+    def nav_version = "1.0.0-alpha04"
+    def ok_http_version = "3.11.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -49,13 +51,15 @@ dependencies {
     kapt "android.arch.lifecycle:compiler:$lifecycle_version"
 
     // Navigation Architecture Component
-    def nav_version = "1.0.0-alpha04"
     implementation "android.arch.navigation:navigation-fragment-ktx:$nav_version"
     // use -ktx for Kotlin
     implementation "android.arch.navigation:navigation-ui-ktx:$nav_version" // use -ktx for Kotlin
 
     // Google Play Services Map
     implementation "com.google.android.gms:play-services-maps:$play_version"
+
+    // OK HTTP
+    implementation "com.squareup.okhttp3:okhttp:$ok_http_version"
 
 
 
