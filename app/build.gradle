@@ -59,6 +59,9 @@ dependencies {
     def work_version = "1.0.0-alpha07"
     implementation "android.arch.work:work-runtime-ktx:$work_version" // use -ktx for Kotlin
 
+    // kotlin coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.24.0'
+
     // Google Play Services Map
     implementation "com.google.android.gms:play-services-maps:$play_version"
 
