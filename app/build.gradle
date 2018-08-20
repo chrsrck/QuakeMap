@@ -64,6 +64,8 @@ dependencies {
 
     // Google Play Services Map
     implementation "com.google.android.gms:play-services-maps:$play_version"
+    // Google map utilities
+    implementation 'com.google.maps.android:android-maps-utils:0.5+'
 
     // OK HTTP
     implementation "com.squareup.okhttp3:okhttp:$ok_http_version"

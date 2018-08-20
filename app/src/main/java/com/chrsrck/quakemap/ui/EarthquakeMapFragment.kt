@@ -15,6 +15,9 @@ import com.chrsrck.quakemap.model.Earthquake
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.data.geojson.GeoJsonLayer
+import com.google.maps.android.data.geojson.GeoJsonPointStyle
+import org.json.JSONObject
 
 
 class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
@@ -59,6 +62,26 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         with(googleMap) {
 //            moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(SYDNEY, ZOOM_LEVEL))
 //            addMarker(com.google.android.gms.maps.model.MarkerOptions().position(SYDNEY))
+            googleMap.uiSettings.isMapToolbarEnabled = false
+            
+            val sourceObserver = Observer<JSONObject> { data ->
+                val layer = GeoJsonLayer(googleMap, data)
+                layer.defaultPointStyle.isDraggable = false
+                layer.features.forEach {
+                    it.pointStyle = GeoJsonPointStyle()
+                    it.pointStyle.title =
+                            if (it.hasProperty("title")) {
+                                it.getProperty("title")
+                            }
+                            else {
+                                "Place not found"
+                            }
+
+                }
+                layer.addLayerToMap()
+            }
+
+
             val mapObserver = Observer<Boolean> { darkMode ->
                 // Update the UI, in this case, a TextView.
                 if (darkMode!!) {
@@ -87,6 +110,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
             }
             viewModel.darkMode.observe(frag, mapObserver)
             viewModel.quakeHashMapLiveData.observe(frag, quakeLiveDataObserver)
+            viewModel.dataSource.jsonObject.observe(frag, sourceObserver)
         }
     }
 
