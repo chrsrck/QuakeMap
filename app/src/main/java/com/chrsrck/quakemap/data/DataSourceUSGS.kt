@@ -24,17 +24,7 @@ class DataSourceUSGS {
     }
 
     fun fetchJSON() = launch(UI) {
-//            val data = async(CommonPool) {
-//                val request: Request = Request.Builder().url(MAG_SIGNIFICANT_MONTH_URL).build()
-//                val response: Response = client.newCall(request).execute()
-//                val json : JSONObject = if (response.isSuccessful) {
-//                    JSONObject(response.body().toString())
-//                } else {
-//                    JSONObject("")
-//                }
-//                json
-//            }.await()
-        jsonObject.value = withContext(CommonPool) {
+        jsonObject.value = async(CommonPool) {
             val request: Request = Request.Builder().url(MAG_SIGNIFICANT_MONTH_URL).build()
             val response: Response = client.newCall(request).execute()
             val json : JSONObject = if (response.isSuccessful) {
@@ -42,8 +32,8 @@ class DataSourceUSGS {
                 } else {
                     JSONObject("")
                 }
-            return@withContext json
-        }
+            return@async json
+        }.await()
     }
 
 //        Log.d(TAG,"Finished the coroutine")}
