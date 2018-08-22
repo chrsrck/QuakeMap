@@ -34,6 +34,7 @@ class DataSourceUSGS {
         client = OkHttpClient()
 //        jsonObject.value = JSONObject()
         parser = jsonParserUSGS()
+        fetchJSON()
     }
 
     fun fetchJSON() = launch(UI) {

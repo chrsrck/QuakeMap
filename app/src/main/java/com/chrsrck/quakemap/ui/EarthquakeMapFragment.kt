@@ -13,6 +13,7 @@ import com.chrsrck.quakemap.databinding.EarthquakeMapFragmentBinding
 import com.google.android.gms.maps.model.LatLng
 import com.chrsrck.quakemap.model.Earthquake
 import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.data.geojson.GeoJsonLayer
@@ -63,24 +64,6 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
 //            moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(SYDNEY, ZOOM_LEVEL))
 //            addMarker(com.google.android.gms.maps.model.MarkerOptions().position(SYDNEY))
             googleMap.uiSettings.isMapToolbarEnabled = false
-            
-//            val sourceObserver = Observer<JSONObject> { data ->
-//                val layer = GeoJsonLayer(googleMap, data)
-//                layer.defaultPointStyle.isDraggable = false
-//                layer.features.forEach {
-//                    it.pointStyle = GeoJsonPointStyle()
-//                    it.pointStyle.title =
-//                            if (it.hasProperty("title")) {
-//                                it.getProperty("title")
-//                            }
-//                            else {
-//                                "Place not found"
-//                            }
-//
-//                }
-//                layer.addLayerToMap()
-//            }
-
 
             val mapObserver = Observer<Boolean> { darkMode ->
                 // Update the UI, in this case, a TextView.
@@ -95,8 +78,17 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
             val quakeLiveDataObserver = Observer<HashMap<String, Earthquake>> { quakeHashMap ->
                 //googleMap.clear()
                 quakeHashMap?.values?.map { earthquake: Earthquake ->
-                    googleMap.addMarker(MarkerOptions()
-                            .title(earthquake.place)
+                    val options = MarkerOptions()
+
+                    when(earthquake.magnitude) {
+                        in 0..3 -> options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                        in 3..6 -> options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
+                        in 6..9 -> options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                        else -> { options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))}
+                    }
+
+                    googleMap.addMarker(options
+                            .title(earthquake.title)
                             .position(LatLng(earthquake.latitude, earthquake.longitude)))
                 }
             }

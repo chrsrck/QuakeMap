@@ -8,6 +8,9 @@ import com.chrsrck.quakemap.data.DataSourceUSGS
 import com.chrsrck.quakemap.model.Earthquake
 import org.json.JSONObject
 
+// Shared view model between MapFragment and List Fragment
+// See google documentation for canonical shared view models that present the same data
+// https://developer.android.com/topic/libraries/architecture/viewmodel#lifecycle
 class EarthquakeViewModel : ViewModel() {
     // TODO: Implement the ViewModel
     //var darkMode: LiveData<Boolean>
@@ -24,13 +27,11 @@ class EarthquakeViewModel : ViewModel() {
         modeText.value = "Light mode"
         key = 0.0
         dataSource = DataSourceUSGS()
-        dataSource.fetchJSON()
     }
 
     fun onDarkModeClick() {
         Log.d(this.javaClass.simpleName, "onDarkModeClicked")
         darkMode.value = (darkMode.value)?.not()
         modeText.value = if (darkMode.value!!) { "Dark mode" } else "Light mode"
-//        addEarthquake()
     }
 }
