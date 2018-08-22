@@ -23,14 +23,6 @@ class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentI
         }
     }
 
-
-//    private fun isOnline(): Boolean {
-//        val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-//
-//        val activeNetwork = cm.activeNetworkInfo
-//        return activeNetwork != null && activeNetwork.isConnectedOrConnecting
-//    }
-
     override fun onListFragmentInteraction(item: DummyContent.DummyItem?) {
         Toast.makeText(this, "you clicked an item", Toast.LENGTH_SHORT).show()
     }

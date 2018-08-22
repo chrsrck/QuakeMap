@@ -3,6 +3,7 @@ package com.chrsrck.quakemap.data
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.util.Log
+import com.chrsrck.quakemap.model.Earthquake
 import kotlinx.coroutines.experimental.*
 import kotlinx.coroutines.experimental.android.UI
 import okhttp3.OkHttpClient
@@ -15,16 +16,28 @@ class DataSourceUSGS {
     private val client : OkHttpClient
     private val TAG : String = this.javaClass.simpleName
     val MAG_SIGNIFICANT_MONTH_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson"
-    val jsonObject : MutableLiveData<JSONObject> = MutableLiveData()
+
+    /*
+    LiveData uses a version counter to see if the data changes.
+    Adding an item to the list doesn't cause the observer to activate
+    since the underlying data structure object is the same.
+    setValue(T t) causes the version counter to update. To have
+    the observer activate after putting in a new element into
+    the HashMap, you need to increment the LiveData's version
+    counter by reassigning the LiveData's HashMap to the existing
+    HashMap
+     */
+    val hashMap : MutableLiveData<HashMap<String, Earthquake>> = MutableLiveData()
+    private val parser : jsonParserUSGS
 
     init {
         client = OkHttpClient()
-        jsonObject.value = JSONObject()
-        fetchJSON()
+//        jsonObject.value = JSONObject()
+        parser = jsonParserUSGS()
     }
 
     fun fetchJSON() = launch(UI) {
-        jsonObject.value = async(CommonPool) {
+        hashMap.value = async(CommonPool) {
             val request: Request = Request.Builder().url(MAG_SIGNIFICANT_MONTH_URL).build()
             val response: Response = client.newCall(request).execute()
             val json : JSONObject = if (response.isSuccessful) {
@@ -32,9 +45,8 @@ class DataSourceUSGS {
                 } else {
                     JSONObject("")
                 }
-            return@async json
+            return@async parser.parseQuakes(json)
         }.await()
+        Log.d(TAG,"Finished the coroutine")
     }
-
-//        Log.d(TAG,"Finished the coroutine")}
 }

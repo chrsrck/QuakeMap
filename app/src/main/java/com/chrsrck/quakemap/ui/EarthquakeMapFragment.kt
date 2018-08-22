@@ -64,22 +64,22 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
 //            addMarker(com.google.android.gms.maps.model.MarkerOptions().position(SYDNEY))
             googleMap.uiSettings.isMapToolbarEnabled = false
             
-            val sourceObserver = Observer<JSONObject> { data ->
-                val layer = GeoJsonLayer(googleMap, data)
-                layer.defaultPointStyle.isDraggable = false
-                layer.features.forEach {
-                    it.pointStyle = GeoJsonPointStyle()
-                    it.pointStyle.title =
-                            if (it.hasProperty("title")) {
-                                it.getProperty("title")
-                            }
-                            else {
-                                "Place not found"
-                            }
-
-                }
-                layer.addLayerToMap()
-            }
+//            val sourceObserver = Observer<JSONObject> { data ->
+//                val layer = GeoJsonLayer(googleMap, data)
+//                layer.defaultPointStyle.isDraggable = false
+//                layer.features.forEach {
+//                    it.pointStyle = GeoJsonPointStyle()
+//                    it.pointStyle.title =
+//                            if (it.hasProperty("title")) {
+//                                it.getProperty("title")
+//                            }
+//                            else {
+//                                "Place not found"
+//                            }
+//
+//                }
+//                layer.addLayerToMap()
+//            }
 
 
             val mapObserver = Observer<Boolean> { darkMode ->
@@ -92,25 +92,16 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
                 }
             }
 
-            val quakeLiveDataObserver = Observer<HashMap<Double, Earthquake>> { quakeHashMap ->
+            val quakeLiveDataObserver = Observer<HashMap<String, Earthquake>> { quakeHashMap ->
                 //googleMap.clear()
                 quakeHashMap?.values?.map { earthquake: Earthquake ->
                     googleMap.addMarker(MarkerOptions()
                             .title(earthquake.place)
                             .position(LatLng(earthquake.latitude, earthquake.longitude)))
                 }
-
-                if (quakeHashMap!!.size > 0) {
-                    val newEQ = quakeHashMap!!.get(viewModel.key)
-                    moveCamera(CameraUpdateFactory
-                            .newLatLngZoom(LatLng(newEQ!!
-                                    .latitude, newEQ!!
-                                    .longitude), ZOOM_LEVEL))
-                }
             }
             viewModel.darkMode.observe(frag, mapObserver)
-            viewModel.quakeHashMapLiveData.observe(frag, quakeLiveDataObserver)
-            viewModel.dataSource.jsonObject.observe(frag, sourceObserver)
+            viewModel.dataSource.hashMap.observe(frag, quakeLiveDataObserver)
         }
     }
 
