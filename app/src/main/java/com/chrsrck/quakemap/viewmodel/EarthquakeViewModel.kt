@@ -23,7 +23,7 @@ class EarthquakeViewModel : ViewModel() {
     var key : Double
 
     init {
-        darkMode.value = false
+        darkMode.value = true
         modeText.value = "Light mode"
         key = 0.0
         dataSource = DataSourceUSGS()
