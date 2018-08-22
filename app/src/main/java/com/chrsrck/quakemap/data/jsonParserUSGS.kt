@@ -54,10 +54,9 @@ class jsonParserUSGS() {
             val place = properties.getString(place_key)
             val time = properties.getLong(time_key)
             val type = properties.getString(type_key)
-            val title = properties.getString(title_key)
 
             val quake = Earthquake(id, mag, place, time, type,
-                    coordirnates.getDouble(0), coordirnates.getDouble(1), title)
+                    coordirnates.getDouble(0), coordirnates.getDouble(1))
             hashMap.put(quake.id, quake)
         }
         return hashMap

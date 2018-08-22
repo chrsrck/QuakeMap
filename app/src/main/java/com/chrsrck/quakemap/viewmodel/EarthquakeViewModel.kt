@@ -16,22 +16,17 @@ class EarthquakeViewModel : ViewModel() {
     //var darkMode: LiveData<Boolean>
     val dataSource : DataSourceUSGS
 
-    val darkMode: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
-    val modeText: MutableLiveData<String> = MutableLiveData<String>()
+    val heatMode: MutableLiveData<Boolean> = MutableLiveData()
+//    val modeText: MutableLiveData<String> = MutableLiveData<String>()
 //    val jsonData : MutableLiveData<JSONObject> = MutableLiveData()
 
-    var key : Double
-
     init {
-        darkMode.value = true
-        modeText.value = "Light mode"
-        key = 0.0
+        heatMode.value = false
         dataSource = DataSourceUSGS()
     }
 
-    fun onDarkModeClick() {
+    fun heatMapToggled() {
         Log.d(this.javaClass.simpleName, "onDarkModeClicked")
-        darkMode.value = (darkMode.value)?.not()
-        modeText.value = if (darkMode.value!!) { "Dark mode" } else "Light mode"
+        heatMode.value = (heatMode.value)?.not()
     }
 }

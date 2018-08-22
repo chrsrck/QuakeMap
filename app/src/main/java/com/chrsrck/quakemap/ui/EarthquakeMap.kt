@@ -1,22 +1,38 @@
 package com.chrsrck.quakemap.ui
 
+import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.model.Earthquake
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
+import com.google.maps.android.clustering.ClusterManager
+import com.google.maps.android.heatmaps.HeatmapTileProvider
+import kotlin.collections.HashMap
+import android.arch.lifecycle.Observer
 
 class EarthquakeMap(googleMap: GoogleMap) {
 
-    val googleMap : GoogleMap
+    private val googleMap : GoogleMap
+    private lateinit var overlay : TileOverlay
+    private lateinit var eqHashMap: HashMap<String, Earthquake>
+
+    val heatObserver : Observer<Boolean> = Observer { heatMode ->
+        if (heatMode!!)
+            makeHeatMap()
+    }
+
+    val quakeObserver : Observer<HashMap<String, Earthquake>> = Observer{ quakeHashMap ->
+        eqHashMap = quakeHashMap!!
+        refreshQuakes()
+    }
 
     init {
         this.googleMap = googleMap
         googleMap.uiSettings.isMapToolbarEnabled = false
     }
 
-    fun refreshQuakes(hashMap : HashMap<String, Earthquake>?) {
-        hashMap?.values?.map { earthquake: Earthquake ->
+    fun refreshQuakes() {
+        googleMap.clear() // TODO only remove map markers instead of everything
+        eqHashMap?.values?.map { earthquake: Earthquake ->
             addEarthquake(earthquake)
         }
     }
@@ -33,9 +49,40 @@ class EarthquakeMap(googleMap: GoogleMap) {
         }
 
         val marker = googleMap.addMarker(options
-                .title(earthquake.title)
+                .title("Magnitude " + earthquake.magnitude.toString())
+                .snippet(earthquake.place)
                 .position(LatLng(earthquake.latitude, earthquake.longitude)))
         marker.tag = earthquake // associates earthquake obj with that specific marker
 
     }
+
+    fun makeHeatMap() {
+        val list : ArrayList<LatLng> =
+                eqHashMap?.values?.map { earthquake ->
+                    LatLng(earthquake.latitude, earthquake.longitude)
+                } as ArrayList<LatLng>
+
+        val heatmapTileProvider = HeatmapTileProvider.Builder()
+                .opacity(0.5)
+                .radius(50)
+                .data(list)
+                .build()
+
+        heatmapTileProvider.setData(list)
+        val options: TileOverlayOptions = TileOverlayOptions().tileProvider(heatmapTileProvider)
+        overlay = googleMap.addTileOverlay(options)
+    }
+
+    fun removeHeatMap() {
+
+    }
+
+//    fun toggleDarkMode(isDark : Boolean) {
+//        if (isDark) {
+//            googleMap.setMapStyle(MapStyleOptions(R.raw.dark_mode_style.toString()))
+//        }
+//        else {
+//            googleMap.setMapStyle(MapStyleOptions("[]")) // TODO "[]" is standard style
+//        }
+//    }
 }

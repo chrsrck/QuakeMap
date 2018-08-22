@@ -30,9 +30,6 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var viewModel: EarthquakeViewModel
     private var mapView : MapView? = null
 
-    val SYDNEY = LatLng(-33.862, 151.21)
-    val ZOOM_LEVEL = 4f
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         //val view = inflater.inflate(R.layout.earthquake_map_fragment, container, false)
@@ -65,21 +62,8 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
 //            addMarker(com.google.android.gms.maps.model.MarkerOptions().position(SYDNEY))
             val quakeMap = EarthquakeMap(googleMap)
 
-            val mapObserver = Observer<Boolean> { darkMode ->
-                // Update the UI, in this case, a TextView.
-                if (darkMode!!) {
-                    googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.dark_mode_style))
-                }
-                else {
-                    googleMap.setMapStyle(MapStyleOptions("[]")) // "[]" is standard style
-                }
-            }
-
-            val quakeLiveDataObserver = Observer<HashMap<String, Earthquake>> { quakeHashMap ->
-                quakeMap.refreshQuakes(quakeHashMap)
-            }
-            viewModel.darkMode.observe(frag, mapObserver)
-            viewModel.dataSource.hashMap.observe(frag, quakeLiveDataObserver)
+            viewModel.dataSource.hashMap.observe(frag, quakeMap.quakeObserver)
+            viewModel.heatMode.observe(frag, quakeMap.heatObserver)
         }
     }
 
