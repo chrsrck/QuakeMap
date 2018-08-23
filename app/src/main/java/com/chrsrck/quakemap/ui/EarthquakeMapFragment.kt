@@ -60,7 +60,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         with(googleMap) {
 //            moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(SYDNEY, ZOOM_LEVEL))
 //            addMarker(com.google.android.gms.maps.model.MarkerOptions().position(SYDNEY))
-            val quakeMap = EarthquakeMap(googleMap)
+            val quakeMap = EarthquakeMap(googleMap, viewModel)
 
             viewModel.dataSource.hashMap.observe(frag, quakeMap.quakeObserver)
             viewModel.heatMode.observe(frag, quakeMap.heatObserver)

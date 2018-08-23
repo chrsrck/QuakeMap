@@ -3,41 +3,45 @@ package com.chrsrck.quakemap.ui
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.model.Earthquake
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.*
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.heatmaps.HeatmapTileProvider
 import kotlin.collections.HashMap
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModel
+import com.chrsrck.quakemap.viewmodel.EarthquakeViewModel
+import com.google.android.gms.maps.model.*
 
-class EarthquakeMap(googleMap: GoogleMap) {
+class EarthquakeMap(googleMap: GoogleMap, viewModel: EarthquakeViewModel) {
 
     private val googleMap : GoogleMap
-    private lateinit var overlay : TileOverlay
-    private lateinit var eqHashMap: HashMap<String, Earthquake>
+    private val viewModel : EarthquakeViewModel
 
-    val heatObserver : Observer<Boolean> = Observer { heatMode ->
-        if (heatMode!!)
-            makeHeatMap()
-    }
-
-    val quakeObserver : Observer<HashMap<String, Earthquake>> = Observer{ quakeHashMap ->
-        eqHashMap = quakeHashMap!!
-        refreshQuakes()
-    }
+    private var overlay : TileOverlay? = null
+    private var markerList : List<Marker>? = null
 
     init {
+        this.viewModel = viewModel
         this.googleMap = googleMap
         googleMap.uiSettings.isMapToolbarEnabled = false
     }
 
-    fun refreshQuakes() {
-        googleMap.clear() // TODO only remove map markers instead of everything
-        eqHashMap?.values?.map { earthquake: Earthquake ->
+    val heatObserver : Observer<Boolean> = Observer { heatMode ->
+        toggleMarkers(heatMode)
+    }
+
+    val quakeObserver : Observer<HashMap<String, Earthquake>> = Observer{ quakeHashMap ->
+        removeMarkers()
+        makeMarkers()
+    }
+
+    private fun makeMarkers() {
+//        googleMap.clear() // TODO refactor viewmodel from data source
+        markerList = viewModel.dataSource.hashMap.value?.values?.map { earthquake: Earthquake ->
             addEarthquake(earthquake)
         }
     }
 
-    fun addEarthquake(earthquake : Earthquake) {
+    private fun addEarthquake(earthquake : Earthquake) : Marker {
         val options = MarkerOptions()
         when(earthquake.magnitude) {
             in 0..2 -> options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
@@ -54,11 +58,12 @@ class EarthquakeMap(googleMap: GoogleMap) {
                 .position(LatLng(earthquake.latitude, earthquake.longitude)))
         marker.tag = earthquake // associates earthquake obj with that specific marker
 
+        return marker
     }
 
-    fun makeHeatMap() {
+    private fun makeHeatMap() {
         val list : ArrayList<LatLng> =
-                eqHashMap?.values?.map { earthquake ->
+                viewModel.dataSource.hashMap.value?.values?.map { earthquake ->
                     LatLng(earthquake.latitude, earthquake.longitude)
                 } as ArrayList<LatLng>
 
@@ -73,8 +78,24 @@ class EarthquakeMap(googleMap: GoogleMap) {
         overlay = googleMap.addTileOverlay(options)
     }
 
-    fun removeHeatMap() {
+    private fun removeMarkers() {
+        markerList?.forEach { marker -> marker.remove() }
+    }
 
+
+    private fun toggleMarkers(isHeatMode : Boolean?) {
+        if (isHeatMode!!) {
+            toggleMarkerVisibility(isVisible = false)
+            makeHeatMap()
+        }
+        else if (isHeatMode?.not()){
+            overlay?.remove()
+            toggleMarkerVisibility(isVisible = true)
+        }
+    }
+
+    private fun toggleMarkerVisibility(isVisible: Boolean) {
+        markerList?.forEach { marker -> marker.isVisible = isVisible }
     }
 
 //    fun toggleDarkMode(isDark : Boolean) {
