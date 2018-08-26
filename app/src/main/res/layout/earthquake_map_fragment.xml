@@ -28,10 +28,8 @@
         <Switch
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:showText="true"
+            android:checked="@{viewmodel.heatMode}"
             android:onCheckedChanged="@{() -> viewmodel.heatMapToggled()}"
-            android:textOff="Heat Map"
-            android:textOn="Markers"
             />
     </LinearLayout>
 
