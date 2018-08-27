@@ -1,7 +1,9 @@
 package com.chrsrck.quakemap.ui
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -36,8 +38,12 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         // Creating the binding and inflating the layout
         // don't use DataBindingUtil since the layout binding is known in advance
         viewModel = ViewModelProviders.of(this).get(EarthquakeViewModel::class.java)
+//        val binding: EarthquakeMapFragmentBinding =
+//                EarthquakeMapFragmentBinding.inflate(inflater, container, false)
         val binding: EarthquakeMapFragmentBinding =
-                EarthquakeMapFragmentBinding.inflate(inflater, container, false)
+                EarthquakeMapFragmentBinding.inflate(inflater)
+//                DataBindingUtil.setContentView(activity!!, R.layout.earthquake_map_fragment)
+
         binding.viewmodel = viewModel
         binding.setLifecycleOwner(this)
         val view = binding.root
