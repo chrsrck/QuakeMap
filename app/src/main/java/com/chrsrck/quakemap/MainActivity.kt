@@ -52,10 +52,10 @@ class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentI
                             for(i in 0.. menu.size() - 1) {
                                 val item : MenuItem = menu.getItem(i)
                                 if (item.itemId == destId) {
-                                    item.isEnabled = false
+                                    item.isChecked = true
                                 }
                                 else {
-                                    item.isEnabled = true
+                                    item.isChecked = false
                                 }
                             }
                         }

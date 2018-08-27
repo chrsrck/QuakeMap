@@ -16,7 +16,7 @@ class DataSourceUSGS {
     private val client : OkHttpClient
     private val TAG : String = this.javaClass.simpleName
     val MAG_SIGNIFICANT_MONTH_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson"
-
+    val ALL_PAST_HOUR = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson"
     /*
     LiveData uses a version counter to see if the data changes.
     Adding an item to the list doesn't cause the observer to activate
@@ -39,7 +39,7 @@ class DataSourceUSGS {
 
     fun fetchJSON() = launch(UI) {
         hashMap.value = async(CommonPool) {
-            val request: Request = Request.Builder().url(MAG_SIGNIFICANT_MONTH_URL).build()
+            val request: Request = Request.Builder().url(ALL_PAST_HOUR).build()
             val response: Response = client.newCall(request).execute()
             val json : JSONObject = if (response.isSuccessful) {
                     JSONObject(response.body()?.string())
