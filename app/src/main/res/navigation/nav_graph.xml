@@ -10,9 +10,9 @@
         android:name="com.chrsrck.quakemap.ui.EarthquakeMapFragment"
         android:label="map_fragment">
 
-        <action
-            android:id="@+id/action_map_fragment_to_earthquake_list_fragment"
-            app:destination="@id/earthquake_list_fragment" />
+        <!--<action-->
+            <!--android:id="@+id/action_map_fragment_to_earthquake_list_fragment"-->
+            <!--app:destination="@id/earthquake_list_fragment" />-->
     </fragment>
         <!--tools:layout="@layout/activity_main" />-->
 
@@ -21,9 +21,9 @@
         android:name="com.chrsrck.quakemap.ui.EarthquakeListFragment"
         android:label="fragment_list"
         tools:layout="@layout/fragment_earthquake_list">
-        <action
-            android:id="@+id/action_earthquake_list_fragment_to_map_fragment"
-            app:destination="@id/map_fragment" />
+        <!--<action-->
+            <!--android:id="@+id/action_earthquake_list_fragment_to_map_fragment"-->
+            <!--app:destination="@id/map_fragment" />-->
     </fragment>
 
 </navigation>
