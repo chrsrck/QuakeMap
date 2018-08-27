@@ -8,20 +8,21 @@ import com.google.maps.android.heatmaps.HeatmapTileProvider
 import kotlin.collections.HashMap
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
+import com.chrsrck.quakemap.data.DataSourceUSGS
 import com.chrsrck.quakemap.viewmodel.EarthquakeViewModel
 import com.google.android.gms.maps.model.*
 
-class EarthquakeMap(googleMap: GoogleMap, viewModel: EarthquakeViewModel) {
+class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS) {
 
     private val googleMap : GoogleMap
-    private val viewModel : EarthquakeViewModel
+    private val dataSource : DataSourceUSGS
 
     private var overlay : TileOverlay? = null
     private var markerList : List<Marker>? = null
 
     init {
-        this.viewModel = viewModel
         this.googleMap = googleMap
+        this.dataSource = dataSource
         googleMap.uiSettings.isMapToolbarEnabled = false
     }
 
@@ -36,7 +37,7 @@ class EarthquakeMap(googleMap: GoogleMap, viewModel: EarthquakeViewModel) {
 
     private fun makeMarkers() {
 //        googleMap.clear() // TODO refactor viewmodel from data source
-        markerList = viewModel.dataSource.hashMap.value?.values?.map { earthquake: Earthquake ->
+        markerList = dataSource.hashMap.value?.values?.map { earthquake: Earthquake ->
             addEarthquake(earthquake)
         }
     }
@@ -63,7 +64,7 @@ class EarthquakeMap(googleMap: GoogleMap, viewModel: EarthquakeViewModel) {
 
     private fun makeHeatMap() {
         val list : ArrayList<LatLng> =
-                viewModel.dataSource.hashMap.value?.values?.map { earthquake ->
+                dataSource.hashMap.value?.values?.map { earthquake ->
                     LatLng(earthquake.latitude, earthquake.longitude)
                 } as ArrayList<LatLng>
 

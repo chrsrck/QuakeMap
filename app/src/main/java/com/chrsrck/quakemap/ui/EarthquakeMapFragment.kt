@@ -14,6 +14,7 @@ import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.databinding.EarthquakeMapFragmentBinding
 import com.google.android.gms.maps.model.LatLng
 import com.chrsrck.quakemap.model.Earthquake
+import com.chrsrck.quakemap.viewmodel.MainActivityViewModel
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -30,6 +31,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private lateinit var viewModel: EarthquakeViewModel
+    private lateinit var activityViewModel : MainActivityViewModel
     private var mapView : MapView? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +40,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         // Creating the binding and inflating the layout
         // don't use DataBindingUtil since the layout binding is known in advance
         viewModel = ViewModelProviders.of(this).get(EarthquakeViewModel::class.java)
+        activityViewModel = ViewModelProviders.of(activity!!).get(MainActivityViewModel::class.java)
 //        val binding: EarthquakeMapFragmentBinding =
 //                EarthquakeMapFragmentBinding.inflate(inflater, container, false)
         val binding: EarthquakeMapFragmentBinding =
@@ -66,9 +69,9 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         with(googleMap) {
 //            moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(SYDNEY, ZOOM_LEVEL))
 //            addMarker(com.google.android.gms.maps.model.MarkerOptions().position(SYDNEY))
-            val quakeMap = EarthquakeMap(googleMap, viewModel)
+            val quakeMap = EarthquakeMap(googleMap, activityViewModel.dataSource)
 
-            viewModel.dataSource.hashMap.observe(frag, quakeMap.quakeObserver)
+            activityViewModel.dataSource.hashMap.observe(frag, quakeMap.quakeObserver)
             viewModel.heatMode.observe(frag, quakeMap.heatObserver)
         }
     }

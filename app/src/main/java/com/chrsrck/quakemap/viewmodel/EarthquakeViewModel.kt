@@ -14,7 +14,7 @@ import org.json.JSONObject
 class EarthquakeViewModel : ViewModel() {
     // TODO: Implement the ViewModel
     //var darkMode: LiveData<Boolean>
-    val dataSource : DataSourceUSGS
+//    val dataSource : DataSourceUSGS
 
     val heatMode: MutableLiveData<Boolean> = MutableLiveData()
 //    val modeText: MutableLiveData<String> = MutableLiveData<String>()
@@ -22,7 +22,7 @@ class EarthquakeViewModel : ViewModel() {
 
     init {
         heatMode.value = false
-        dataSource = DataSourceUSGS()
+//        dataSource = DataSourceUSGS()
     }
 
     fun heatMapToggled() {
