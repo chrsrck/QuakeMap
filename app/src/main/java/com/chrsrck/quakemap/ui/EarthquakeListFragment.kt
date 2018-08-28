@@ -1,5 +1,6 @@
 package com.chrsrck.quakemap.ui
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -13,6 +14,7 @@ import com.chrsrck.quakemap.R
 
 import com.chrsrck.quakemap.dummy.DummyContent
 import com.chrsrck.quakemap.dummy.DummyContent.DummyItem
+import com.chrsrck.quakemap.viewmodel.MainActivityViewModel
 
 /**
  * A fragment representing a list of Items.
@@ -25,6 +27,7 @@ class EarthquakeListFragment : Fragment() {
     private var columnCount = 1
 
     private var listener: OnListFragmentInteractionListener? = null
+    private lateinit var activityViewModel : MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +41,7 @@ class EarthquakeListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_earthquake_list, container, false)
-
+        activityViewModel = ViewModelProviders.of(activity!!).get(MainActivityViewModel::class.java)
         // Set the adapter
         if (view is RecyclerView) {
             with(view) {
