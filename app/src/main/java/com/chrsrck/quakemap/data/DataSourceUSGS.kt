@@ -50,4 +50,11 @@ class DataSourceUSGS {
         }.await()
         Log.d(TAG,"Finished the coroutine")
     }
+
+    fun provideEarthquakeList() : ArrayList<Earthquake> {
+        val list =  hashMap.value?.values?.map {
+            earthquake -> earthquake
+        } as ArrayList<Earthquake>
+        return list
+    }
 }
