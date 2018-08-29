@@ -1,6 +1,8 @@
 package com.chrsrck.quakemap.ui
 
 import android.arch.lifecycle.ViewModelProviders
+import android.databinding.BindingMethod
+import android.databinding.BindingMethods
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -13,7 +15,18 @@ import com.chrsrck.quakemap.viewmodel.MainActivityViewModel
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
+import android.graphics.drawable.Drawable
+import android.databinding.BindingAdapter
+import android.widget.ImageView
 
+
+// binding adapter must be static method
+// allows fab toggle
+@BindingAdapter("app:srcCompat")
+fun bindSrcCompat(imageView: ImageView, drawable: Drawable) {
+    // Your setter code goes here, like setDrawable or similar
+    imageView.setImageDrawable(drawable)
+}
 
 class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
 
