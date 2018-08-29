@@ -2,7 +2,6 @@ package com.chrsrck.quakemap.data
 
 import com.chrsrck.quakemap.model.Earthquake
 import org.json.JSONObject
-import kotlin.collections.HashMap
 
 
 /*

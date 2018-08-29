@@ -1,6 +1,5 @@
 package com.chrsrck.quakemap.model
 
-import com.google.android.gms.maps.model.LatLng
 
 class Earthquake(
         val id: String,
@@ -10,5 +9,4 @@ class Earthquake(
         val type: String,
         val longitude: Double,
         val latitude: Double)  {
-
 }

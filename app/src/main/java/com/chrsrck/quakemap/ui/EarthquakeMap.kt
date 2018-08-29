@@ -1,16 +1,11 @@
 package com.chrsrck.quakemap.ui
 
-import com.chrsrck.quakemap.R
+import android.arch.lifecycle.Observer
+import com.chrsrck.quakemap.data.DataSourceUSGS
 import com.chrsrck.quakemap.model.Earthquake
 import com.google.android.gms.maps.GoogleMap
-import com.google.maps.android.clustering.ClusterManager
-import com.google.maps.android.heatmaps.HeatmapTileProvider
-import kotlin.collections.HashMap
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModel
-import com.chrsrck.quakemap.data.DataSourceUSGS
-import com.chrsrck.quakemap.viewmodel.EarthquakeViewModel
 import com.google.android.gms.maps.model.*
+import com.google.maps.android.heatmaps.HeatmapTileProvider
 
 class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS) {
 
