@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable name="viewmodel" type="com.chrsrck.quakemap.viewmodel.EarthquakeViewModel" />
+    </data>
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.EarthquakeMapFragment">
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/heatSwitch" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:text="@string/heat_map_mode"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/heatSwitch" />
+
+        <Switch
+            android:id="@+id/heatSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:checked="@{viewmodel.heatMode}"
+            android:onCheckedChanged="@{() -> viewmodel.heatMapToggled()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/textView"
+            tools:layout_marginLeft="16dp" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</layout>
