@@ -15,7 +15,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
 import com.chrsrck.quakemap.databinding.ActivityMainBinding
-import com.chrsrck.quakemap.dummy.DummyContent
 import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.ui.EarthquakeListFragment
 import com.chrsrck.quakemap.viewmodel.MainActivityViewModel

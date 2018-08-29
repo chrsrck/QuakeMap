@@ -1,4 +1,4 @@
-package com.chrsrck.quakemap
+package com.chrsrck.quakemap.viewmodel
 
 import android.arch.lifecycle.ViewModel;
 

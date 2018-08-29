@@ -12,8 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.chrsrck.quakemap.R
 
-import com.chrsrck.quakemap.dummy.DummyContent
-import com.chrsrck.quakemap.dummy.DummyContent.DummyItem
+
 import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.viewmodel.MainActivityViewModel
 

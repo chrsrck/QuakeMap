@@ -9,7 +9,6 @@ import com.chrsrck.quakemap.R
 
 
 import com.chrsrck.quakemap.ui.EarthquakeListFragment.OnListFragmentInteractionListener
-import com.chrsrck.quakemap.dummy.DummyContent.DummyItem
 import com.chrsrck.quakemap.model.Earthquake
 
 import kotlinx.android.synthetic.main.fragment_earthquake.view.*
