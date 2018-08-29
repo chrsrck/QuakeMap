@@ -33,7 +33,9 @@
             android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_heat_map" />
+            app:srcCompat="@drawable/ic_heat_map"
+            android:onClick="@{() -> viewmodel.heatMapToggled()}"
+            />
 
     </android.support.constraint.ConstraintLayout>
 
