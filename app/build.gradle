@@ -49,6 +49,7 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
     implementation "android.arch.lifecycle:runtime:$lifecycle_version"
     implementation 'android.arch.lifecycle:extensions:1.1.1'
+
     kapt "android.arch.lifecycle:compiler:$lifecycle_version"
 
     // Navigation Architecture Component

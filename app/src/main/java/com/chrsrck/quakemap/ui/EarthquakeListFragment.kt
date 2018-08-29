@@ -14,6 +14,7 @@ import com.chrsrck.quakemap.R
 
 import com.chrsrck.quakemap.dummy.DummyContent
 import com.chrsrck.quakemap.dummy.DummyContent.DummyItem
+import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.viewmodel.MainActivityViewModel
 
 /**
@@ -85,7 +86,7 @@ class EarthquakeListFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: DummyItem?)
+        fun onListFragmentInteraction(item: Earthquake?)
     }
 
     companion object {

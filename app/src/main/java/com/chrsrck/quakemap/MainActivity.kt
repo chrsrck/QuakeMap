@@ -16,6 +16,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
 import com.chrsrck.quakemap.databinding.ActivityMainBinding
 import com.chrsrck.quakemap.dummy.DummyContent
+import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.ui.EarthquakeListFragment
 import com.chrsrck.quakemap.viewmodel.MainActivityViewModel
 
@@ -32,9 +33,7 @@ class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentI
             DataBindingUtil.setContentView(this, R.layout.activity_main)
 //                ActivityMainBinding.inflate(layoutInflater)
         binding.viewModel = viewModel
-//        binding.bottomNavMenu.menu.getItem(0).isEnabled = false
         val bottomNav = binding.bottomNavMenu as BottomNavigationView
-
 
         val navHostFragment =
                 supportFragmentManager.findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment
@@ -47,22 +46,22 @@ class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentI
         navHostFragment.navController.addOnNavigatedListener(
                 NavController.OnNavigatedListener(
                         fun (controller: NavController, dest : NavDestination) {
-                            val destId = dest.id
-                            val menu = bottomNav.menu
-                            for(i in 0.. menu.size() - 1) {
-                                val item : MenuItem = menu.getItem(i)
-                                if (item.itemId == destId) {
-                                    item.isChecked = true
-                                }
-                                else {
-                                    item.isChecked = false
-                                }
-                            }
+//                            val destId = dest.id
+//                            val menu = bottomNav.menu
+//                            for(i in 0.. menu.size() - 1) {
+//                                val item : MenuItem = menu.getItem(i)
+//                                if (item.itemId == destId) {
+//                                    item.isChecked = true
+//                                }
+//                                else {
+//                                    item.isChecked = false
+//                                }
+//                            }
                         }
                 ))
     }
 
-    override fun onListFragmentInteraction(item: DummyContent.DummyItem?) {
+    override fun onListFragmentInteraction(item: Earthquake?) {
         Toast.makeText(this, "you clicked an item", Toast.LENGTH_SHORT).show()
     }
 

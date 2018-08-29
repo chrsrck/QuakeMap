@@ -4,16 +4,20 @@
     <item
         android:id="@+id/map_fragment"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_home"/>
+        android:title="@string/title_home"
+        android:checked="true"
+        />
 
     <item
         android:id="@+id/earthquake_list_fragment"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_dashboard"/>
+        android:title="@string/title_dashboard"
+        android:checked="false"/>
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/settings_fragment"
         android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_notifications"/>
+        android:title="@string/title_notifications"
+        android:checked="false"/>
 
 </menu>

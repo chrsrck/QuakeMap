@@ -16,12 +16,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.viewmodel.MainActivityViewModel
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.maps.android.data.geojson.GeoJsonLayer
-import com.google.maps.android.data.geojson.GeoJsonPointStyle
-import org.json.JSONObject
 
 
 class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {

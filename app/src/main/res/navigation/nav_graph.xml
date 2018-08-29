@@ -26,4 +26,12 @@
             <!--app:destination="@id/map_fragment" />-->
     </fragment>
 
+    <fragment
+        android:id="@+id/settings_fragment"
+        android:name="com.chrsrck.quakemap.Settings"
+        android:label="fragment_settings"
+        tools:layout="@layout/settings_fragment"
+        >
+    </fragment>
+
 </navigation>
