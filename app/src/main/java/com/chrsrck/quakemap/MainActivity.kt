@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.app.AppCompatDelegate
 import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -22,6 +23,9 @@ class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentI
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+//        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES); //enables night mode
 
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
         val binding : ActivityMainBinding =
