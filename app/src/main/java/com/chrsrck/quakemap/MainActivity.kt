@@ -24,8 +24,8 @@ class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentI
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES); //enables night mode
+        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES); //enables night mode
 
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
         val binding : ActivityMainBinding =

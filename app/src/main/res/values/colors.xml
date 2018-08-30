@@ -2,12 +2,12 @@
 <resources>
     <!--Chosen with online matieral design color tool Amber  https://material.io/tools/color/#!/-->
     <!--Light day mode values-->
-    <color name="primaryColor">#ffab00</color>
-    <color name="primaryLightColor">#ffdd4b</color>
-    <color name="primaryDarkColor">#c67c00</color>
-    <color name="secondaryColor">#aed581</color>
-    <color name="secondaryLightColor">#e1ffb1</color>
-    <color name="secondaryDarkColor">#7da453</color>
+    <color name="primaryColor">#ffcc80</color>
+    <color name="primaryLightColor">#ffffb0</color>
+    <color name="primaryDarkColor">#ca9b52</color>
+    <color name="secondaryColor">#80cbc4</color>
+    <color name="secondaryLightColor">#b2fef7</color>
+    <color name="secondaryDarkColor">#4f9a94</color>
     <!--<color name="colorPrimaryText">#000000</color>-->
     <!--<color name="colorSecondaryText">#000000</color>-->
 </resources>
