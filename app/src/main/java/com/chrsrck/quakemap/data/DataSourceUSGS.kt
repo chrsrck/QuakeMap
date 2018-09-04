@@ -34,7 +34,7 @@ class DataSourceUSGS {
     init {
         client = OkHttpClient()
         parser = jsonParserUSGS()
-//        fetchJSON()
+        fetchJSON()
     }
 
     fun fetchJSON() = launch(UI) {
@@ -52,12 +52,12 @@ class DataSourceUSGS {
     }
 
     fun provideEarthquakeList() : ArrayList<Earthquake> {
-//        var eqList =  hashMap.value?.values?.map {
-//            earthquake -> earthquake
-//        } as ArrayList<Earthquake>
-        val list = ArrayList<Earthquake>()
-        list.add(Earthquake("test", 1.0, "Nowhere",
-                0, "earthquake", 0.0, 0.0))
+        var list =  hashMap.value?.values?.map {
+            earthquake -> earthquake
+        } as ArrayList<Earthquake>
+//        val list = ArrayList<Earthquake>()
+//        list.add(Earthquake("test", 1.0, "Nowhere",
+//                0, "earthquake", 0.0, 0.0))
         return list
     }
 }
