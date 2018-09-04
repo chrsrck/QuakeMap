@@ -14,12 +14,11 @@ import java.io.InputStream
 import java.util.*
 
 class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS,
-                    resources: Resources, cameraPosition: LatLng) {
+                    resources: Resources, cameraPosition: CameraPosition) {
 
     val googleMap : GoogleMap
     private val dataSource : DataSourceUSGS
     private val resources : Resources
-    val cameraPosition : LatLng
 
     private var overlay : TileOverlay? = null
     private var markerList : List<Marker>? = null
@@ -28,9 +27,8 @@ class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS,
         this.googleMap = googleMap
         this.dataSource = dataSource
         this.resources = resources
-        this.cameraPosition = cameraPosition
 //        googleMap.setMapStyle(MapStyleOptions(R.raw.dark_mode_style.toString()))
-        googleMap.moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(cameraPosition, 2f))
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
         googleMap.uiSettings.isMapToolbarEnabled = false
         setMapStyle()
     }
