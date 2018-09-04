@@ -23,6 +23,8 @@ import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
 import android.widget.ImageView
+import com.chrsrck.quakemap.MainActivity
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 
 
@@ -43,6 +45,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var viewModel: EarthquakeViewModel
     private lateinit var activityViewModel : MainActivityViewModel
     private var mapView : MapView? = null
+    private lateinit var quakeMap : EarthquakeMap
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -51,6 +54,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         // don't use DataBindingUtil since the layout binding is known in advance
         viewModel = ViewModelProviders.of(this).get(EarthquakeViewModel::class.java)
         activityViewModel = ViewModelProviders.of(activity!!).get(MainActivityViewModel::class.java)
+//        viewModel.heatMode.value = (activity as MainActivity).sharedPreferences.getBoolean("heatMode", false)
 
         val binding: EarthquakeMapFragmentBinding =
                 EarthquakeMapFragmentBinding.inflate(inflater)
@@ -73,17 +77,14 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap?) {
         val frag : EarthquakeMapFragment = this
-        googleMap ?: return
-        with(googleMap) {
-//            moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(SYDNEY, ZOOM_LEVEL))
-//            addMarker(com.google.android.gms.maps.model.MarkerOptions().position(SYDNEY))
-//            googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(activity as Context, R.raw.dark_mode_style))
 
-            val quakeMap = EarthquakeMap(googleMap, activityViewModel.dataSource, resources)
+        val latitude  = (activity as MainActivity).sharedPreferences.getFloat("latitude", 0.0f).toDouble()
+        val longitude = (activity as MainActivity).sharedPreferences.getFloat("longitude", 0.0f).toDouble()
+        quakeMap = EarthquakeMap(googleMap!!, activityViewModel.dataSource, resources,
+                LatLng(latitude, longitude))
 
-            activityViewModel.dataSource.hashMap.observe(frag, quakeMap.quakeObserver)
-            viewModel.heatMode.observe(frag, quakeMap.heatObserver)
-        }
+        activityViewModel.dataSource.hashMap.observe(frag, quakeMap.quakeObserver)
+        viewModel.heatMode.observe(frag, quakeMap.heatObserver)
     }
 
     // Must call lifecycle methods on map view to prevent memory leaks
@@ -93,8 +94,13 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onPause() {
+        (activity as MainActivity).sharedPreferences.edit().putFloat("latitude",
+                quakeMap?.googleMap.cameraPosition.target.latitude.toFloat()).apply()
+        (activity as MainActivity).sharedPreferences.edit().putFloat("longitude",
+                quakeMap?.googleMap.cameraPosition.target.longitude.toFloat()).apply()
         super.onPause()
         mapView?.onPause()
+//        (activity as MainActivity).sharedPreferences.edit().putBoolean("heatMode", viewModel?.heatMode?.value!!).apply()
     }
 
     override fun onStop() {

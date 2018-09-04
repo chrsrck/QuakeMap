@@ -6,6 +6,7 @@ import android.content.res.Resources
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.data.DataSourceUSGS
 import com.chrsrck.quakemap.model.Earthquake
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.heatmaps.HeatmapTileProvider
@@ -13,11 +14,12 @@ import java.io.InputStream
 import java.util.*
 
 class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS,
-                    resources: Resources) {
+                    resources: Resources, cameraPosition: LatLng) {
 
-    private val googleMap : GoogleMap
+    val googleMap : GoogleMap
     private val dataSource : DataSourceUSGS
     private val resources : Resources
+    val cameraPosition : LatLng
 
     private var overlay : TileOverlay? = null
     private var markerList : List<Marker>? = null
@@ -26,7 +28,9 @@ class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS,
         this.googleMap = googleMap
         this.dataSource = dataSource
         this.resources = resources
+        this.cameraPosition = cameraPosition
 //        googleMap.setMapStyle(MapStyleOptions(R.raw.dark_mode_style.toString()))
+        googleMap.moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(cameraPosition, 2f))
         googleMap.uiSettings.isMapToolbarEnabled = false
         setMapStyle()
     }
