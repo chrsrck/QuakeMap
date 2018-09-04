@@ -1,6 +1,8 @@
 package com.chrsrck.quakemap
 
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
+import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
@@ -20,8 +22,19 @@ import com.chrsrck.quakemap.viewmodel.MainActivityViewModel
 class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentInteractionListener {
 
     private lateinit var viewModel : MainActivityViewModel
+    lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        sharedPreferences = getPreferences(Context.MODE_PRIVATE)
+        val modeDark =  sharedPreferences.getBoolean("isDarkMode", false)
+        if(modeDark) {
+            delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
         super.onCreate(savedInstanceState)
 
 //        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);

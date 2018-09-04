@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatDelegate
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.chrsrck.quakemap.MainActivity
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.databinding.SettingsFragmentBinding
 import com.chrsrck.quakemap.viewmodel.SettingsViewModel
@@ -37,7 +38,8 @@ class SettingsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         // TODO: Use the ViewModel
-
+        // AppCompatDelegate.getDefaultNodeMode is the system setting
+        // delegate.setLocalNightMode actually resets the theme.
         val darkModeObserver = Observer<Boolean> {
             val actCompat = activity as AppCompatActivity
             if (it != null && it) {
@@ -47,8 +49,13 @@ class SettingsFragment : Fragment() {
                 actCompat.getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
         }
-
         viewModel.isDarkMode.observe(this, darkModeObserver)
+    }
+
+    override fun onPause() {
+        (activity as MainActivity).sharedPreferences.edit().putBoolean("isDarkMode",
+                viewModel?.isDarkMode?.value!!).apply()
+        super.onPause()
     }
 
 }
