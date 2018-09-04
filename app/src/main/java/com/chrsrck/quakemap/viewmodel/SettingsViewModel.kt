@@ -7,16 +7,10 @@ import android.databinding.Observable
 
 class SettingsViewModel : ViewModel() {
     // TODO: Implement the ViewModel
-    val isNightMode : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    val isDarkMode : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
 
     init {
-        isNightMode.value = false
+        isDarkMode.value = false
     }
-
-    fun toggleNightMode() {
-        isNightMode.value = isNightMode.value?.not()
-    }
-
-
 
 }

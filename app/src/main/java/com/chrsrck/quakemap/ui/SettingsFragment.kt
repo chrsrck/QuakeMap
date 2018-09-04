@@ -38,9 +38,9 @@ class SettingsFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         // TODO: Use the ViewModel
 
-        val nightModeObserver = Observer<Boolean> {isNightMode ->
+        val darkModeObserver = Observer<Boolean> {
             val actCompat = activity as AppCompatActivity
-            if (isNightMode != null && isNightMode) {
+            if (it != null && it) {
                 actCompat.getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             }
             else {
@@ -48,7 +48,7 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        viewModel.isNightMode.observe(this, nightModeObserver)
+        viewModel.isDarkMode.observe(this, darkModeObserver)
     }
 
 }

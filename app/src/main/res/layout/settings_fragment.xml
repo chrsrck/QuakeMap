@@ -20,7 +20,7 @@
             android:id="@+id/themeSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="@={viewmodel.nightMode}"
+            android:checked="@={viewmodel.isDarkMode}"
             />
     </LinearLayout>
 
