@@ -46,7 +46,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var viewModel: EarthquakeViewModel
     private lateinit var activityViewModel : MainActivityViewModel
     private var mapView : MapView? = null
-    private lateinit var quakeMap : EarthquakeMap
+    private var quakeMap : EarthquakeMap? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -91,8 +91,8 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         quakeMap = EarthquakeMap(googleMap!!, activityViewModel.dataSource, resources,
                 pos)
 
-        activityViewModel.dataSource.hashMap.observe(frag, quakeMap.quakeObserver)
-        viewModel.heatMode.observe(frag, quakeMap.heatObserver)
+        activityViewModel.dataSource.hashMap.observe(frag, quakeMap?.quakeObserver!!)
+        viewModel.heatMode.observe(frag, quakeMap?.heatObserver!!)
     }
 
     // Must call lifecycle methods on map view to prevent memory leaks
@@ -103,14 +103,16 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onPause() {
         val preferences = (activity as MainActivity).sharedPreferences
-        val camPos = quakeMap?.googleMap.cameraPosition
-        preferences.edit().putFloat("latitude",
-                camPos.target.latitude.toFloat()).apply()
-        preferences.edit().putFloat("longitude",
-                camPos.target.longitude.toFloat()).apply()
-        preferences.edit().putFloat("bearing", camPos.bearing).apply()
-        preferences.edit().putFloat("zoom", camPos.zoom).apply()
-        preferences.edit().putFloat("tilt", camPos.tilt).apply()
+        val camPos = quakeMap?.googleMap?.cameraPosition
+        if (camPos != null) {
+            preferences.edit().putFloat("latitude",
+                    camPos?.target.latitude.toFloat()).apply()
+            preferences.edit().putFloat("longitude",
+                    camPos.target.longitude.toFloat()).apply()
+            preferences.edit().putFloat("bearing", camPos.bearing).apply()
+            preferences.edit().putFloat("zoom", camPos.zoom).apply()
+            preferences.edit().putFloat("tilt", camPos.tilt).apply()
+        }
 
         super.onPause()
         mapView?.onPause()
