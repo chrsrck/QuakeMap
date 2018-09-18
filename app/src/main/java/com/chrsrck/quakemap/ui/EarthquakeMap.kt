@@ -1,16 +1,24 @@
 package com.chrsrck.quakemap.ui
 
 import android.arch.lifecycle.Observer
+import android.content.res.Configuration
+import android.content.res.Resources
+import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.data.DataSourceUSGS
 import com.chrsrck.quakemap.model.Earthquake
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.heatmaps.HeatmapTileProvider
+import java.io.InputStream
+import java.util.*
 
-class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS) {
+class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS,
+                    resources: Resources, cameraPosition: CameraPosition) {
 
-    private val googleMap : GoogleMap
+    val googleMap : GoogleMap
     private val dataSource : DataSourceUSGS
+    private val resources : Resources
 
     private var overlay : TileOverlay? = null
     private var markerList : List<Marker>? = null
@@ -18,7 +26,11 @@ class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS) {
     init {
         this.googleMap = googleMap
         this.dataSource = dataSource
+        this.resources = resources
+//        googleMap.setMapStyle(MapStyleOptions(R.raw.dark_mode_style.toString()))
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
         googleMap.uiSettings.isMapToolbarEnabled = false
+        setMapStyle()
     }
 
     val heatObserver : Observer<Boolean> = Observer { heatMode ->
@@ -94,12 +106,19 @@ class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS) {
         markerList?.forEach { marker -> marker.isVisible = isVisible }
     }
 
-//    fun toggleDarkMode(isDark : Boolean) {
-//        if (isDark) {
-//            googleMap.setMapStyle(MapStyleOptions(R.raw.dark_mode_style.toString()))
-//        }
-//        else {
-//            googleMap.setMapStyle(MapStyleOptions("[]")) // TODO "[]" is standard style
-//        }
-//    }
+    fun setMapStyle() {
+        val mode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        // TODO "[]" is standard style
+        when (mode) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                val stream : InputStream = resources.openRawResource(R.raw.dark_mode_style)
+                val style = Scanner(stream).useDelimiter("\\A").next()
+                googleMap.setMapStyle(MapStyleOptions(style))
+            }
+            Configuration.UI_MODE_NIGHT_NO ->
+                googleMap.setMapStyle(MapStyleOptions("[]"))
+            Configuration.UI_MODE_NIGHT_UNDEFINED ->
+                googleMap.setMapStyle(MapStyleOptions("[]"))
+        }
+    }
 }

@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/settings_fragment"
-        android:name="com.chrsrck.quakemap.ui.Settings"
+        android:name="com.chrsrck.quakemap.ui.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/settings_fragment"
         >

@@ -58,8 +58,8 @@ dependencies {
     implementation "android.arch.navigation:navigation-ui-ktx:$nav_version" // use -ktx for Kotlin
 
     // Work Manager architecture component
-    def work_version = "1.0.0-alpha07"
-    implementation "android.arch.work:work-runtime-ktx:$work_version" // use -ktx for Kotlin
+//    def work_version = "1.0.0-alpha07"
+//    implementation "android.arch.work:work-runtime-ktx:$work_version" // use -ktx for Kotlin
 
     // kotlin coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.24.0'
