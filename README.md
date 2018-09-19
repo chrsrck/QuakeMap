@@ -11,5 +11,4 @@ Dark Mode with markers:
 ![darkmarkerssmall](https://user-images.githubusercontent.com/5043777/45723311-a6973180-bb7e-11e8-9321-78dd66d5d531.png)
 
 Dark Mode with heat map:
-
 ![darkheatmapsmall](https://user-images.githubusercontent.com/5043777/45723322-b0b93000-bb7e-11e8-8b43-a3389f9add2d.png)
