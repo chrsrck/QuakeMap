@@ -1,6 +1,8 @@
 package com.chrsrck.quakemap.data
 
 import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Observer
+import android.support.v4.app.Fragment
 import android.util.Log
 import com.chrsrck.quakemap.model.Earthquake
 import kotlinx.coroutines.experimental.CommonPool
@@ -28,7 +30,7 @@ class DataSourceUSGS {
     counter by reassigning the LiveData's HashMap to the existing
     HashMap
      */
-    val hashMap : MutableLiveData<HashMap<String, Earthquake>> = MutableLiveData()
+    private val hashMap : MutableLiveData<HashMap<String, Earthquake>> = MutableLiveData()
     private val parser : jsonParserUSGS
 
     init {
@@ -51,8 +53,12 @@ class DataSourceUSGS {
         Log.d(TAG,"Finished the coroutine")
     }
 
+    fun observeEarthquakes(frag : Fragment, observer: Observer<HashMap<String, Earthquake>>) {
+        hashMap.observe(frag, observer)
+    }
+
     fun provideEarthquakeList() : ArrayList<Earthquake> {
-        var list =  hashMap.value?.values?.map {
+        var list =  hashMap?.value?.values?.map {
             earthquake -> earthquake
         } as ArrayList<Earthquake>
 //        val list = ArrayList<Earthquake>()

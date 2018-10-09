@@ -1,32 +1,45 @@
 package com.chrsrck.quakemap.ui
 
 import android.arch.lifecycle.Observer
+import android.content.ContentValues.TAG
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.util.Log
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.data.DataSourceUSGS
 import com.chrsrck.quakemap.model.Earthquake
+import com.chrsrck.quakemap.viewmodel.EarthquakeViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.heatmaps.HeatmapTileProvider
 import java.io.InputStream
 import java.util.*
+import kotlin.collections.HashMap
 
 class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS,
-                    resources: Resources, cameraPosition: CameraPosition) {
+                    resources: Resources, cameraPosition: CameraPosition,
+                    vmEQ : EarthquakeViewModel) {
 
     val googleMap : GoogleMap
     private val dataSource : DataSourceUSGS
     private val resources : Resources
+    val vm : EarthquakeViewModel
 
     private var overlay : TileOverlay? = null
     private var markerList : List<Marker>? = null
 
+    private var eqHashMap : HashMap<String, Earthquake>?
+
     init {
+        vm = vmEQ
+
+
         this.googleMap = googleMap
         this.dataSource = dataSource
         this.resources = resources
+        eqHashMap = null
+
 //        googleMap.setMapStyle(MapStyleOptions(R.raw.dark_mode_style.toString()))
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
         googleMap.uiSettings.isMapToolbarEnabled = false
@@ -38,13 +51,18 @@ class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS,
     }
 
     val quakeObserver : Observer<HashMap<String, Earthquake>> = Observer{ quakeHashMap ->
-        removeMarkers()
+
+        eqHashMap = quakeHashMap // capture reference to new data
+//        googleMap.clear()
+        makeHeatMap()
         makeMarkers()
+
+        toggleMarkers(vm.heatMode?.value)
     }
 
     private fun makeMarkers() {
 //        googleMap.clear() // TODO refactor viewmodel from data source
-        markerList = dataSource.hashMap.value?.values?.map { earthquake: Earthquake ->
+        markerList = eqHashMap?.values?.map { earthquake: Earthquake ->
             addEarthquake(earthquake)
         }
     }
@@ -70,20 +88,22 @@ class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS,
     }
 
     private fun makeHeatMap() {
-        val list : ArrayList<LatLng> =
-                dataSource.hashMap.value?.values?.map { earthquake ->
+        val list : ArrayList<LatLng>? =
+                eqHashMap?.values?.map { earthquake ->
                     LatLng(earthquake.latitude, earthquake.longitude)
-                } as ArrayList<LatLng>
+                } as ArrayList<LatLng>?
 
-        val heatmapTileProvider = HeatmapTileProvider.Builder()
-                .opacity(0.5)
-                .radius(50)
-                .data(list)
-                .build()
+        if (list != null) {
+            val heatmapTileProvider = HeatmapTileProvider.Builder()
+                    .opacity(0.5)
+                    .radius(50)
+                    .data(list)
+                    .build()
 
-        heatmapTileProvider.setData(list)
-        val options: TileOverlayOptions = TileOverlayOptions().tileProvider(heatmapTileProvider)
-        overlay = googleMap.addTileOverlay(options)
+            heatmapTileProvider.setData(list)
+            val options: TileOverlayOptions = TileOverlayOptions().tileProvider(heatmapTileProvider)
+            overlay = googleMap.addTileOverlay(options)
+        }
     }
 
     private fun removeMarkers() {
@@ -92,12 +112,14 @@ class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS,
 
 
     private fun toggleMarkers(isHeatMode : Boolean?) {
+//        Log.d(TAG, "Toggled Markers")
         if (isHeatMode!!) {
             toggleMarkerVisibility(isVisible = false)
-            makeHeatMap()
+            overlay?.isVisible = true
         }
         else if (isHeatMode?.not()){
-            overlay?.remove()
+//            overlay?.remove()
+            overlay?.isVisible = false
             toggleMarkerVisibility(isVisible = true)
         }
     }

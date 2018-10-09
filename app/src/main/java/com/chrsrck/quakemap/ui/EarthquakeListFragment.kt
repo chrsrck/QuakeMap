@@ -48,6 +48,8 @@ class EarthquakeListFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
+
+
                 adapter =
                         MyEarthquakeRecyclerViewAdapter(
                                 activityViewModel.dataSource.provideEarthquakeList(),
@@ -70,6 +72,8 @@ class EarthquakeListFragment : Fragment() {
         super.onDetach()
         listener = null
     }
+
+
 
     /**
      * This interface must be implemented by activities that contain this

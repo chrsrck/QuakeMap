@@ -86,13 +86,14 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         val zoom = preferences.getFloat("zoom", 0f)
         val tilt = preferences.getFloat("tilt", 0f)
         val bearing = preferences.getFloat("bearing", 0f)
-//        viewModel.heatMode.value = preferences.getBoolean("heatMode", false)
+        viewModel.heatMode.value = preferences.getBoolean("heatMode", false)
 
         val pos = CameraPosition(LatLng(latitude, longitude), zoom, tilt, bearing)
         quakeMap = EarthquakeMap(googleMap!!, activityViewModel.dataSource, resources,
-                pos)
+                pos, viewModel)
 
-        activityViewModel.dataSource.hashMap.observe(frag, quakeMap?.quakeObserver!!)
+        activityViewModel.dataSource.observeEarthquakes(frag, quakeMap?.quakeObserver!!)
+
         viewModel.heatMode.observe(frag, quakeMap?.heatObserver!!)
     }
 
