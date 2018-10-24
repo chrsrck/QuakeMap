@@ -1,5 +1,6 @@
 package com.chrsrck.quakemap.ui
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
@@ -28,6 +29,18 @@ class EarthquakeListFragment : Fragment() {
 
     private var listener: OnListFragmentInteractionListener? = null
     private lateinit var activityViewModel : MainActivityViewModel
+    private var list : ArrayList<Earthquake> = ArrayList()
+
+    private val eqObserver = Observer<HashMap<String, Earthquake>> { hashMap ->
+
+        if (hashMap != null) {
+            // TODO: optimize this for faster reload
+            list.clear()
+            hashMap.forEach({entry ->
+                list.add(entry.value)
+            })
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +54,8 @@ class EarthquakeListFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_earthquake_list, container, false)
         activityViewModel = ViewModelProviders.of(activity!!).get(MainActivityViewModel::class.java)
+        activityViewModel.dataSource.observeEarthquakes(this, eqObserver)
+
         // Set the adapter
         if (view is RecyclerView) {
             with(view) {
@@ -49,10 +64,9 @@ class EarthquakeListFragment : Fragment() {
                     else -> GridLayoutManager(context, columnCount)
                 }
 
-
                 adapter =
                         MyEarthquakeRecyclerViewAdapter(
-                                activityViewModel.dataSource.provideEarthquakeList(),
+                                list,
                                 listener)
             }
         }
