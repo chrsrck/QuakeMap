@@ -11,11 +11,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.chrsrck.quakemap.MainActivity
 import com.chrsrck.quakemap.R
 
 
 import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.viewmodel.MainActivityViewModel
+import com.chrsrck.quakemap.viewmodel.NetworkViewModel
 
 /**
  * A fragment representing a list of Items.
@@ -28,7 +30,7 @@ class EarthquakeListFragment : Fragment() {
     private var columnCount = 1
 
     private var listener: OnListFragmentInteractionListener? = null
-    private lateinit var activityViewModel : MainActivityViewModel
+    private lateinit var networkViewModel : NetworkViewModel
     private var list : ArrayList<Earthquake> = ArrayList()
 
     private val eqObserver = Observer<HashMap<String, Earthquake>> { hashMap ->
@@ -53,8 +55,8 @@ class EarthquakeListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_earthquake_list, container, false)
-        activityViewModel = ViewModelProviders.of(activity!!).get(MainActivityViewModel::class.java)
-        activityViewModel.dataSource.observeEarthquakes(this, eqObserver)
+        networkViewModel = (activity as MainActivity).networkViewModel
+        networkViewModel.observeEarthquakes(this, eqObserver)
 
         // Set the adapter
         if (view is RecyclerView) {

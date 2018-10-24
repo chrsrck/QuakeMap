@@ -18,11 +18,13 @@ import com.chrsrck.quakemap.databinding.ActivityMainBinding
 import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.ui.EarthquakeListFragment
 import com.chrsrck.quakemap.viewmodel.MainActivityViewModel
+import com.chrsrck.quakemap.viewmodel.NetworkViewModel
 
 class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentInteractionListener {
 
     private lateinit var viewModel : MainActivityViewModel
     lateinit var sharedPreferences: SharedPreferences
+    lateinit var networkViewModel: NetworkViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -45,6 +47,9 @@ class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentI
             DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewModel = viewModel
         val bottomNav = binding.bottomNavMenu as BottomNavigationView
+
+        networkViewModel = ViewModelProviders.of(this).get(NetworkViewModel::class.java)
+        networkViewModel.fetchEarthquakeData()
 
         val navHostFragment =
                 supportFragmentManager.findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment

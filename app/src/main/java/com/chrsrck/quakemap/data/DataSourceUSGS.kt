@@ -30,7 +30,7 @@ class DataSourceUSGS {
     counter by reassigning the LiveData's HashMap to the existing
     HashMap
      */
-    private val hashMap : MutableLiveData<HashMap<String, Earthquake>> = MutableLiveData()
+    val hashMap : MutableLiveData<HashMap<String, Earthquake>> = MutableLiveData()
     private val parser : jsonParserUSGS
 
     init {
@@ -54,7 +54,4 @@ class DataSourceUSGS {
         Log.d(TAG,"Finished the coroutine")
     }
 
-    fun observeEarthquakes(frag : Fragment, observer: Observer<HashMap<String, Earthquake>>) {
-        hashMap.observe(frag, observer)
-    }
 }

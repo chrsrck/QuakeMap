@@ -17,12 +17,11 @@ import java.io.InputStream
 import java.util.*
 import kotlin.collections.HashMap
 
-class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS,
+class EarthquakeMap(googleMap: GoogleMap,
                     resources: Resources, cameraPosition: CameraPosition,
                     vmEQ : EarthquakeViewModel) {
 
     val googleMap : GoogleMap
-    private val dataSource : DataSourceUSGS
     private val resources : Resources
     val vm : EarthquakeViewModel
 
@@ -36,7 +35,6 @@ class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS,
 
 
         this.googleMap = googleMap
-        this.dataSource = dataSource
         this.resources = resources
         eqHashMap = null
 
