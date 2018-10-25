@@ -13,9 +13,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.chrsrck.quakemap.MainActivity
 import com.chrsrck.quakemap.R
+import com.chrsrck.quakemap.databinding.FragmentEarthquakeListBinding
 
 
 import com.chrsrck.quakemap.model.Earthquake
+import com.chrsrck.quakemap.viewmodel.EarthquakeViewModel
+import com.chrsrck.quakemap.viewmodel.ListViewModel
 import com.chrsrck.quakemap.viewmodel.MainActivityViewModel
 import com.chrsrck.quakemap.viewmodel.NetworkViewModel
 
@@ -31,17 +34,13 @@ class EarthquakeListFragment : Fragment() {
 
     private var listener: OnListFragmentInteractionListener? = null
     private lateinit var networkViewModel : NetworkViewModel
-    private var list : ArrayList<Earthquake> = ArrayList()
+    private lateinit var listViewModel : ListViewModel
+    private lateinit var recyclerView : RecyclerView
 
     private val eqObserver = Observer<HashMap<String, Earthquake>> { hashMap ->
-
-        if (hashMap != null) {
-            // TODO: optimize this for faster reload
-            list.clear()
-            hashMap.forEach({entry ->
-                list.add(entry.value)
-            })
-        }
+        listViewModel.updateQuakeList(hashMap)
+        // TODO: notify recycler view of data change
+        recyclerView.adapter?.notifyDataSetChanged()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,24 +53,31 @@ class EarthquakeListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_earthquake_list, container, false)
+//        val view = inflater.inflate(R.layout.fragment_earthquake_list, container, false)
+
         networkViewModel = (activity as MainActivity).networkViewModel
         networkViewModel.observeEarthquakes(this, eqObserver)
 
-        // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
+        listViewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)
+        val binding : FragmentEarthquakeListBinding
+                = FragmentEarthquakeListBinding.inflate(inflater)
+        binding.viewModel = listViewModel
+        binding.setLifecycleOwner(this)
+        val view = binding.root
+        recyclerView = view.findViewById(R.id.list)
 
-                adapter =
-                        MyEarthquakeRecyclerViewAdapter(
-                                list,
-                                listener)
+        with(recyclerView) {
+            layoutManager = when {
+                columnCount <= 1 -> LinearLayoutManager(context)
+                else -> GridLayoutManager(context, columnCount)
             }
+
+            adapter =
+                    MyEarthquakeRecyclerViewAdapter(
+                            listViewModel.getQuakeList(),
+                            listener)
         }
+
         return view
     }
 
