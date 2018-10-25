@@ -52,10 +52,13 @@ class EarthquakeMap(googleMap: GoogleMap,
 
         eqHashMap = quakeHashMap // capture reference to new data
 //        googleMap.clear()
-        makeHeatMap()
-        makeMarkers()
+        if (overlay == null)
+            makeHeatMap()
 
-        toggleMarkers(vm.heatMode?.value)
+        if (markerList == null)
+            makeMarkers()
+
+//        toggleMarkers(vm.heatMode?.value)
     }
 
     private fun makeMarkers() {
@@ -82,6 +85,13 @@ class EarthquakeMap(googleMap: GoogleMap,
                 .position(LatLng(earthquake.latitude, earthquake.longitude)))
         marker.tag = earthquake // associates earthquake obj with that specific marker
 
+        if (vm.heatMode.value!!) {
+            marker.isVisible = false
+        }
+        else {
+            marker.isVisible = true
+        }
+
         return marker
     }
 
@@ -101,6 +111,13 @@ class EarthquakeMap(googleMap: GoogleMap,
             heatmapTileProvider.setData(list)
             val options: TileOverlayOptions = TileOverlayOptions().tileProvider(heatmapTileProvider)
             overlay = googleMap.addTileOverlay(options)
+
+            if (vm.heatMode.value!!) {
+                overlay?.isVisible = true
+            }
+            else {
+                overlay?.isVisible = false
+            }
         }
     }
 
