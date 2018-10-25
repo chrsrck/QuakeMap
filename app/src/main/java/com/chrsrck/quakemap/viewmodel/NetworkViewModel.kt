@@ -29,7 +29,7 @@ class NetworkViewModel(application: Application) : AndroidViewModel(application)
             dataSource.fetchJSON()
         }
         else {
-            Toast.makeText(context, "No internet connection", Toast.LENGTH_LONG)
+            Toast.makeText(context, "No internet connection", Toast.LENGTH_LONG).show()
         }
     }
 
