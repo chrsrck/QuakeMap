@@ -6,6 +6,22 @@
     <string name="heat_map_mode">Heat Map Mode</string>
     <string name="is_dark_key">is_dark_key</string>
 
+    <string name="default_feed">all</string>
+
+    <array name="array_feed_labels">
+        <item>All Past Hour</item>
+        <item>Magnitude 2.5+ Past Day</item>
+        <item>Magnitude 4.5+ Past Week</item>
+        <item>Significant Past Month</item>
+    </array>
+
+    <array name="array_feed_values">
+        <item>@string/default_feed</item>
+        <item>2.5+</item>
+        <item>4.5+</item>
+        <item>sig</item>
+    </array>
+
 
     <!--For automatic night mode theme switching-->
     <!--<array name="array_theme_labels">-->

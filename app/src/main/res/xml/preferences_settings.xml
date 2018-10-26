@@ -14,14 +14,18 @@
             />
     </PreferenceCategory>
 
-    <!--<PreferenceCategory-->
-        <!--android:title="Earthquake Feed"-->
-        <!--android:key="key_feed"-->
-        <!--&gt;-->
+    <PreferenceCategory
+        android:title="Earthquake Feed"
+        >
 
-        <!--<ListPreference-->
-            <!---->
-            <!--/>-->
+        <ListPreference
+            android:key="key_feed"
+            android:title="Select Earthquake Feed"
+            android:summary="Chooses the earthquake feed that displays on the map."
+            android:defaultValue="@string/default_feed"
+            android:entries="@array/array_feed_labels"
+            android:entryValues="@array/array_feed_values"
+            />
 
-    <!--</PreferenceCategory>-->
+    </PreferenceCategory>
 </PreferenceScreen>
