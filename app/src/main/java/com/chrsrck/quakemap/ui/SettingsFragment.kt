@@ -15,10 +15,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.chrsrck.quakemap.MainActivity
 import com.chrsrck.quakemap.R
+import com.chrsrck.quakemap.viewmodel.NetworkViewModel
 import com.chrsrck.quakemap.viewmodel.SettingsViewModel
 
 
 class SettingsFragment : PreferenceFragmentCompat() {
+
+    private lateinit var networkViewModel : NetworkViewModel
 
     companion object {
         fun newInstance() = SettingsFragment()
@@ -32,6 +35,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
         addPreferencesFromResource(R.xml.preferences_settings)
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        networkViewModel = ViewModelProviders.of(this).get(NetworkViewModel::class.java)
+        return view
+    }
+
 
     override fun onResume() {
         super.onResume()
@@ -39,9 +48,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 .registerOnSharedPreferenceChangeListener(prefListner)
     }
     override fun onPause() {
-        super.onPause()
         PreferenceManager.getDefaultSharedPreferences(activity)
                 .unregisterOnSharedPreferenceChangeListener(prefListner)
+
+        super.onPause()
     }
 
     private fun prefChanged(sharedPreferences: SharedPreferences?, key: String?) {
@@ -57,6 +67,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 activity?.setTheme(R.style.AppTheme)
                 activity?.recreate()
             }
+            resources.getString(R.string.pref_key_feed) -> {
+                val feedKey = sharedPreferences?.getString(key, resources.getString(R.string.key_sig_eq_feed))
+                networkViewModel.fetchEarthquakeData(feedKey)
+            }
+
         }
     }
 

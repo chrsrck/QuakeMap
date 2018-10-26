@@ -6,7 +6,15 @@
     <string name="heat_map_mode">Heat Map Mode</string>
     <string name="is_dark_key">is_dark_key</string>
 
-    <string name="default_feed">all</string>
+
+
+
+    <string name="pref_key_feed">feed_pref_key</string>
+    <string name="key_all_eq_feed">all</string>
+    <string name="key_2_half_eq_feed">2.5+</string>
+    <string name="key_4_half_eq_feed">4.5+</string>
+    <string name="key_sig_eq_feed">sig</string>
+
 
     <array name="array_feed_labels">
         <item>All Past Hour</item>
@@ -16,10 +24,10 @@
     </array>
 
     <array name="array_feed_values">
-        <item>@string/default_feed</item>
-        <item>2.5+</item>
-        <item>4.5+</item>
-        <item>sig</item>
+        <item>@string/key_all_eq_feed</item>
+        <item>@string/key_2_half_eq_feed</item>
+        <item>@string/key_4_half_eq_feed</item>
+        <item>@string/key_sig_eq_feed</item>
     </array>
 
 

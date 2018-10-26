@@ -19,7 +19,8 @@ import kotlin.collections.HashMap
 
 class EarthquakeMap(googleMap: GoogleMap,
                     resources: Resources, cameraPosition: CameraPosition,
-                    vmEQ : EarthquakeViewModel) {
+                    vmEQ : EarthquakeViewModel,
+                    data : HashMap<String, Earthquake>?) {
 
     val googleMap : GoogleMap
     private val resources : Resources
@@ -33,10 +34,9 @@ class EarthquakeMap(googleMap: GoogleMap,
     init {
         vm = vmEQ
 
-
         this.googleMap = googleMap
         this.resources = resources
-        eqHashMap = null
+        eqHashMap = data
 
 //        googleMap.setMapStyle(MapStyleOptions(R.raw.dark_mode_style.toString()))
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
@@ -54,9 +54,17 @@ class EarthquakeMap(googleMap: GoogleMap,
 //        googleMap.clear()
         if (overlay == null)
             makeHeatMap()
+        else {
+            overlay?.remove()
+            makeHeatMap()
+        }
 
         if (markerList == null)
             makeMarkers()
+        else {
+            removeMarkers()
+            makeMarkers()
+        }
 
 //        toggleMarkers(vm.heatMode?.value)
     }

@@ -8,6 +8,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.support.v4.app.Fragment
 import android.widget.Toast
+import com.chrsrck.quakemap.MainActivity
 import com.chrsrck.quakemap.data.DataSourceUSGS
 import com.chrsrck.quakemap.model.Earthquake
 
@@ -24,7 +25,12 @@ class NetworkViewModel(application: Application) : AndroidViewModel(application)
                 application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 
-    fun fetchEarthquakeData() {
+    fun getEarthquakeData() : HashMap<String, Earthquake>? {
+        return dataSource.hashMap.value
+    }
+
+    fun fetchEarthquakeData(feedKey: String?) {
+        dataSource.setFeed(feedKey)
         if (isOnline()) {
             dataSource.fetchJSON()
         }
@@ -33,12 +39,15 @@ class NetworkViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+
     fun isOnline(): Boolean {
         val networkInfo: NetworkInfo? = connMgr.activeNetworkInfo
         return networkInfo?.isConnected == true
     }
 
-    fun observeEarthquakes(frag : Fragment, observer: Observer<HashMap<String, Earthquake>>) {
-        dataSource.hashMap.observe(frag, observer)
+    fun observeEarthquakes(fragment : Fragment, observer: Observer<HashMap<String, Earthquake>>) {
+        dataSource.hashMap.observe(fragment, observer)
     }
+    
+
 }

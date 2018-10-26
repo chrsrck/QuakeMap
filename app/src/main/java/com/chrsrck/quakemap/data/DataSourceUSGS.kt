@@ -18,8 +18,13 @@ class DataSourceUSGS {
 
     private val client : OkHttpClient
     private val TAG : String = this.javaClass.simpleName
+
+    private var activeFeed : String
     private val MAG_SIGNIFICANT_MONTH_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson"
-//    val ALL_PAST_HOUR = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson"
+    val MAG_ALL_HOUR_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson"
+    val MAG_2_HALF_DAY_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson"
+    val MAG_4_HALF_WEEK_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson"
+
     /*
     LiveData uses a version counter to see if the data changes.
     Adding an item to the list doesn't cause the observer to activate
@@ -34,21 +39,32 @@ class DataSourceUSGS {
     private val parser : jsonParserUSGS
 
     init {
+        activeFeed = MAG_SIGNIFICANT_MONTH_URL
         client = OkHttpClient()
         parser = jsonParserUSGS()
     }
 
-    fun fetchJSON() = launch(UI) {
-        hashMap.value = async(CommonPool) {
-            val request: Request = Request.Builder().url(MAG_SIGNIFICANT_MONTH_URL).build()
-            val response: Response = client.newCall(request).execute()
-            val json : JSONObject = if (response.isSuccessful) {
-                    JSONObject(response.body()?.string())
-                } else {
-                    JSONObject("")
-                }
-            return@async parser.parseQuakes(json)
-        }.await()
+    fun setFeed(key : String?) {
+        when(key) {
+            "all" -> activeFeed = MAG_ALL_HOUR_URL
+            "2.5+" -> activeFeed = MAG_2_HALF_DAY_URL
+            "4.5+" -> activeFeed = MAG_4_HALF_WEEK_URL
+            else -> { activeFeed = MAG_SIGNIFICANT_MONTH_URL }
+        }
+    }
+
+    fun fetchJSON() =
+            launch(UI) { async(CommonPool) {
+                val request: Request = Request.Builder().url(activeFeed).build()
+                val response: Response = client.newCall(request).execute()
+                val json : JSONObject = if (response.isSuccessful) {
+                        JSONObject(response.body()?.string())
+                    } else {
+                        JSONObject("")
+                    }
+                val parseMap = parser.parseQuakes(json)
+                hashMap.postValue(parseMap)
+        }
 
         Log.d(TAG,"Finished the coroutine")
     }

@@ -31,16 +31,7 @@ class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentI
         PreferenceManager.setDefaultValues(this, R.xml.preferences_settings, false)
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val modeDark =
-                sharedPreferences.getBoolean(resources.getString(R.string.is_dark_key), false)
-
-        if(modeDark) {
-            delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
+        restoreTheme()
         super.onCreate(savedInstanceState)
 
 //        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -53,7 +44,7 @@ class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentI
         val bottomNav = binding.bottomNavMenu as BottomNavigationView
 
         networkViewModel = ViewModelProviders.of(this).get(NetworkViewModel::class.java)
-        networkViewModel.fetchEarthquakeData()
+        restoreNetworkData()
 
         val navHostFragment =
                 supportFragmentManager.findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment
@@ -73,6 +64,27 @@ class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentI
 
     override fun onListFragmentInteraction(item: Earthquake?) {
         Toast.makeText(this, "you clicked an item", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun restoreTheme() {
+        val modeDark =
+                sharedPreferences.getBoolean(resources.getString(R.string.is_dark_key), false)
+
+        if(modeDark) {
+            delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+    }
+
+    private fun restoreNetworkData() {
+        val feed =
+                sharedPreferences.getString(resources.getString(R.string.pref_key_feed),
+                        resources.getString(R.string.key_sig_eq_feed))
+        networkViewModel.fetchEarthquakeData(feed)
+
     }
 
 }

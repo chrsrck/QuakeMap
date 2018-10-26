@@ -83,7 +83,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         val pos = CameraPosition(LatLng(latitude, longitude), zoom, tilt, bearing)
 
 
-        quakeMap = EarthquakeMap(googleMap!!, resources, pos, viewModel)
+        quakeMap = EarthquakeMap(googleMap!!, resources, pos, viewModel, networkViewModel.getEarthquakeData())
 
         networkViewModel.observeEarthquakes(frag, quakeMap?.quakeObserver!!)
 
