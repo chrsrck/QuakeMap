@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
@@ -27,9 +28,12 @@ class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentI
     lateinit var networkViewModel: NetworkViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        PreferenceManager.setDefaultValues(this, R.xml.preferences_settings, false)
 
-        sharedPreferences = getPreferences(Context.MODE_PRIVATE)
-        val modeDark =  sharedPreferences.getBoolean("isDarkMode", false)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val modeDark =
+                sharedPreferences.getBoolean(resources.getString(R.string.is_dark_key), false)
+
         if(modeDark) {
             delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)

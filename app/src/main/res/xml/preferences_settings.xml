@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Display"
+        >
+
+        <SwitchPreference
+            android:title="Enable Night Mode"
+            android:key="@string/is_dark_key"
+            android:summaryOff="App has a light daytime theme."
+            android:summaryOn="App has a dark nighttime theme."
+            android:defaultValue="false"
+            />
+    </PreferenceCategory>
+
+    <!--<PreferenceCategory-->
+        <!--android:title="Earthquake Feed"-->
+        <!--android:key="key_feed"-->
+        <!--&gt;-->
+
+        <!--<ListPreference-->
+            <!---->
+            <!--/>-->
+
+    <!--</PreferenceCategory>-->
+</PreferenceScreen>
