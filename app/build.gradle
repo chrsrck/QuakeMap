@@ -30,7 +30,7 @@ android {
 dependencies {
     def lifecycle_version = "1.1.1"
     def play_version = "15.0.1"
-    def support_version = "28.0.0-alpha1"
+    def support_version = "28.0.0"
     def nav_version = "1.0.0-alpha04"
     def ok_http_version = "3.11.0"
     def gson_version = "2.8.5"
@@ -74,7 +74,7 @@ dependencies {
 
     // preference fragment
     // TODO: change support version
-    implementation "com.android.support:preference-v14:28.0.0"
+    implementation "com.android.support:preference-v14:$support_version"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

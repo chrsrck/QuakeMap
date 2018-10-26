@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--Chosen with online matieral design color tool Amber  https://material.io/tools/color/#!/-->
-
     <!--Dark night mode values-->
     <color name="primaryColor">#263238</color>
     <color name="primaryLightColor">#4f5b62</color>
@@ -11,5 +10,4 @@
     <color name="secondaryDarkColor">#005662</color>
     <!--<color name="primaryTextColor">#ffffff</color>-->
     <!--<color name="secondaryTextColor">#ffffff</color>-->
-
 </resources>
