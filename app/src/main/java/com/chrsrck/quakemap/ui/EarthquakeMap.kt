@@ -17,12 +17,12 @@ import java.io.InputStream
 import java.util.*
 import kotlin.collections.HashMap
 
-class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS,
+class EarthquakeMap(googleMap: GoogleMap,
                     resources: Resources, cameraPosition: CameraPosition,
-                    vmEQ : EarthquakeViewModel) {
+                    vmEQ : EarthquakeViewModel,
+                    data : HashMap<String, Earthquake>?) {
 
     val googleMap : GoogleMap
-    private val dataSource : DataSourceUSGS
     private val resources : Resources
     val vm : EarthquakeViewModel
 
@@ -34,11 +34,9 @@ class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS,
     init {
         vm = vmEQ
 
-
         this.googleMap = googleMap
-        this.dataSource = dataSource
         this.resources = resources
-        eqHashMap = null
+        eqHashMap = data
 
 //        googleMap.setMapStyle(MapStyleOptions(R.raw.dark_mode_style.toString()))
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
@@ -54,10 +52,21 @@ class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS,
 
         eqHashMap = quakeHashMap // capture reference to new data
 //        googleMap.clear()
-        makeHeatMap()
-        makeMarkers()
+        if (overlay == null)
+            makeHeatMap()
+        else {
+            overlay?.remove()
+            makeHeatMap()
+        }
 
-        toggleMarkers(vm.heatMode?.value)
+        if (markerList == null)
+            makeMarkers()
+        else {
+            removeMarkers()
+            makeMarkers()
+        }
+
+//        toggleMarkers(vm.heatMode?.value)
     }
 
     private fun makeMarkers() {
@@ -84,6 +93,13 @@ class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS,
                 .position(LatLng(earthquake.latitude, earthquake.longitude)))
         marker.tag = earthquake // associates earthquake obj with that specific marker
 
+        if (vm.heatMode.value!!) {
+            marker.isVisible = false
+        }
+        else {
+            marker.isVisible = true
+        }
+
         return marker
     }
 
@@ -103,6 +119,13 @@ class EarthquakeMap(googleMap: GoogleMap, dataSource: DataSourceUSGS,
             heatmapTileProvider.setData(list)
             val options: TileOverlayOptions = TileOverlayOptions().tileProvider(heatmapTileProvider)
             overlay = googleMap.addTileOverlay(options)
+
+            if (vm.heatMode.value!!) {
+                overlay?.isVisible = true
+            }
+            else {
+                overlay?.isVisible = false
+            }
         }
     }
 

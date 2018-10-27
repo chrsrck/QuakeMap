@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Display"
+        >
+
+        <SwitchPreference
+            android:title="Enable Night Mode"
+            android:key="@string/is_dark_key"
+            android:summaryOff="App has a light daytime theme."
+            android:summaryOn="App has a dark nighttime theme."
+            android:defaultValue="false"
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Earthquake Feed"
+        >
+
+        <ListPreference
+            android:key="@string/pref_key_feed"
+            android:title="Select Earthquake Feed"
+            android:summary="Chooses the earthquake feed that displays on the map."
+            android:defaultValue="@string/key_sig_eq_feed"
+            android:entries="@array/array_feed_labels"
+            android:entryValues="@array/array_feed_values"
+            />
+
+    </PreferenceCategory>
+</PreferenceScreen>

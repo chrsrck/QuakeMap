@@ -1,10 +1,6 @@
 package com.chrsrck.quakemap.ui
 
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
-import android.content.res.Configuration
-import android.databinding.BindingMethod
-import android.databinding.BindingMethods
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -19,14 +15,11 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import android.graphics.drawable.Drawable
 import android.databinding.BindingAdapter
-import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.app.AppCompatDelegate
 import android.widget.ImageView
 import com.chrsrck.quakemap.MainActivity
+import com.chrsrck.quakemap.viewmodel.NetworkViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
 
 
 // binding adapter must be static method
@@ -44,7 +37,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private lateinit var viewModel: EarthquakeViewModel
-    private lateinit var activityViewModel : MainActivityViewModel
+    private lateinit var networkViewModel : NetworkViewModel
     private var mapView : MapView? = null
     private var quakeMap : EarthquakeMap? = null
 
@@ -54,9 +47,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         // Creating the binding and inflating the layout
         // don't use DataBindingUtil since the layout binding is known in advance
         viewModel = ViewModelProviders.of(this).get(EarthquakeViewModel::class.java)
-        activityViewModel = ViewModelProviders.of(activity!!).get(MainActivityViewModel::class.java)
 //        viewModel.heatMode.value = (activity as MainActivity).sharedPreferences.getBoolean("heatMode", false)
-
         val binding: EarthquakeMapFragmentBinding =
                 EarthquakeMapFragmentBinding.inflate(inflater)
 
@@ -64,6 +55,8 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         binding.setLifecycleOwner(this)
         val view = binding.root
 
+        networkViewModel =
+                ViewModelProviders.of((activity as MainActivity)).get(NetworkViewModel::class.java)
 
         mapView = view.findViewById(R.id.mapView) as MapView
         mapView?.onCreate(savedInstanceState) // lifecycle method for memory leak prevention
@@ -74,6 +67,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         // TODO: Use the ViewModel
+
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
@@ -87,12 +81,12 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         val tilt = preferences.getFloat("tilt", 0f)
         val bearing = preferences.getFloat("bearing", 0f)
         viewModel.heatMode.value = preferences.getBoolean("heatMode", false)
-
         val pos = CameraPosition(LatLng(latitude, longitude), zoom, tilt, bearing)
-        quakeMap = EarthquakeMap(googleMap!!, activityViewModel.dataSource, resources,
-                pos, viewModel)
 
-        activityViewModel.dataSource.observeEarthquakes(frag, quakeMap?.quakeObserver!!)
+
+        quakeMap = EarthquakeMap(googleMap!!, resources, pos, viewModel, networkViewModel.getEarthquakeData())
+
+        networkViewModel.observeEarthquakes(frag, quakeMap?.quakeObserver!!)
 
         viewModel.heatMode.observe(frag, quakeMap?.heatObserver!!)
     }
