@@ -6,7 +6,7 @@ class Earthquake(
         val magnitude: Double,
         val place: String,
         val time: Long,
-        val type: String,
+        val type: String, //possible to be not than eq ex. nuke bomb
         val longitude: Double,
         val latitude: Double)  {
 }

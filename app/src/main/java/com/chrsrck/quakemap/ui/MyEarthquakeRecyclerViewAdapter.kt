@@ -41,7 +41,12 @@ class MyEarthquakeRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
         holder.mIdView.text = item.id
-        holder.mContentView.text = "Magnitude " + item.magnitude + "-" + item.place
+        holder.magTextView.text = "Magnitude: " + item.magnitude
+        holder.placeTextView.text = "Place: " + item.place
+        holder.latTextView.text = "Latitude: " + item.latitude
+        holder.longTextView.text = "Longitude: " + item.longitude
+        holder.timeTextView.text = "Time: " + item.time
+        holder.typeTextView.text = "Event type: " + item.type
 
         with(holder.mView) {
             tag = item
@@ -52,11 +57,12 @@ class MyEarthquakeRecyclerViewAdapter(
     override fun getItemCount(): Int = mValues.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mIdView: TextView = mView.item_number
-        val mContentView: TextView = mView.content
-
-        override fun toString(): String {
-            return super.toString() + " '" + mContentView.text + "'"
-        }
+        val mIdView: TextView = mView.id_eq_text
+        val magTextView: TextView = mView.magText
+        val placeTextView = mView.placeText
+        val latTextView = mView.latText
+        val longTextView = mView.longText
+        val timeTextView = mView.timeText
+        val typeTextView = mView.typeText
     }
 }
