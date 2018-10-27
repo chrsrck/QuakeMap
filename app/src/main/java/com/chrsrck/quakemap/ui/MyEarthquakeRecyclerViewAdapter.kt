@@ -10,6 +10,8 @@ import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.ui.EarthquakeListFragment.OnListFragmentInteractionListener
 import kotlinx.android.synthetic.main.fragment_earthquake.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
@@ -22,6 +24,7 @@ class MyEarthquakeRecyclerViewAdapter(
     : RecyclerView.Adapter<MyEarthquakeRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
+    private val dateFormater : SimpleDateFormat
 
     init {
         mOnClickListener = View.OnClickListener { v ->
@@ -30,6 +33,8 @@ class MyEarthquakeRecyclerViewAdapter(
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
         }
+        dateFormater = SimpleDateFormat("MMM-dd-yyyy h:mm:ss a z")
+        dateFormater.timeZone = TimeZone.getDefault()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -41,12 +46,14 @@ class MyEarthquakeRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
         holder.mIdView.text = item.id
-        holder.magTextView.text = "Magnitude: " + item.magnitude
-        holder.placeTextView.text = "Place: " + item.place
+        holder.magTextView.text = "Magnitude " + item.magnitude
+        holder.placeTextView.text = item.place
         holder.latTextView.text = "Latitude: " + item.latitude
         holder.longTextView.text = "Longitude: " + item.longitude
-//        holder.timeTextView.text = "Time: " + item.time
+        holder.timeTextView.text = dateFormater.format(Date(item.time))
         holder.typeTextView.text = "Event type: " + item.type
+
+
 
         with(holder.mView) {
             tag = item
@@ -62,7 +69,7 @@ class MyEarthquakeRecyclerViewAdapter(
         val placeTextView = mView.placeText
         val latTextView = mView.latText
         val longTextView = mView.longText
-//        val timeTextView = mView.timeText
+        val timeTextView = mView.timeText
         val typeTextView = mView.typeText
     }
 }
