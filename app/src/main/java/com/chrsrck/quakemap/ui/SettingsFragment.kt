@@ -37,7 +37,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
-        networkViewModel = ViewModelProviders.of(this).get(NetworkViewModel::class.java)
+        networkViewModel = ViewModelProviders.of((activity as MainActivity)).get(NetworkViewModel::class.java)
         return view
     }
 

@@ -2,6 +2,7 @@ package com.chrsrck.quakemap.viewmodel
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
+import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.net.ConnectivityManager
@@ -45,8 +46,8 @@ class NetworkViewModel(application: Application) : AndroidViewModel(application)
         return networkInfo?.isConnected == true
     }
 
-    fun observeEarthquakes(fragment : Fragment, observer: Observer<HashMap<String, Earthquake>>) {
-        dataSource.hashMap.observe(fragment, observer)
+    fun observeEarthquakes(lifecycleOwner: LifecycleOwner, observer: Observer<HashMap<String, Earthquake>>) {
+        dataSource.hashMap.observe(lifecycleOwner, observer)
     }
     
 

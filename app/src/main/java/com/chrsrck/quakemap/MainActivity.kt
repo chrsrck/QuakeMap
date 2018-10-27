@@ -1,5 +1,6 @@
 package com.chrsrck.quakemap
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.SharedPreferences
@@ -26,6 +27,9 @@ class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentI
     private lateinit var viewModel : MainActivityViewModel
     lateinit var sharedPreferences: SharedPreferences
     lateinit var networkViewModel: NetworkViewModel
+    val dataObserver : Observer<HashMap<String, Earthquake>> = Observer { it ->
+        Toast.makeText(this, "Updated Earthquake Data", Toast.LENGTH_LONG).show()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         PreferenceManager.setDefaultValues(this, R.xml.preferences_settings, false)
@@ -44,6 +48,8 @@ class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentI
         val bottomNav = binding.bottomNavMenu as BottomNavigationView
 
         networkViewModel = ViewModelProviders.of(this).get(NetworkViewModel::class.java)
+        networkViewModel.observeEarthquakes(this, dataObserver)
+
         restoreNetworkData()
 
         val navHostFragment =
