@@ -55,7 +55,8 @@ class EarthquakeListFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 //        val view = inflater.inflate(R.layout.fragment_earthquake_list, container, false)
 
-        networkViewModel = (activity as MainActivity).networkViewModel
+        networkViewModel =
+                ViewModelProviders.of((activity as MainActivity)).get(NetworkViewModel::class.java)
         networkViewModel.observeEarthquakes(this, eqObserver)
 
         listViewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)

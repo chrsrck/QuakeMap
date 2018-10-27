@@ -55,7 +55,8 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         binding.setLifecycleOwner(this)
         val view = binding.root
 
-        networkViewModel = (activity as MainActivity).networkViewModel
+        networkViewModel =
+                ViewModelProviders.of((activity as MainActivity)).get(NetworkViewModel::class.java)
 
         mapView = view.findViewById(R.id.mapView) as MapView
         mapView?.onCreate(savedInstanceState) // lifecycle method for memory leak prevention

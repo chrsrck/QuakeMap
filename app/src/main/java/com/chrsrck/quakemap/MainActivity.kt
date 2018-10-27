@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentI
 
     private lateinit var viewModel : MainActivityViewModel
     lateinit var sharedPreferences: SharedPreferences
-    lateinit var networkViewModel: NetworkViewModel
+    private lateinit var networkViewModel: NetworkViewModel
     val dataObserver : Observer<HashMap<String, Earthquake>> = Observer { it ->
         Toast.makeText(this, "Updated Earthquake Data", Toast.LENGTH_LONG).show()
     }
