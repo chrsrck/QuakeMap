@@ -1,12 +1,9 @@
 package com.chrsrck.quakemap.ui
 
 import android.arch.lifecycle.Observer
-import android.content.ContentValues.TAG
 import android.content.res.Configuration
 import android.content.res.Resources
-import android.util.Log
 import com.chrsrck.quakemap.R
-import com.chrsrck.quakemap.data.DataSourceUSGS
 import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.viewmodel.EarthquakeViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -41,6 +38,7 @@ class EarthquakeMap(googleMap: GoogleMap,
 //        googleMap.setMapStyle(MapStyleOptions(R.raw.dark_mode_style.toString()))
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
         googleMap.uiSettings.isMapToolbarEnabled = false
+        googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
         setMapStyle()
     }
 
@@ -158,10 +156,14 @@ class EarthquakeMap(googleMap: GoogleMap,
             Configuration.UI_MODE_NIGHT_YES -> {
                 val stream : InputStream = resources.openRawResource(R.raw.dark_mode_style)
                 val style = Scanner(stream).useDelimiter("\\A").next()
+
                 googleMap.setMapStyle(MapStyleOptions(style))
             }
-            Configuration.UI_MODE_NIGHT_NO ->
-                googleMap.setMapStyle(MapStyleOptions("[]"))
+            Configuration.UI_MODE_NIGHT_NO -> {
+                val stream : InputStream = resources.openRawResource(R.raw.light_mode_style)
+                val style = Scanner(stream).useDelimiter("\\A").next()
+                googleMap.setMapStyle(MapStyleOptions(style))
+            }
             Configuration.UI_MODE_NIGHT_UNDEFINED ->
                 googleMap.setMapStyle(MapStyleOptions("[]"))
         }
