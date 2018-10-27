@@ -45,7 +45,7 @@ class MyEarthquakeRecyclerViewAdapter(
         holder.placeTextView.text = "Place: " + item.place
         holder.latTextView.text = "Latitude: " + item.latitude
         holder.longTextView.text = "Longitude: " + item.longitude
-        holder.timeTextView.text = "Time: " + item.time
+//        holder.timeTextView.text = "Time: " + item.time
         holder.typeTextView.text = "Event type: " + item.type
 
         with(holder.mView) {
@@ -62,7 +62,7 @@ class MyEarthquakeRecyclerViewAdapter(
         val placeTextView = mView.placeText
         val latTextView = mView.latText
         val longTextView = mView.longText
-        val timeTextView = mView.timeText
+//        val timeTextView = mView.timeText
         val typeTextView = mView.typeText
     }
 }
