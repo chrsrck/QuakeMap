@@ -72,6 +72,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 networkViewModel.fetchEarthquakeData(feedKey)
             }
 
+
         }
     }
 

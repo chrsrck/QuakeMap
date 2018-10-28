@@ -1,0 +1,32 @@
+[
+  {
+    "featureType": "landscape",
+    "stylers": [
+      {
+        "hue": "#ffcc80"
+      },
+      {
+        "saturation": 100
+      }
+    ]
+  },
+  {
+    "featureType": "poi",
+    "stylers": [
+      {
+        "hue": "#ca9b52"
+      }
+    ]
+  },
+  {
+    "featureType": "water",
+    "stylers": [
+      {
+        "hue": "#b2fef7"
+      },
+      {
+        "saturation": -45
+      }
+    ]
+  }
+]
