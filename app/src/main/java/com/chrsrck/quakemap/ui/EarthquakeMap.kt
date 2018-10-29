@@ -5,28 +5,22 @@ import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Color
-import android.widget.Toast
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.viewmodel.EarthquakeViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
-import com.google.maps.android.data.kml.KmlLayer
-import com.google.maps.android.heatmaps.HeatmapTileProvider
-import kotlinx.coroutines.experimental.async
-import java.io.InputStream
-import java.util.*
-import kotlin.collections.HashMap
-import com.google.maps.android.data.geojson.GeoJsonLineStringStyle
-import org.json.JSONException
 import com.google.maps.android.data.geojson.GeoJsonLayer
-import com.google.maps.android.data.geojson.GeoJsonPolygon
-import com.google.maps.android.data.geojson.GeoJsonPolygonStyle
+import com.google.maps.android.heatmaps.HeatmapTileProvider
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
+import org.json.JSONException
 import java.io.IOException
+import java.io.InputStream
+import java.util.*
 
 
 class EarthquakeMap(googleMap: GoogleMap,
@@ -53,7 +47,6 @@ class EarthquakeMap(googleMap: GoogleMap,
 
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
         googleMap.uiSettings.isMapToolbarEnabled = false
-        googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
         setMapStyle()
         loadPlateBoundaries(context)
     }

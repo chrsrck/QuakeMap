@@ -1,11 +1,6 @@
 package com.chrsrck.quakemap.viewmodel
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModel;
-import android.databinding.Bindable
-import android.databinding.Observable
-import android.support.v7.app.AppCompatDelegate
+import android.arch.lifecycle.ViewModel
 
 class SettingsViewModel : ViewModel() {
     // TODO: Implement the ViewModel

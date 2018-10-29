@@ -1,7 +1,6 @@
 package com.chrsrck.quakemap.viewmodel
 
 import android.arch.lifecycle.ViewModel
-import com.chrsrck.quakemap.data.DataSourceUSGS
 
 class MainActivityViewModel : ViewModel() {
 

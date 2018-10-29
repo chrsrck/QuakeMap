@@ -1,23 +1,22 @@
 package com.chrsrck.quakemap.ui
 
 import android.arch.lifecycle.ViewModelProviders
+import android.databinding.BindingAdapter
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import com.chrsrck.quakemap.MainActivity
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.databinding.EarthquakeMapFragmentBinding
 import com.chrsrck.quakemap.viewmodel.EarthquakeViewModel
-import com.chrsrck.quakemap.viewmodel.MainActivityViewModel
+import com.chrsrck.quakemap.viewmodel.NetworkViewModel
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
-import android.graphics.drawable.Drawable
-import android.databinding.BindingAdapter
-import android.widget.ImageView
-import com.chrsrck.quakemap.MainActivity
-import com.chrsrck.quakemap.viewmodel.NetworkViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 

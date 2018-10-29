@@ -1,22 +1,14 @@
 package com.chrsrck.quakemap.data
 
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
-import android.support.v4.app.Fragment
-import android.util.Log
 import com.chrsrck.quakemap.model.Earthquake
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.CoroutineExceptionHandler
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
-import org.json.JSONException
 import org.json.JSONObject
-import java.lang.Exception
-import kotlin.coroutines.experimental.coroutineContext
 
 class DataSourceUSGS {
 
@@ -68,7 +60,7 @@ class DataSourceUSGS {
             } else {
                 JSONObject("")
             }
-            
+
             val parseMap = parser.parseQuakes(json)
             hashMap.postValue(parseMap)
         }
