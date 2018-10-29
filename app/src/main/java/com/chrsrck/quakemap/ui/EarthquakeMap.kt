@@ -52,8 +52,8 @@ class EarthquakeMap(googleMap: GoogleMap,
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
         googleMap.uiSettings.isMapToolbarEnabled = false
         googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
-        loadPlateBoundaries(context)
         setMapStyle()
+        loadPlateBoundaries(context)
     }
 
     val heatObserver : Observer<Boolean> = Observer { heatMode ->
@@ -170,8 +170,8 @@ class EarthquakeMap(googleMap: GoogleMap,
             val plates_layer: GeoJsonLayer? = async (CommonPool) {
                 try {
                     val layer = GeoJsonLayer(googleMap, R.raw.plates, context)
-                    layer.defaultLineStringStyle.width = 2f
-                    layer.defaultLineStringStyle.color = Color.RED
+                    layer.defaultPolygonStyle.strokeWidth = 2f
+                    layer.defaultPolygonStyle.strokeColor = Color.RED
                     return@async layer
                 } catch (e: JSONException) {
                     e.printStackTrace()
@@ -194,15 +194,15 @@ class EarthquakeMap(googleMap: GoogleMap,
             }
         }
 
-//        launch (UI){
-//            val style = async (CommonPool){
-//                val stream : InputStream = resources.openRawResource(styleId)
-//                return@async Scanner(stream).useDelimiter("\\A").next()
-//            }.await()
-//            googleMap.setMapStyle(MapStyleOptions(style))
-//        }
-        val stream = resources.openRawResource(styleId)
-        val style = Scanner(stream).useDelimiter("\\A").next()
-        googleMap.setMapStyle(MapStyleOptions(style))
+        launch (UI){
+            val style = async (CommonPool){
+                val stream : InputStream = resources.openRawResource(styleId)
+                return@async Scanner(stream).useDelimiter("\\A").next()
+            }.await()
+            googleMap.setMapStyle(MapStyleOptions(style))
+        }
+//        val stream = resources.openRawResource(styleId)
+//        val style = Scanner(stream).useDelimiter("\\A").next()
+//        googleMap.setMapStyle(MapStyleOptions(style))
     }
 }
