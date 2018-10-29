@@ -1,6 +1,7 @@
 package com.chrsrck.quakemap.ui
 
 
+import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,13 @@ import android.widget.TextView
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.ui.EarthquakeListFragment.OnListFragmentInteractionListener
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.MapFragment
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.earthquake_map_fragment.view.*
 import kotlinx.android.synthetic.main.fragment_earthquake.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -45,13 +53,23 @@ class MyEarthquakeRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
-        holder.mIdView.text = item.id
-        holder.magTextView.text = "Magnitude " + item.magnitude
-        holder.placeTextView.text = item.place
-        holder.latTextView.text = "Latitude: " + item.latitude
-        holder.longTextView.text = "Longitude: " + item.longitude
-        holder.timeTextView.text = dateFormater.format(Date(item.time))
-        holder.typeTextView.text = "Event type: " + item.type
+//        holder.mIdView.text = item.id
+//        holder.magTextView.text = "Magnitude " + item.magnitude
+//        holder.placeTextView.text = item.place
+//        holder.latTextView.text = "Latitude: " + item.latitude
+//        holder.longTextView.text = "Longitude: " + item.longitude
+//        holder.timeTextView.text = dateFormater.format(Date(item.time))
+//        holder.typeTextView.text = "Event type: " + item.type
+        val map = holder.mapView
+        map.onCreate(Bundle.EMPTY)
+        map.getMapAsync({googleMap ->
+            val pos = LatLng(item.latitude, item.longitude)
+            val opt = MarkerOptions().position(pos)
+            googleMap.addMarker(opt)
+//            googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(pos, 5f)))
+            map.onResume()
+        })
+        map.invalidate()
 
 
 
@@ -64,12 +82,13 @@ class MyEarthquakeRecyclerViewAdapter(
     override fun getItemCount(): Int = mValues.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mIdView: TextView = mView.id_eq_text
-        val magTextView: TextView = mView.magText
-        val placeTextView = mView.placeText
-        val latTextView = mView.latText
-        val longTextView = mView.longText
-        val timeTextView = mView.timeText
-        val typeTextView = mView.typeText
+//        val mIdView: TextView = mView.id_eq_text
+//        val magTextView: TextView = mView.magText
+//        val placeTextView = mView.placeText
+//        val latTextView = mView.latText
+//        val longTextView = mView.longText
+//        val timeTextView = mView.timeText
+//        val typeTextView = mView.typeText
+        val mapView = mView.map_card
     }
 }
