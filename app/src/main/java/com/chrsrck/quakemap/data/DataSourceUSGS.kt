@@ -63,10 +63,6 @@ class DataSourceUSGS {
                         JSONObject("")
                     }
                 val parseMap = parser.parseQuakes(json)
-                hashMap.postValue(parseMap)
-        }
-
-        Log.d(TAG,"Finished the coroutine")
-    }
-
+                hashMap.postValue(parseMap) }
+            }
 }

@@ -43,11 +43,9 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        //val view = inflater.inflate(R.layout.earthquake_map_fragment, container, false)
         // Creating the binding and inflating the layout
         // don't use DataBindingUtil since the layout binding is known in advance
         viewModel = ViewModelProviders.of(this).get(EarthquakeViewModel::class.java)
-//        viewModel.heatMode.value = (activity as MainActivity).sharedPreferences.getBoolean("heatMode", false)
         val binding: EarthquakeMapFragmentBinding =
                 EarthquakeMapFragmentBinding.inflate(inflater)
 
@@ -84,7 +82,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         val pos = CameraPosition(LatLng(latitude, longitude), zoom, tilt, bearing)
 
 
-        quakeMap = EarthquakeMap(googleMap!!, resources, pos, viewModel, networkViewModel.getEarthquakeData())
+        quakeMap = EarthquakeMap(googleMap!!, resources, pos, viewModel, networkViewModel.getEarthquakeData(), context)
 
         networkViewModel.observeEarthquakes(frag, quakeMap?.quakeObserver!!)
 

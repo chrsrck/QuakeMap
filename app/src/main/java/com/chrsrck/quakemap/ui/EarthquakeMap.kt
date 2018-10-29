@@ -1,23 +1,37 @@
 package com.chrsrck.quakemap.ui
 
 import android.arch.lifecycle.Observer
+import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.graphics.Color
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.viewmodel.EarthquakeViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
+import com.google.maps.android.data.kml.KmlLayer
 import com.google.maps.android.heatmaps.HeatmapTileProvider
+import kotlinx.coroutines.experimental.async
 import java.io.InputStream
 import java.util.*
 import kotlin.collections.HashMap
+import com.google.maps.android.data.geojson.GeoJsonLineStringStyle
+import org.json.JSONException
+import com.google.maps.android.data.geojson.GeoJsonLayer
+import com.google.maps.android.data.geojson.GeoJsonPolygon
+import com.google.maps.android.data.geojson.GeoJsonPolygonStyle
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
+
 
 class EarthquakeMap(googleMap: GoogleMap,
                     resources: Resources, cameraPosition: CameraPosition,
                     vmEQ : EarthquakeViewModel,
-                    data : HashMap<String, Earthquake>?) {
+                    data : HashMap<String, Earthquake>?,
+                    context : Context?) {
 
     val googleMap : GoogleMap
     private val resources : Resources
@@ -35,10 +49,10 @@ class EarthquakeMap(googleMap: GoogleMap,
         this.resources = resources
         eqHashMap = data
 
-//        googleMap.setMapStyle(MapStyleOptions(R.raw.dark_mode_style.toString()))
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
         googleMap.uiSettings.isMapToolbarEnabled = false
         googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+        loadPlateBoundaries(context)
         setMapStyle()
     }
 
@@ -68,7 +82,6 @@ class EarthquakeMap(googleMap: GoogleMap,
     }
 
     private fun makeMarkers() {
-//        googleMap.clear() // TODO refactor viewmodel from data source
         markerList = eqHashMap?.values?.map { earthquake: Earthquake ->
             addEarthquake(earthquake)
         }
@@ -91,7 +104,7 @@ class EarthquakeMap(googleMap: GoogleMap,
                 .position(LatLng(earthquake.latitude, earthquake.longitude)))
         marker.tag = earthquake // associates earthquake obj with that specific marker
 
-        if (vm.heatMode.value!!) {
+        if (vm?.heatMode?.value!!) {
             marker.isVisible = false
         }
         else {
@@ -149,23 +162,55 @@ class EarthquakeMap(googleMap: GoogleMap,
         markerList?.forEach { marker -> marker.isVisible = isVisible }
     }
 
+    private fun loadPlateBoundaries(context: Context?) {
+//        val layer : KmlLayer = KmlLayer(googleMap, resources.openRawResource(R.raw.gov_plate_boundaries), context)
+//        layer.addLayerToMap()
+
+        launch (UI) {
+            val plates_layer: GeoJsonLayer? = async (CommonPool) {
+                try {
+                    val layer = GeoJsonLayer(googleMap, R.raw.plate_boundaries, context)
+                    layer.defaultLineStringStyle.width = 2f
+                    layer.defaultLineStringStyle.color = Color.RED
+//                    layer?.features?.forEach { feature ->
+//                        val style = GeoJsonPolygonStyle()
+//
+//                    }
+                    return@async layer
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+                return@async null
+            }.await()
+
+//            plates_layer?.defaultLineStringStyle?.width = 1f
+
+            plates_layer?.addLayerToMap()
+        }
+    }
+
+
+
     fun setMapStyle() {
         val mode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        // TODO "[]" is standard style
+        val styleId: Int
         when (mode) {
-            Configuration.UI_MODE_NIGHT_YES -> {
-                val stream : InputStream = resources.openRawResource(R.raw.dark_mode_style)
-                val style = Scanner(stream).useDelimiter("\\A").next()
-
-                googleMap.setMapStyle(MapStyleOptions(style))
+            Configuration.UI_MODE_NIGHT_YES -> styleId = R.raw.dark_mode_style
+            Configuration.UI_MODE_NIGHT_NO -> styleId = R.raw.light_mode_style
+            else -> {
+                styleId = R.raw.standard_style
             }
-            Configuration.UI_MODE_NIGHT_NO -> {
-                val stream : InputStream = resources.openRawResource(R.raw.light_mode_style)
-                val style = Scanner(stream).useDelimiter("\\A").next()
-                googleMap.setMapStyle(MapStyleOptions(style))
-            }
-            Configuration.UI_MODE_NIGHT_UNDEFINED ->
-                googleMap.setMapStyle(MapStyleOptions("[]"))
         }
+
+//        launch (UI){
+//            val style = async (CommonPool){
+//                val stream : InputStream = resources.openRawResource(styleId)
+//                return@async Scanner(stream).useDelimiter("\\A").next()
+//            }.await()
+//            googleMap.setMapStyle(MapStyleOptions(style))
+//        }
+        val stream = resources.openRawResource(styleId)
+        val style = Scanner(stream).useDelimiter("\\A").next()
+        googleMap.setMapStyle(MapStyleOptions(style))
     }
 }

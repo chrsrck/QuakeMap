@@ -17,7 +17,6 @@ class EarthquakeViewModel : ViewModel() {
     }
 
     fun heatMapToggled() {
-        Log.d(this.javaClass.simpleName, "Heat map toggle clicked")
         heatMode.value = (heatMode.value)?.not()
     }
 }

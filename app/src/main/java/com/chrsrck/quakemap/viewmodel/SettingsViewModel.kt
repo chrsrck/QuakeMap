@@ -15,12 +15,5 @@ class SettingsViewModel : ViewModel() {
     init {
 
     }
-    fun setIsDarkMode(value : Boolean?) {
-        if (value != null && value) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        }
-        else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
-    }
+
 }
