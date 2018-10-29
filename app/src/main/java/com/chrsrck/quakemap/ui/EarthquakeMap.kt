@@ -169,13 +169,9 @@ class EarthquakeMap(googleMap: GoogleMap,
         launch (UI) {
             val plates_layer: GeoJsonLayer? = async (CommonPool) {
                 try {
-                    val layer = GeoJsonLayer(googleMap, R.raw.plate_boundaries, context)
+                    val layer = GeoJsonLayer(googleMap, R.raw.plates, context)
                     layer.defaultLineStringStyle.width = 2f
                     layer.defaultLineStringStyle.color = Color.RED
-//                    layer?.features?.forEach { feature ->
-//                        val style = GeoJsonPolygonStyle()
-//
-//                    }
                     return@async layer
                 } catch (e: JSONException) {
                     e.printStackTrace()
@@ -183,13 +179,9 @@ class EarthquakeMap(googleMap: GoogleMap,
                 return@async null
             }.await()
 
-//            plates_layer?.defaultLineStringStyle?.width = 1f
-
             plates_layer?.addLayerToMap()
         }
     }
-
-
 
     fun setMapStyle() {
         val mode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
