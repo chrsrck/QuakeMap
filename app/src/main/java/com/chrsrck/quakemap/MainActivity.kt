@@ -2,7 +2,6 @@ package com.chrsrck.quakemap
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
 import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -38,9 +37,6 @@ class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentI
         restoreTheme()
         super.onCreate(savedInstanceState)
 
-//        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES); //enables night mode
-
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
         val binding : ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -69,7 +65,7 @@ class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentI
     }
 
     override fun onListFragmentInteraction(item: Earthquake?) {
-        Toast.makeText(this, "you clicked an item", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "you clicked an item", Toast.LENGTH_SHORT).show()
     }
 
     private fun restoreTheme() {

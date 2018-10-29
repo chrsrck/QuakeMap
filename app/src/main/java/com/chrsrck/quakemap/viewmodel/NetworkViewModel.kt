@@ -7,9 +7,7 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import android.support.v4.app.Fragment
 import android.widget.Toast
-import com.chrsrck.quakemap.MainActivity
 import com.chrsrck.quakemap.data.DataSourceUSGS
 import com.chrsrck.quakemap.model.Earthquake
 

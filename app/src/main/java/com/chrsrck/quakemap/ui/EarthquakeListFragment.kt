@@ -1,5 +1,6 @@
 package com.chrsrck.quakemap.ui
 
+
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -14,12 +15,8 @@ import android.view.ViewGroup
 import com.chrsrck.quakemap.MainActivity
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.databinding.FragmentEarthquakeListBinding
-
-
 import com.chrsrck.quakemap.model.Earthquake
-import com.chrsrck.quakemap.viewmodel.EarthquakeViewModel
 import com.chrsrck.quakemap.viewmodel.ListViewModel
-import com.chrsrck.quakemap.viewmodel.MainActivityViewModel
 import com.chrsrck.quakemap.viewmodel.NetworkViewModel
 
 /**

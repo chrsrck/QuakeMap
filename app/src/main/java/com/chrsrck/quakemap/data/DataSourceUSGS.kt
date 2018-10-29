@@ -1,13 +1,9 @@
 package com.chrsrck.quakemap.data
 
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
-import android.support.v4.app.Fragment
-import android.util.Log
 import com.chrsrck.quakemap.model.Earthquake
 import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.CoroutineExceptionHandler
 import kotlinx.coroutines.experimental.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -24,6 +20,8 @@ class DataSourceUSGS {
     val MAG_ALL_HOUR_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson"
     val MAG_2_HALF_DAY_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson"
     val MAG_4_HALF_WEEK_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson"
+    val exceptionHandler : CoroutineExceptionHandler
+            = CoroutineExceptionHandler({_, e -> })
 
     /*
     LiveData uses a version counter to see if the data changes.
@@ -53,20 +51,18 @@ class DataSourceUSGS {
         }
     }
 
-    fun fetchJSON() =
-            launch(UI) { async(CommonPool) {
-                val request: Request = Request.Builder().url(activeFeed).build()
-                val response: Response = client.newCall(request).execute()
-                val json : JSONObject = if (response.isSuccessful) {
-                        JSONObject(response.body()?.string())
-                    } else {
-                        JSONObject("")
-                    }
-                val parseMap = parser.parseQuakes(json)
-                hashMap.postValue(parseMap)
+    fun fetchJSON() {
+        launch(CommonPool + exceptionHandler) {
+            val request: Request = Request.Builder().url(activeFeed).build()
+            val response: Response = client.newCall(request).execute()
+            val json: JSONObject = if (response.isSuccessful) {
+                JSONObject(response.body()?.string())
+            } else {
+                JSONObject("")
+            }
+
+            val parseMap = parser.parseQuakes(json)
+            hashMap.postValue(parseMap)
         }
-
-        Log.d(TAG,"Finished the coroutine")
     }
-
 }

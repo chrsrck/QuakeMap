@@ -1,12 +1,9 @@
 package com.chrsrck.quakemap.ui
 
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.support.v7.preference.PreferenceManager
@@ -16,7 +13,6 @@ import android.view.ViewGroup
 import com.chrsrck.quakemap.MainActivity
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.viewmodel.NetworkViewModel
-import com.chrsrck.quakemap.viewmodel.SettingsViewModel
 
 
 class SettingsFragment : PreferenceFragmentCompat() {
