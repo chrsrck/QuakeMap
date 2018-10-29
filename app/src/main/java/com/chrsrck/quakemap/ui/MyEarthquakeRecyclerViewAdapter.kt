@@ -66,7 +66,9 @@ class MyEarthquakeRecyclerViewAdapter(
             val pos = LatLng(item.latitude, item.longitude)
             val opt = MarkerOptions().position(pos)
             googleMap.addMarker(opt)
-//            googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(pos, 5f)))
+            googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(pos, 5f)))
+            googleMap.uiSettings.isMapToolbarEnabled = false
+            googleMap.setOnMapClickListener({})
             map.onResume()
         })
         map.invalidate()
