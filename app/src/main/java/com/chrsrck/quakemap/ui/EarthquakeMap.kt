@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Color
+import android.widget.Toast
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.viewmodel.EarthquakeViewModel
@@ -25,6 +26,7 @@ import com.google.maps.android.data.geojson.GeoJsonPolygonStyle
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
+import java.io.IOException
 
 
 class EarthquakeMap(googleMap: GoogleMap,
@@ -163,23 +165,21 @@ class EarthquakeMap(googleMap: GoogleMap,
     }
 
     private fun loadPlateBoundaries(context: Context?) {
-//        val layer : KmlLayer = KmlLayer(googleMap, resources.openRawResource(R.raw.gov_plate_boundaries), context)
-//        layer.addLayerToMap()
-
         launch (UI) {
-            val plates_layer: GeoJsonLayer? = async (CommonPool) {
-                try {
-                    val layer = GeoJsonLayer(googleMap, R.raw.plates, context)
-                    layer.defaultPolygonStyle.strokeWidth = 2f
-                    layer.defaultPolygonStyle.strokeColor = Color.RED
-                    return@async layer
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
-                return@async null
-            }.await()
+            val plates_layer_def = async (CommonPool) {
+                val layer = GeoJsonLayer(googleMap, R.raw.plates, context)
+                layer.defaultPolygonStyle.strokeWidth = 2f
+                layer.defaultPolygonStyle.strokeColor = Color.RED
+                return@async layer
+            }
 
-            plates_layer?.addLayerToMap()
+            try {
+                val plates_layer = plates_layer_def.await()
+                plates_layer?.addLayerToMap()
+            }
+            catch (e : JSONException) {
+
+            }
         }
     }
 
@@ -195,14 +195,18 @@ class EarthquakeMap(googleMap: GoogleMap,
         }
 
         launch (UI){
-            val style = async (CommonPool){
+            val styleDef = async (CommonPool){
                 val stream : InputStream = resources.openRawResource(styleId)
                 return@async Scanner(stream).useDelimiter("\\A").next()
-            }.await()
-            googleMap.setMapStyle(MapStyleOptions(style))
+            }
+
+            try {
+                val style = styleDef.await()
+                googleMap.setMapStyle(MapStyleOptions(style))
+            }
+            catch (e : IOException) {
+
+            }
         }
-//        val stream = resources.openRawResource(styleId)
-//        val style = Scanner(stream).useDelimiter("\\A").next()
-//        googleMap.setMapStyle(MapStyleOptions(style))
     }
 }
