@@ -68,9 +68,13 @@ class MyEarthquakeRecyclerViewAdapter(
         val mapView : MapView
         var googleMap : GoogleMap?
 
+        val titleText : TextView
+
         init {
             layout = mView
             mapView = layout.findViewById(R.id.map_card)
+            titleText = mView.findViewById(R.id.title_text)
+
             googleMap = null
             if (mapView != null) {
                 mapView.onCreate(null) // forces the actual map to appear in a card
@@ -81,6 +85,7 @@ class MyEarthquakeRecyclerViewAdapter(
         fun bindView(item : Earthquake) {
             layout.tag = this
             mapView.tag = item
+            titleText.text = item.id
             configureMap(item)
         }
 
