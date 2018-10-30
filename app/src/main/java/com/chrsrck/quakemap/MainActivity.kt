@@ -21,7 +21,7 @@ import com.chrsrck.quakemap.ui.EarthquakeListFragment
 import com.chrsrck.quakemap.viewmodel.MainActivityViewModel
 import com.chrsrck.quakemap.viewmodel.NetworkViewModel
 
-class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentInteractionListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel : MainActivityViewModel
     lateinit var sharedPreferences: SharedPreferences
@@ -64,9 +64,6 @@ class MainActivity : AppCompatActivity(), EarthquakeListFragment.OnListFragmentI
                 ))
     }
 
-    override fun onListFragmentInteraction(item: Earthquake?) {
-//        Toast.makeText(this, "you clicked an item", Toast.LENGTH_SHORT).show()
-    }
 
     private fun restoreTheme() {
         val modeDark =
