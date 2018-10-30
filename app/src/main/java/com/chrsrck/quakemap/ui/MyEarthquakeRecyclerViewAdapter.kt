@@ -60,6 +60,15 @@ class MyEarthquakeRecyclerViewAdapter(
         }
     }
 
+    override fun onViewRecycled(holder: ViewHolder) {
+        super.onViewRecycled(holder)
+        val mapHolder = holder
+        if (mapHolder != null && mapHolder.googleMap != null) {
+            mapHolder?.googleMap?.clear()
+            mapHolder?.googleMap?.mapType = GoogleMap.MAP_TYPE_NONE
+        }
+    }
+
     override fun getItemCount(): Int = mValues.size
 
     inner class ViewHolder(val mView: View, val context: Context) : RecyclerView.ViewHolder(mView), OnMapReadyCallback {
@@ -69,16 +78,27 @@ class MyEarthquakeRecyclerViewAdapter(
         var googleMap : GoogleMap?
 
         val titleText : TextView
+        val magText : TextView
+        val placeText : TextView
+        val timeText : TextView
+        val latText : TextView
+        val longText : TextView
+
 
         init {
             layout = mView
             mapView = layout.findViewById(R.id.map_card)
             titleText = mView.findViewById(R.id.title_text)
+            magText = mView.mag_text
+            placeText = mView.place_text
+            timeText = mView.time_text
+            latText = mView.lat_text
+            longText = mView.long_text
 
             googleMap = null
             if (mapView != null) {
                 mapView.onCreate(null) // forces the actual map to appear in a card
-                mapView.getMapAsync(this)
+                mapView.getMapAsync(this) // gets the map bit map image
             }
         }
 
@@ -86,6 +106,12 @@ class MyEarthquakeRecyclerViewAdapter(
             layout.tag = this
             mapView.tag = item
             titleText.text = item.id
+            magText.text = item.magnitude.toString()
+            placeText.text = item.place
+            timeText.text = dateFormater.format(Date(item.time))
+            latText.text = item.latitude.toString()
+            longText.text = item.longitude.toString()
+
             configureMap(item)
         }
 
@@ -103,7 +129,7 @@ class MyEarthquakeRecyclerViewAdapter(
             val opt = MarkerOptions().position(pos)
             googleMap?.mapType = GoogleMap.MAP_TYPE_NORMAL
             googleMap?.addMarker(opt)
-            googleMap?.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(pos, 5f)))
+//            googleMap?.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(pos, 5f)))
             googleMap?.uiSettings?.isMapToolbarEnabled = false
             googleMap?.setOnMapClickListener({})
         }

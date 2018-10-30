@@ -65,7 +65,7 @@ class EarthquakeListFragment : Fragment() {
         binding.setLifecycleOwner(this)
         val view = binding.root
         recyclerView = view.findViewById(R.id.list)
-        recyclerView?.setRecyclerListener( onRecyclerListener)
+//        recyclerView?.setRecyclerListener( onRecyclerListener)
 
         with(recyclerView) {
             layoutManager = when {
@@ -96,13 +96,13 @@ class EarthquakeListFragment : Fragment() {
         listener = null
     }
 
-    private val onRecyclerListener = RecyclerView.RecyclerListener { viewHolder ->
-        val mapHolder = (viewHolder as MyEarthquakeRecyclerViewAdapter.ViewHolder)
-        if (mapHolder != null && mapHolder.googleMap != null) {
-            mapHolder?.googleMap?.clear()
-            mapHolder?.googleMap?.mapType = GoogleMap.MAP_TYPE_NONE
-        }
-    }
+//    private val onRecyclerListener = RecyclerView.RecyclerListener { viewHolder ->
+//        val mapHolder = (viewHolder as MyEarthquakeRecyclerViewAdapter.ViewHolder)
+//        if (mapHolder != null && mapHolder.googleMap != null) {
+//            mapHolder?.googleMap?.clear()
+//            mapHolder?.googleMap?.mapType = GoogleMap.MAP_TYPE_NONE
+//        }
+//    }
 
 
 
