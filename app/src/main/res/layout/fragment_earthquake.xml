@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.MaterialComponents.CardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
@@ -15,6 +16,9 @@
             android:id="@+id/title_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textAppearance="@android:style/TextAppearance.Material.Title"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
             />
 
         <com.google.android.gms.maps.MapView
@@ -22,95 +26,91 @@
             android:id="@+id/map_card"
             android:name="com.google.android.gms.maps.MapView"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             map:liteMode="true"
             >
         </com.google.android.gms.maps.MapView>
 
-        <TextView
-            android:id="@+id/mag_text"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="match_parent"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="bottom|left"
+            android:orientation="vertical"
+            >
 
-        <TextView
-            android:id="@+id/place_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            <TextView
+                android:text="Magnitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/cardSubtitleStyle"
+                />
 
-        <TextView
-            android:id="@+id/time_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            <TextView
+                android:id="@+id/mag_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/cardContentStyle"
+                />
 
-        <TextView
-            android:id="@+id/lat_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            <TextView
+                android:text="Location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/cardSubtitleStyle"
+                />
 
-        <TextView
-            android:id="@+id/long_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            <TextView
+                android:id="@+id/place_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/cardContentStyle"
+                />
+
+            <TextView
+                android:text="Time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/cardSubtitleStyle"
+                />
+
+            <TextView
+                android:id="@+id/time_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/cardContentStyle"
+                />
+
+            <TextView
+                android:text="Latitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/cardSubtitleStyle"
+                />
+
+            <TextView
+                android:id="@+id/lat_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/cardContentStyle"
+                />
+
+            <TextView
+                android:text="Longitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/cardSubtitleStyle"
+                />
+
+            <TextView
+                android:id="@+id/long_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/cardContentStyle"
+                />
+        </LinearLayout>
     </LinearLayout>
-
-
-    <!--<FrameLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:orientation="vertical">-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/id_eq_text"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="@dimen/text_margin"-->
-            <!--android:textAppearance="?attr/textAppearanceListItem"-->
-            <!--android:layout_gravity="center"-->
-            <!--/>-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/magText"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--/>-->
-
-
-        <!--<TextView-->
-            <!--android:id="@+id/placeText"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--/>-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/timeText"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--/>-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/latText"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--/>-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/longText"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--/>-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/typeText"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--/>-->
-    <!--</FrameLayout>-->
-
 </android.support.design.card.MaterialCardView>
 
 

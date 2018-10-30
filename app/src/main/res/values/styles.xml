@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
@@ -11,6 +11,19 @@
 
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:colorControlNormal">?android:colorControlNormal</item>
+    </style>
+
+    <style name="cardSubtitleStyle" parent="AppTheme">
+        <!--<item name="android:textAppearance">@android:style/TextAppearance.Material.Title</item>-->
+        <item name="android:textAllCaps">true</item>
+        <!--<item name="android:letterSpacing">1.5em</item>-->
+        <item name="android:textSize">10pt</item>
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+    <style name="cardContentStyle" parent="AppTheme">
+        <item name="android:textAppearance">@android:style/TextAppearance.Material.Body1</item>
+
     </style>
 
 </resources>
