@@ -25,7 +25,8 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             map:liteMode="true"
-            map:cameraZoom="5"/>
+            map:mapType="none"
+            />
 
         <TextView
             android:id="@+id/title_text"

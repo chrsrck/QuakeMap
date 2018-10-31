@@ -83,6 +83,7 @@ class MyEarthquakeRecyclerViewAdapter(
         val timeText : TextView
         val latText : TextView
         val longText : TextView
+        val onMapClickListener : GoogleMap.OnMapClickListener = GoogleMap.OnMapClickListener {  }
 
 
         init {
@@ -127,11 +128,13 @@ class MyEarthquakeRecyclerViewAdapter(
         private fun configureMap(quake : Earthquake) {
             val pos = LatLng(quake.latitude, quake.longitude)
             val opt = MarkerOptions().position(pos)
-            googleMap?.mapType = GoogleMap.MAP_TYPE_NORMAL
+            if (googleMap?.mapType != GoogleMap.MAP_TYPE_TERRAIN) {
+                googleMap?.mapType = GoogleMap.MAP_TYPE_TERRAIN
+            }
             googleMap?.addMarker(opt)
-            googleMap?.moveCamera(CameraUpdateFactory.newLatLng(pos))
+//            googleMap?.moveCamera(CameraUpdateFactory.newLatLng(pos))
             googleMap?.uiSettings?.isMapToolbarEnabled = false
-            googleMap?.setOnMapClickListener({})
+            googleMap?.setOnMapClickListener(onMapClickListener)
         }
     }
 }
