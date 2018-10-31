@@ -72,7 +72,7 @@ class EarthquakeListFragment : Fragment() {
                 columnCount <= 1 -> LinearLayoutManager(context)
                 else -> GridLayoutManager(context, columnCount)
             }
-            recyclerView.setItemViewCacheSize(3)
+//            recyclerView.setItemViewCacheSize(5)
             recyclerView.setHasFixedSize(true)
 
             adapter =
