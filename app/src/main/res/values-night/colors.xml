@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--Chosen with online matieral design color tool Amber  https://material.io/tools/color/#!/-->
+    <!--Chosen with online matieral design color tool Black / Cyan  https://material.io/tools/color/#!/-->
     <!--Dark night mode values-->
     <color name="primaryColor">#263238</color>
     <color name="primaryLightColor">#4f5b62</color>
     <color name="primaryDarkColor">#000a12</color>
-    <color name="secondaryColor">#00838f</color>
-    <color name="secondaryLightColor">#4fb3bf</color>
-    <color name="secondaryDarkColor">#005662</color>
+    <color name="secondaryColor">#00acc1</color>
+    <color name="secondaryLightColor">#5ddef4</color>
+    <color name="secondaryDarkColor">#007c91</color>
     <!--<color name="primaryTextColor">#ffffff</color>-->
     <!--<color name="secondaryTextColor">#ffffff</color>-->
 </resources>
