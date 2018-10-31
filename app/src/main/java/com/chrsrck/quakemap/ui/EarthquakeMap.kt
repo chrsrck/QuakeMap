@@ -10,6 +10,7 @@ import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.viewmodel.EarthquakeViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.heatmaps.HeatmapTileProvider
@@ -47,7 +48,7 @@ class EarthquakeMap(googleMap: GoogleMap,
 
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
         googleMap.uiSettings.isMapToolbarEnabled = false
-        setMapStyle()
+        setMapStyle(context)
         loadPlateBoundaries(context)
     }
 
@@ -176,7 +177,7 @@ class EarthquakeMap(googleMap: GoogleMap,
         }
     }
 
-    fun setMapStyle() {
+    fun setMapStyle(context : Context?) {
         val mode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         val styleId: Int
         when (mode) {
@@ -189,15 +190,14 @@ class EarthquakeMap(googleMap: GoogleMap,
 
         launch (UI){
             val styleDef = async (CommonPool){
-                val stream : InputStream = resources.openRawResource(styleId)
-                return@async Scanner(stream).useDelimiter("\\A").next()
+                return@async MapStyleOptions.loadRawResourceStyle(context, styleId)
             }
 
             try {
                 val style = styleDef.await()
-                googleMap.setMapStyle(MapStyleOptions(style))
+                googleMap.setMapStyle(style)
             }
-            catch (e : IOException) {
+            catch (e : Resources.NotFoundException) {
 
             }
         }

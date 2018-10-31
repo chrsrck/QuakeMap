@@ -18,6 +18,7 @@ import com.chrsrck.quakemap.databinding.FragmentEarthquakeListBinding
 import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.viewmodel.ListViewModel
 import com.chrsrck.quakemap.viewmodel.NetworkViewModel
+import com.google.android.gms.maps.GoogleMap
 
 /**
  * A fragment representing a list of Items.
@@ -46,6 +47,7 @@ class EarthquakeListFragment : Fragment() {
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -63,12 +65,15 @@ class EarthquakeListFragment : Fragment() {
         binding.setLifecycleOwner(this)
         val view = binding.root
         recyclerView = view.findViewById(R.id.list)
+//        recyclerView?.setRecyclerListener( onRecyclerListener)
 
         with(recyclerView) {
             layoutManager = when {
                 columnCount <= 1 -> LinearLayoutManager(context)
                 else -> GridLayoutManager(context, columnCount)
             }
+//            recyclerView.setItemViewCacheSize(5)
+            recyclerView.setHasFixedSize(true)
 
             adapter =
                     MyEarthquakeRecyclerViewAdapter(
@@ -81,17 +86,25 @@ class EarthquakeListFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnListFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener")
-        }
+//        if (context is OnListFragmentInteractionListener) {
+//            listener = context
+//        } else {
+//            throw RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener")
+//        }
     }
 
     override fun onDetach() {
         super.onDetach()
         listener = null
     }
+
+//    private val onRecyclerListener = RecyclerView.RecyclerListener { viewHolder ->
+//        val mapHolder = (viewHolder as MyEarthquakeRecyclerViewAdapter.ViewHolder)
+//        if (mapHolder != null && mapHolder.googleMap != null) {
+//            mapHolder?.googleMap?.clear()
+//            mapHolder?.googleMap?.mapType = GoogleMap.MAP_TYPE_NONE
+//        }
+//    }
 
 
 
