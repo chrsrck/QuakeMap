@@ -13,17 +13,32 @@
         <item name="android:colorControlNormal">?android:colorControlNormal</item>
     </style>
 
-    <style name="cardSubtitleStyle" parent="AppTheme">
-        <!--<item name="android:textAppearance">@android:style/TextAppearance.Material.Title</item>-->
-        <item name="android:textAllCaps">true</item>
-        <!--<item name="android:letterSpacing">1.5em</item>-->
-        <item name="android:textSize">10pt</item>
-        <item name="android:layout_marginTop">10dp</item>
+    <style name="Card" parent="AppTheme">
+    <!-- Default Card Style -->
+        <item name="android:layout_marginRight">@dimen/card_margin_horizontal</item>
+        <item name="android:layout_marginLeft">@dimen/card_margin_horizontal</item>
     </style>
 
-    <style name="cardContentStyle" parent="AppTheme">
-        <item name="android:textAppearance">@android:style/TextAppearance.Material.Body1</item>
+    <style name="Card.Overline" parent="Card">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Overline</item>
+        <item name="android:fontFamily">@font/titilliumweb_light</item>
+        <item name="android:textColor">?attr/colorAccent</item>
+        <item name="android:layout_marginTop">@dimen/card_margin_vertical</item>
+        <item name="android:layout_marginBottom">@dimen/card_margin_vertical_inner</item>
+    </style>
 
+    <style name="Card.Title" parent="Card">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Subtitle1</item>
+        <item name="android:fontFamily">@font/titilliumweb_regular</item>
+    </style>
+
+    <style name="Card.Content" parent="Card">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body2</item>
+        <item name="android:layout_marginBottom">@dimen/card_margin_vertical_inner</item>
+    </style>
+
+    <style name="Card.Timestamp" parent="Card">
+        <item name="android:layout_marginBottom">@dimen/card_margin_vertical</item>
     </style>
 
 </resources>
