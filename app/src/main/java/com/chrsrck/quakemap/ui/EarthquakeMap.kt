@@ -10,7 +10,6 @@ import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.viewmodel.EarthquakeViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.heatmaps.HeatmapTileProvider
@@ -19,8 +18,6 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import org.json.JSONException
-import java.io.IOException
-import java.io.InputStream
 import java.util.*
 
 
@@ -100,13 +97,11 @@ class EarthquakeMap(googleMap: GoogleMap,
                 .position(LatLng(earthquake.latitude, earthquake.longitude)))
         marker.tag = earthquake // associates earthquake obj with that specific marker
 
-        if (vm?.heatMode?.value!!) {
-            marker.isVisible = false
+        when (vm.heatMode.value) {
+            true -> {marker.isVisible = false}
+            false -> {marker.isVisible = true}
+            null -> {}
         }
-        else {
-            marker.isVisible = true
-        }
-
         return marker
     }
 
@@ -142,15 +137,16 @@ class EarthquakeMap(googleMap: GoogleMap,
 
 
     private fun toggleMarkers(isHeatMode : Boolean?) {
-//        Log.d(TAG, "Toggled Markers")
-        if (isHeatMode!!) {
-            toggleMarkerVisibility(isVisible = false)
-            overlay?.isVisible = true
-        }
-        else if (isHeatMode?.not()){
-//            overlay?.remove()
-            overlay?.isVisible = false
-            toggleMarkerVisibility(isVisible = true)
+        when(isHeatMode) {
+            true -> {
+                toggleMarkerVisibility(isVisible = false)
+                overlay?.isVisible = true
+            }
+            false -> {
+                overlay?.isVisible = false
+                toggleMarkerVisibility(isVisible = true)
+            }
+            null -> {}
         }
     }
 
@@ -169,7 +165,7 @@ class EarthquakeMap(googleMap: GoogleMap,
 
             try {
                 val plates_layer = plates_layer_def.await()
-                plates_layer?.addLayerToMap()
+                plates_layer.addLayerToMap()
             }
             catch (e : JSONException) {
 

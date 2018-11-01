@@ -7,7 +7,6 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import android.widget.Toast
 import com.chrsrck.quakemap.data.DataSourceUSGS
 import com.chrsrck.quakemap.model.Earthquake
 
@@ -32,9 +31,6 @@ class NetworkViewModel(application: Application) : AndroidViewModel(application)
         dataSource.setFeed(feedKey)
         if (isOnline()) {
             dataSource.fetchJSON()
-        }
-        else {
-            Toast.makeText(context, "No internet connection", Toast.LENGTH_LONG).show()
         }
     }
 

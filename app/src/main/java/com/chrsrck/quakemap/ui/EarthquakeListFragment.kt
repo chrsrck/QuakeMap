@@ -84,28 +84,10 @@ class EarthquakeListFragment : Fragment() {
         return view
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-//        if (context is OnListFragmentInteractionListener) {
-//            listener = context
-//        } else {
-//            throw RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener")
-//        }
-    }
-
     override fun onDetach() {
         super.onDetach()
         listener = null
     }
-
-//    private val onRecyclerListener = RecyclerView.RecyclerListener { viewHolder ->
-//        val mapHolder = (viewHolder as MyEarthquakeRecyclerViewAdapter.ViewHolder)
-//        if (mapHolder != null && mapHolder.googleMap != null) {
-//            mapHolder?.googleMap?.clear()
-//            mapHolder?.googleMap?.mapType = GoogleMap.MAP_TYPE_NONE
-//        }
-//    }
-
 
 
     /**

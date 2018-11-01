@@ -61,12 +61,6 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         return view
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        // TODO: Use the ViewModel
-
-    }
-
     override fun onMapReady(googleMap: GoogleMap?) {
         val frag : EarthquakeMapFragment = this
 
@@ -99,14 +93,14 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         val camPos = quakeMap?.googleMap?.cameraPosition
         if (camPos != null) {
             preferences.edit().putFloat("latitude",
-                    camPos?.target.latitude.toFloat()).apply()
+                    camPos.target.latitude.toFloat()).apply()
             preferences.edit().putFloat("longitude",
                     camPos.target.longitude.toFloat()).apply()
             preferences.edit().putFloat("bearing", camPos.bearing).apply()
             preferences.edit().putFloat("zoom", camPos.zoom).apply()
             preferences.edit().putFloat("tilt", camPos.tilt).apply()
         }
-        preferences.edit().putBoolean("heatMode", viewModel?.heatMode?.value!!).apply()
+        preferences.edit().putBoolean("heatMode", viewModel.heatMode.value as Boolean).apply()
 
         super.onPause()
         mapView?.onPause()

@@ -16,19 +16,13 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    signingConfigs {
-        release {
-            storeFile file(RELEASE_STORE_FILE)
-            storePassword RELEASE_STORE_PASSWORD
-            keyAlias = RELEASE_KEY_ALIAS
-            keyPassword RELEASE_KEY_PASSWORD
-        }
-    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+        }
+        debug {
         }
     }
     dataBinding {
@@ -43,7 +37,6 @@ dependencies {
     def support_version = "28.0.0"
     def nav_version = "1.0.0-alpha04"
     def ok_http_version = "3.11.0"
-    def gson_version = "2.8.5"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -83,9 +76,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$ok_http_version"
 
     // preference fragment
-    // TODO: change support version
     implementation "com.android.support:preference-v14:$support_version"
-
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
