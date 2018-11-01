@@ -142,13 +142,11 @@ class EarthquakeMap(googleMap: GoogleMap,
 
 
     private fun toggleMarkers(isHeatMode : Boolean?) {
-//        Log.d(TAG, "Toggled Markers")
         if (isHeatMode!!) {
             toggleMarkerVisibility(isVisible = false)
             overlay?.isVisible = true
         }
         else if (isHeatMode?.not()){
-//            overlay?.remove()
             overlay?.isVisible = false
             toggleMarkerVisibility(isVisible = true)
         }

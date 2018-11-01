@@ -26,9 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel : MainActivityViewModel
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var networkViewModel: NetworkViewModel
-    val dataObserver : Observer<HashMap<String, Earthquake>> = Observer { it ->
-        Toast.makeText(this, "Updated Earthquake Data", Toast.LENGTH_LONG).show()
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         PreferenceManager.setDefaultValues(this, R.xml.preferences_settings, false)
@@ -44,7 +42,6 @@ class MainActivity : AppCompatActivity() {
         val bottomNav = binding.bottomNavMenu as BottomNavigationView
 
         networkViewModel = ViewModelProviders.of(this).get(NetworkViewModel::class.java)
-        networkViewModel.observeEarthquakes(this, dataObserver)
 
         restoreNetworkData()
 
