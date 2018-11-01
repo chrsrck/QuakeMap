@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">QuakeMap</string>
+    <string name="app_name">Quake Map</string>
     <string name="nav_title_map">Map</string>
     <string name="nav_title_list">List</string>
     <string name="nav_title_settings">Settings</string>
