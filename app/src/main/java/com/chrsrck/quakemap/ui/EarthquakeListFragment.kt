@@ -18,7 +18,6 @@ import com.chrsrck.quakemap.databinding.FragmentEarthquakeListBinding
 import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.viewmodel.ListViewModel
 import com.chrsrck.quakemap.viewmodel.NetworkViewModel
-import com.google.android.gms.maps.GoogleMap
 
 /**
  * A fragment representing a list of Items.

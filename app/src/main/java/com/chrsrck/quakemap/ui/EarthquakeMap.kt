@@ -10,7 +10,6 @@ import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.viewmodel.EarthquakeViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.heatmaps.HeatmapTileProvider
@@ -19,8 +18,6 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import org.json.JSONException
-import java.io.IOException
-import java.io.InputStream
 import java.util.*
 
 

@@ -1,6 +1,5 @@
 package com.chrsrck.quakemap
 
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
@@ -9,15 +8,12 @@ import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
-import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
 import com.chrsrck.quakemap.databinding.ActivityMainBinding
-import com.chrsrck.quakemap.model.Earthquake
-import com.chrsrck.quakemap.ui.EarthquakeListFragment
 import com.chrsrck.quakemap.viewmodel.MainActivityViewModel
 import com.chrsrck.quakemap.viewmodel.NetworkViewModel
 
