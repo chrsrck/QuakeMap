@@ -29,11 +29,11 @@ class MyEarthquakeRecyclerViewAdapter(
     private val dateFormater : SimpleDateFormat
 
     init {
-        mOnClickListener = View.OnClickListener { v ->
+        mOnClickListener = View.OnClickListener { _ ->
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
         }
-        dateFormater = SimpleDateFormat("MMM-dd-yyyy h:mm:ss a z")
+        dateFormater = SimpleDateFormat("MMM-dd-yyyy h:mm:ss a z", Locale.US)
         dateFormater.timeZone = TimeZone.getDefault()
     }
 
@@ -55,9 +55,9 @@ class MyEarthquakeRecyclerViewAdapter(
     override fun onViewRecycled(holder: ViewHolder) {
         super.onViewRecycled(holder)
         val mapHolder = holder
-        if (mapHolder != null && mapHolder.googleMap != null) {
-            mapHolder?.googleMap?.clear()
-            mapHolder?.googleMap?.mapType = GoogleMap.MAP_TYPE_NONE
+        if (mapHolder.googleMap != null) {
+            mapHolder.googleMap?.clear()
+            mapHolder.googleMap?.mapType = GoogleMap.MAP_TYPE_NONE
         }
     }
 
@@ -112,7 +112,7 @@ class MyEarthquakeRecyclerViewAdapter(
             MapsInitializer.initialize(context)
             googleMap = p0
             val quake = mapView.tag as Earthquake
-            if (quake != null && googleMap != null) {
+            if (googleMap != null) {
                 configureMap(quake)
             }
         }

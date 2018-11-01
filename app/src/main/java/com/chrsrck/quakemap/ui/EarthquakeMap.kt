@@ -97,13 +97,11 @@ class EarthquakeMap(googleMap: GoogleMap,
                 .position(LatLng(earthquake.latitude, earthquake.longitude)))
         marker.tag = earthquake // associates earthquake obj with that specific marker
 
-        if (vm?.heatMode?.value!!) {
-            marker.isVisible = false
+        when (vm.heatMode.value) {
+            true -> {marker.isVisible = false}
+            false -> {marker.isVisible = true}
+            null -> {}
         }
-        else {
-            marker.isVisible = true
-        }
-
         return marker
     }
 
@@ -139,13 +137,16 @@ class EarthquakeMap(googleMap: GoogleMap,
 
 
     private fun toggleMarkers(isHeatMode : Boolean?) {
-        if (isHeatMode!!) {
-            toggleMarkerVisibility(isVisible = false)
-            overlay?.isVisible = true
-        }
-        else if (isHeatMode?.not()){
-            overlay?.isVisible = false
-            toggleMarkerVisibility(isVisible = true)
+        when(isHeatMode) {
+            true -> {
+                toggleMarkerVisibility(isVisible = false)
+                overlay?.isVisible = true
+            }
+            false -> {
+                overlay?.isVisible = false
+                toggleMarkerVisibility(isVisible = true)
+            }
+            null -> {}
         }
     }
 
@@ -164,7 +165,7 @@ class EarthquakeMap(googleMap: GoogleMap,
 
             try {
                 val plates_layer = plates_layer_def.await()
-                plates_layer?.addLayerToMap()
+                plates_layer.addLayerToMap()
             }
             catch (e : JSONException) {
 

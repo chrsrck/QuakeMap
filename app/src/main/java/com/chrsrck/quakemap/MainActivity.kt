@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         val binding : ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewModel = viewModel
-        val bottomNav = binding.bottomNavMenu as BottomNavigationView
+        val bottomNav = binding.bottomNavMenu
 
         networkViewModel = ViewModelProviders.of(this).get(NetworkViewModel::class.java)
 
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         navHostFragment.navController.addOnNavigatedListener(
                 NavController.OnNavigatedListener(
-                        fun (controller: NavController, dest : NavDestination) {
+                        fun (_: NavController, _ : NavDestination) {
 
                         }
                 ))
@@ -63,10 +63,10 @@ class MainActivity : AppCompatActivity() {
                 sharedPreferences.getBoolean(resources.getString(R.string.is_dark_key), false)
 
         if(modeDark) {
-            delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {
-            delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
