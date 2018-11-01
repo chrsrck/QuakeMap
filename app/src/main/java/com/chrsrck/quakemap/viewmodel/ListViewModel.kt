@@ -13,7 +13,6 @@ class ListViewModel() : ViewModel() {
 
     fun updateQuakeList(map : HashMap<String, Earthquake>?) {
         if (map != null) {
-            // TODO: optimize this for faster reload
             quakeList.clear()
             map.forEach({entry ->
                 quakeList.add(entry.value)

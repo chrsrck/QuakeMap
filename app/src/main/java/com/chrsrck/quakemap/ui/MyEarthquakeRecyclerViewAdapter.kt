@@ -20,11 +20,6 @@ import kotlinx.android.synthetic.main.fragment_earthquake.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-/**
- * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
- * specified [OnListFragmentInteractionListener].
- * TODO: Replace the implementation with code for your data type.
- */
 class MyEarthquakeRecyclerViewAdapter(
         private val mValues: List<Earthquake>,
         private val mListener: OnListFragmentInteractionListener?)

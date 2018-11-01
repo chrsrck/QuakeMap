@@ -5,7 +5,7 @@
     <string name="nav_title_settings">Settings</string>
     <string name="heat_map_mode">Heat Map Mode</string>
     <string name="is_dark_key">is_dark_key</string>
-    
+
     <string name="pref_key_feed">feed_pref_key</string>
     <string name="key_all_eq_feed">all</string>
     <string name="key_2_half_eq_feed">2.5+</string>
