@@ -13,10 +13,10 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.heatmaps.HeatmapTileProvider
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
+//import kotlinx.coroutines.CommonPool
+//import kotlinx.coroutines.android.UI
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.json.JSONException
 import java.util.*
 
@@ -155,22 +155,22 @@ class EarthquakeMap(googleMap: GoogleMap,
     }
 
     private fun loadPlateBoundaries(context: Context?) {
-        launch (UI) {
-            val plates_layer_def = async (CommonPool) {
-                val layer = GeoJsonLayer(googleMap, R.raw.plates, context)
-                layer.defaultPolygonStyle.strokeWidth = 2f
-                layer.defaultPolygonStyle.strokeColor = Color.RED
-                return@async layer
-            }
-
-            try {
-                val plates_layer = plates_layer_def.await()
-                plates_layer.addLayerToMap()
-            }
-            catch (e : JSONException) {
-
-            }
-        }
+//        launch (UI) {
+//            val plates_layer_def = async (CommonPool) {
+//                val layer = GeoJsonLayer(googleMap, R.raw.plates, context)
+//                layer.defaultPolygonStyle.strokeWidth = 2f
+//                layer.defaultPolygonStyle.strokeColor = Color.RED
+//                return@async layer
+//            }
+//
+//            try {
+//                val plates_layer = plates_layer_def.await()
+//                plates_layer.addLayerToMap()
+//            }
+//            catch (e : JSONException) {
+//
+//            }
+//        }
     }
 
     fun setMapStyle(context : Context?) {
@@ -184,18 +184,18 @@ class EarthquakeMap(googleMap: GoogleMap,
             }
         }
 
-        launch (UI){
-            val styleDef = async (CommonPool){
-                return@async MapStyleOptions.loadRawResourceStyle(context, styleId)
-            }
-
-            try {
-                val style = styleDef.await()
-                googleMap.setMapStyle(style)
-            }
-            catch (e : Resources.NotFoundException) {
-
-            }
-        }
+//        launch (UI){
+//            val styleDef = async (CommonPool){
+//                return@async MapStyleOptions.loadRawResourceStyle(context, styleId)
+//            }
+//
+//            try {
+//                val style = styleDef.await()
+//                googleMap.setMapStyle(style)
+//            }
+//            catch (e : Resources.NotFoundException) {
+//
+//            }
+//        }
     }
 }
