@@ -1,6 +1,6 @@
 package com.chrsrck.quakemap.viewmodel
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.chrsrck.quakemap.model.Earthquake
 
 class ListViewModel() : ViewModel() {

@@ -1,6 +1,6 @@
 package com.chrsrck.quakemap.data
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import com.chrsrck.quakemap.model.Earthquake
 //import kotlinx.coroutines.experimental.CommonPool
 //import kotlinx.coroutines.experimental.CoroutineExceptionHandler

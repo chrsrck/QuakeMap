@@ -1,6 +1,6 @@
 package com.chrsrck.quakemap.ui
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources

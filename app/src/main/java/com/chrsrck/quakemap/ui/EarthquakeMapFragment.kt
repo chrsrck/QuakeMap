@@ -1,10 +1,10 @@
 package com.chrsrck.quakemap.ui
 
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.BindingAdapter
+import androidx.lifecycle.ViewModelProviders
+import androidx.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

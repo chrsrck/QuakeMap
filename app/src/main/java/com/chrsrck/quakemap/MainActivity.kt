@@ -1,13 +1,13 @@
 package com.chrsrck.quakemap
 
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.content.SharedPreferences
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.design.widget.BottomNavigationView
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.app.AppCompatDelegate
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
@@ -49,12 +49,12 @@ class MainActivity : AppCompatActivity() {
                     item.onNavDestinationSelected(navHostFragment.navController)
                 })
 
-        navHostFragment.navController.addOnNavigatedListener(
-                NavController.OnNavigatedListener(
-                        fun (_: NavController, _ : NavDestination) {
-
-                        }
-                ))
+//        navHostFragment.navController.addOnNavigatedListener(
+//                NavController.OnNavigatedListener(
+//                        fun (_: NavController, _ : NavDestination) {
+//
+//                        }
+//                ))
     }
 
 
