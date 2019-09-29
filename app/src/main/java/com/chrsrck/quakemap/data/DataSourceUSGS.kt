@@ -52,17 +52,15 @@ class DataSourceUSGS {
     }
 
     fun fetchJSON() {
-//        launch(CommonPool + exceptionHandler) {
-//            val request: Request = Request.Builder().url(activeFeed).build()
-//            val response: Response = client.newCall(request).execute()
-//            val json: JSONObject = if (response.isSuccessful) {
-//                JSONObject(response.body()?.string())
-//            } else {
-//                JSONObject("")
-//            }
-//
-//            val parseMap = parser.parseQuakes(json)
-//            hashMap.postValue(parseMap)
-//        }
+            val request: Request = Request.Builder().url(activeFeed).build()
+            val response: Response = client.newCall(request).execute()
+            val json: JSONObject = if (response.isSuccessful) {
+                JSONObject(response.body()?.string())
+            } else {
+                JSONObject("")
+            }
+
+            val parseMap = parser.parseQuakes(json)
+            hashMap.postValue(parseMap)
     }
 }

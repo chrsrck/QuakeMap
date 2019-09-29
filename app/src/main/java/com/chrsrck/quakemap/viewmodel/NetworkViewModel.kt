@@ -7,8 +7,13 @@ import androidx.lifecycle.Observer
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import androidx.lifecycle.viewModelScope
 import com.chrsrck.quakemap.data.DataSourceUSGS
 import com.chrsrck.quakemap.model.Earthquake
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class NetworkViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -30,12 +35,17 @@ class NetworkViewModel(application: Application) : AndroidViewModel(application)
     fun fetchEarthquakeData(feedKey: String?) {
         dataSource.setFeed(feedKey)
         if (isOnline()) {
-            dataSource.fetchJSON()
+            viewModelScope.async {
+                dataSource.fetchJSON()
+            }
         }
     }
 
+    private suspend fun getData() = withContext(Dispatchers.Default) {
+        dataSource.fetchJSON()
+    }
 
-    fun isOnline(): Boolean {
+    private fun isOnline(): Boolean {
         val networkInfo: NetworkInfo? = connMgr.activeNetworkInfo
         return networkInfo?.isConnected == true
     }
