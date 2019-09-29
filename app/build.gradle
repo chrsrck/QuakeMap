@@ -61,6 +61,7 @@ dependencies {
 
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version" // explicit viewmodel needed for viewModelScope
 
 
     // Navigation Architecture Component
