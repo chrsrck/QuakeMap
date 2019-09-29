@@ -36,7 +36,7 @@ class NetworkViewModel(application: Application) : AndroidViewModel(application)
         dataSource.setFeed(feedKey)
         if (isOnline()) {
             viewModelScope.async {
-                dataSource.fetchJSON()
+                getData()
             }
         }
     }
