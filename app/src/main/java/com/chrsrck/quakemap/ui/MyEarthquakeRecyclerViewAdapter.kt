@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import com.chrsrck.quakemap.R
+import com.chrsrck.quakemap.databinding.EarthquakeListViewholderBinding
 import com.chrsrck.quakemap.model.Earthquake
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
@@ -23,6 +25,7 @@ class MyEarthquakeRecyclerViewAdapter(
     : androidx.recyclerview.widget.RecyclerView.Adapter<MyEarthquakeRecyclerViewAdapter.ViewHolder>() {
 
     private val dateFormater : SimpleDateFormat
+    private lateinit var binding: EarthquakeListViewholderBinding
 
     init {
         dateFormater = SimpleDateFormat("MMM-dd-yyyy h:mm:ss a z", Locale.US)
@@ -30,16 +33,19 @@ class MyEarthquakeRecyclerViewAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.earthquake_list_viewholder, parent, false)
-        return ViewHolder(view, parent.context)
+        val inflater = LayoutInflater.from(parent.context)
+        binding = DataBindingUtil.inflate<EarthquakeListViewholderBinding>(inflater, R.layout.earthquake_list_viewholder, parent, false)
+        return ViewHolder(binding.root, parent.context)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
+        binding.eq = item
+        binding.executePendingBindings()
 
         with(holder.mView) {
             holder.bindView(item)
+
         }
     }
 
@@ -60,7 +66,6 @@ class MyEarthquakeRecyclerViewAdapter(
         val mapView : MapView
         var googleMap : GoogleMap?
 
-        val titleText : TextView
         val magText : TextView
         val placeText : TextView
         val timeText : TextView
@@ -72,7 +77,6 @@ class MyEarthquakeRecyclerViewAdapter(
         init {
             layout = mView
             mapView = layout.findViewById(R.id.map_card)
-            titleText = mView.findViewById(R.id.title_text)
             magText = mView.mag_text
             placeText = mView.place_text
             timeText = mView.time_text
@@ -89,7 +93,6 @@ class MyEarthquakeRecyclerViewAdapter(
         fun bindView(item : Earthquake) {
             layout.tag = this
             mapView.tag = item
-            titleText.text = item.id
             magText.text = item.magnitude.toString()
             placeText.text = item.place
             timeText.text = dateFormater.format(Date(item.time))
