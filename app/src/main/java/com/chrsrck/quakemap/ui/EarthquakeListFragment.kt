@@ -1,14 +1,14 @@
 package com.chrsrck.quakemap.ui
 
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +33,7 @@ class EarthquakeListFragment : Fragment() {
     private var listener: OnListFragmentInteractionListener? = null
     private lateinit var networkViewModel : NetworkViewModel
     private lateinit var listViewModel : ListViewModel
-    private lateinit var recyclerView : RecyclerView
+    private lateinit var recyclerView : androidx.recyclerview.widget.RecyclerView
 
     private val eqObserver = Observer<HashMap<String, Earthquake>> { hashMap ->
         listViewModel.updateQuakeList(hashMap)
@@ -69,8 +69,8 @@ class EarthquakeListFragment : Fragment() {
 
         with(recyclerView) {
             layoutManager = when {
-                columnCount <= 1 -> LinearLayoutManager(context)
-                else -> GridLayoutManager(context, columnCount)
+                columnCount <= 1 -> androidx.recyclerview.widget.LinearLayoutManager(context)
+                else -> androidx.recyclerview.widget.GridLayoutManager(context, columnCount)
             }
 //            recyclerView.setItemViewCacheSize(5)
             recyclerView.setHasFixedSize(true)

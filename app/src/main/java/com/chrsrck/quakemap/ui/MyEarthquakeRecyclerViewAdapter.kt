@@ -2,7 +2,7 @@ package com.chrsrck.quakemap.ui
 
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +23,7 @@ import java.util.*
 class MyEarthquakeRecyclerViewAdapter(
         private val mValues: List<Earthquake>,
         private val mListener: OnListFragmentInteractionListener?)
-    : RecyclerView.Adapter<MyEarthquakeRecyclerViewAdapter.ViewHolder>() {
+    : androidx.recyclerview.widget.RecyclerView.Adapter<MyEarthquakeRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
     private val dateFormater : SimpleDateFormat
@@ -63,7 +63,7 @@ class MyEarthquakeRecyclerViewAdapter(
 
     override fun getItemCount(): Int = mValues.size
 
-    inner class ViewHolder(val mView: View, val context: Context) : RecyclerView.ViewHolder(mView), OnMapReadyCallback {
+    inner class ViewHolder(val mView: View, val context: Context) : androidx.recyclerview.widget.RecyclerView.ViewHolder(mView), OnMapReadyCallback {
 
         val layout : View
         val mapView : MapView

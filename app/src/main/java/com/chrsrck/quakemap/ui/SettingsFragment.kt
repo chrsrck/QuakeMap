@@ -1,12 +1,12 @@
 package com.chrsrck.quakemap.ui
 
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
-import android.support.v7.app.AppCompatDelegate
-import android.support.v7.preference.PreferenceFragmentCompat
-import android.support.v7.preference.PreferenceManager
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

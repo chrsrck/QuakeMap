@@ -1,6 +1,6 @@
 package com.chrsrck.quakemap.ui
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
@@ -13,10 +13,9 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.heatmaps.HeatmapTileProvider
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.*
+//import kotlinx.coroutines.CommonPool
+//import kotlinx.coroutines.android.UI
 import org.json.JSONException
 import java.util.*
 
@@ -45,8 +44,10 @@ class EarthquakeMap(googleMap: GoogleMap,
 
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
         googleMap.uiSettings.isMapToolbarEnabled = false
-        setMapStyle(context)
-        loadPlateBoundaries(context)
+        if (context != null) {
+            setMapStyle(context)
+            loadPlateBoundaries(context)
+        }
     }
 
     val heatObserver : Observer<Boolean> = Observer { heatMode ->
@@ -154,48 +155,37 @@ class EarthquakeMap(googleMap: GoogleMap,
         markerList?.forEach { marker -> marker.isVisible = isVisible }
     }
 
-    private fun loadPlateBoundaries(context: Context?) {
-        launch (UI) {
-            val plates_layer_def = async (CommonPool) {
-                val layer = GeoJsonLayer(googleMap, R.raw.plates, context)
-                layer.defaultPolygonStyle.strokeWidth = 2f
-                layer.defaultPolygonStyle.strokeColor = Color.RED
-                return@async layer
-            }
-
-            try {
-                val plates_layer = plates_layer_def.await()
-                plates_layer.addLayerToMap()
-            }
-            catch (e : JSONException) {
-
-            }
+    private fun loadPlateBoundaries(context: Context) {
+        GlobalScope.launch(Dispatchers.Main) {
+            val plates = loadPlates(context)
+            plates.addLayerToMap()
         }
     }
 
-    fun setMapStyle(context : Context?) {
+    private fun setMapStyle(context : Context) {
         val mode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        val styleId: Int
-        when (mode) {
-            Configuration.UI_MODE_NIGHT_YES -> styleId = R.raw.dark_mode_style
-            Configuration.UI_MODE_NIGHT_NO -> styleId = R.raw.light_mode_style
+        val styleId = when (mode) {
+            Configuration.UI_MODE_NIGHT_YES -> R.raw.dark_mode_style
+            Configuration.UI_MODE_NIGHT_NO -> R.raw.light_mode_style
             else -> {
-                styleId = R.raw.standard_style
+                R.raw.standard_style
             }
         }
 
-        launch (UI){
-            val styleDef = async (CommonPool){
-                return@async MapStyleOptions.loadRawResourceStyle(context, styleId)
-            }
-
-            try {
-                val style = styleDef.await()
-                googleMap.setMapStyle(style)
-            }
-            catch (e : Resources.NotFoundException) {
-
-            }
+        GlobalScope.launch(Dispatchers.Main) {
+            val style = loadStyle(styleId, context)
+            googleMap.setMapStyle(style)
         }
+    }
+
+    private suspend fun loadStyle(styleId : Int, context: Context?) = withContext(Dispatchers.IO) {
+        return@withContext MapStyleOptions.loadRawResourceStyle(context, styleId)
+    }
+
+    private suspend fun loadPlates(context: Context) : GeoJsonLayer = withContext(Dispatchers.IO) {
+        val layer = GeoJsonLayer(googleMap, R.raw.plates, context)
+        layer.defaultPolygonStyle.strokeWidth = 2f
+        layer.defaultPolygonStyle.strokeColor = Color.RED
+        return@withContext layer
     }
 }
