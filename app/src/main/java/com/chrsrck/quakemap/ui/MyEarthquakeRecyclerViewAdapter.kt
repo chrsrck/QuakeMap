@@ -2,44 +2,36 @@ package com.chrsrck.quakemap.ui
 
 
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.model.Earthquake
-import com.chrsrck.quakemap.ui.EarthquakeListFragment.OnListFragmentInteractionListener
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.main.fragment_earthquake.view.*
+import kotlinx.android.synthetic.main.earthquake_list_viewholder.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MyEarthquakeRecyclerViewAdapter(
-        private val mValues: List<Earthquake>,
-        private val mListener: OnListFragmentInteractionListener?)
+        private val mValues: List<Earthquake>)
     : androidx.recyclerview.widget.RecyclerView.Adapter<MyEarthquakeRecyclerViewAdapter.ViewHolder>() {
 
-    private val mOnClickListener: View.OnClickListener
     private val dateFormater : SimpleDateFormat
 
     init {
-        mOnClickListener = View.OnClickListener { _ ->
-            // Notify the active callbacks interface (the activity, if the fragment is attached to
-            // one) that an item has been selected.
-        }
         dateFormater = SimpleDateFormat("MMM-dd-yyyy h:mm:ss a z", Locale.US)
         dateFormater.timeZone = TimeZone.getDefault()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.fragment_earthquake, parent, false)
+                .inflate(R.layout.earthquake_list_viewholder, parent, false)
         return ViewHolder(view, parent.context)
     }
 
@@ -48,7 +40,6 @@ class MyEarthquakeRecyclerViewAdapter(
 
         with(holder.mView) {
             holder.bindView(item)
-            setOnClickListener(mOnClickListener)
         }
     }
 
