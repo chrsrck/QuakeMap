@@ -4,11 +4,11 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Color
-import android.preference.PreferenceManager
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.preference.PreferenceManager
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.model.Earthquake
 import com.google.android.gms.maps.model.CameraPosition
@@ -67,5 +67,24 @@ class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewMode
 
     private suspend fun loadStyle(styleId : Int, context: Context?) = withContext(Dispatchers.IO) {
         return@withContext MapStyleOptions.loadRawResourceStyle(context, styleId)
+    }
+
+    fun saveCameraPosToPreferences(pos : CameraPosition) {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplication())
+        if (pos != null) {
+            preferences.edit().putFloat(latKey, pos.target.latitude.toFloat()).apply()
+            preferences.edit().putFloat(longKey,
+                    pos.target.longitude.toFloat()).apply()
+            preferences.edit().putFloat(bearingKey, pos.bearing).apply()
+            preferences.edit().putFloat(zoomKey, pos.zoom).apply()
+            preferences.edit().putFloat(tiltKey, pos.tilt).apply()
+        }
+
+        val saveHeat = heatMode.value ?: false
+        preferences.edit().putBoolean(heatModeKey, saveHeat).apply()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
     }
 }

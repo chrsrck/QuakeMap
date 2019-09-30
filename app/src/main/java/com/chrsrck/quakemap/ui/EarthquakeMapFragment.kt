@@ -11,11 +11,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.preference.PreferenceManager
 import com.chrsrck.quakemap.MainActivity
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.databinding.EarthquakeMapFragmentBinding
 import com.chrsrck.quakemap.viewmodel.EarthquakeMapFragmentViewModel
 import com.chrsrck.quakemap.viewmodel.NetworkViewModel
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -41,9 +43,10 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var networkViewModel : NetworkViewModel
     private var mapView : MapView? = null
 //    private var quakeMap : EarthquakeMap? = null
+    private lateinit var googleMap : GoogleMap
 
     private val heatObs = Observer<Boolean> {
-        
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -68,6 +71,10 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
+        if (googleMap == null) return
+
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(viewModel.camPos))
+        googleMap.uiSettings.isMapToolbarEnabled = false
 
         networkViewModel.eqLiveData.observe(this, Observer {
             viewModel.eqHashMap = it
@@ -78,6 +85,8 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         })
 
         viewModel.heatMode.observe(this, heatObs)
+
+        this.googleMap = googleMap
     }
 
     // Must call lifecycle methods on map view to prevent memory leaks
@@ -87,19 +96,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onPause() {
-//        val preferences = (activity as MainActivity).sharedPreferences
-//        val camPos = quakeMap?.googleMap?.cameraPosition
-//        if (camPos != null) {
-//            preferences.edit().putFloat("latitude",
-//                    camPos.target.latitude.toFloat()).apply()
-//            preferences.edit().putFloat("longitude",
-//                    camPos.target.longitude.toFloat()).apply()
-//            preferences.edit().putFloat("bearing", camPos.bearing).apply()
-//            preferences.edit().putFloat("zoom", camPos.zoom).apply()
-//            preferences.edit().putFloat("tilt", camPos.tilt).apply()
-//        }
-//        preferences.edit().putBoolean("heatMode", viewModel.heatMode.value as Boolean).apply()
-
+        viewModel.saveCameraPosToPreferences(googleMap.cameraPosition)
         super.onPause()
         mapView?.onPause()
     }
