@@ -11,10 +11,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.model.Earthquake
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.*
 import com.google.maps.android.data.geojson.GeoJsonLayer
+import com.google.maps.android.heatmaps.HeatmapTileProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
@@ -25,9 +24,17 @@ import kotlinx.coroutines.withContext
 class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewModel(application) {
 
     val heatMode : MutableLiveData<Boolean> = MutableLiveData()
-    var eqHashMap : HashMap<String, Earthquake>?
+    var eqHashMap : HashMap<String, Earthquake>? = null
+        set(value) {
+            configureMap(value)
+        }
+
 
     val styleLiveData = MutableLiveData<MapStyleOptions>()
+    val markerOptionsLiveData = MutableLiveData<List<MarkerOptions>>()
+    val overlayOptionsLiveData = MutableLiveData<TileOverlayOptions>()
+
+
     val camPos : CameraPosition
 
     private val latKey = "latitude"
@@ -36,6 +43,8 @@ class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewMode
     private val tiltKey = "tilt"
     private val bearingKey = "bearing"
     private val heatModeKey = "heatMode"
+
+    private var magStr : String
 
     init {
         val sp = PreferenceManager.getDefaultSharedPreferences(application)
@@ -58,7 +67,7 @@ class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewMode
         val tilt = sp.getFloat(tiltKey, 0f)
         val bearing = sp.getFloat(bearingKey, 0f)
         camPos = CameraPosition(LatLng(latitude, longitude), zoom, tilt, bearing)
-        eqHashMap = null
+        magStr = application.resources.getString(R.string.magnitude_snippet_title)
     }
 
     fun heatMapToggled() {
@@ -82,6 +91,47 @@ class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewMode
 
         val saveHeat = heatMode.value ?: false
         preferences.edit().putBoolean(heatModeKey, saveHeat).apply()
+    }
+
+
+    private fun configureMap(hashMap : HashMap<String, Earthquake>?) {
+        if (hashMap == null)
+            return
+
+        viewModelScope.async(Dispatchers.Default) {
+            val l = hashMap.map {
+                val eq = it.value
+                val options = MarkerOptions()
+                when (eq.magnitude) {
+                    in 0.0..2.0 -> options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                    in 2.0..5.0 -> options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
+                    in 5.0..8.0 -> options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                    else -> {
+                        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                    }
+                }
+                options
+                        .title(magStr + eq.magnitude.toString())
+                        .snippet(eq.place)
+                        .position(LatLng(eq.latitude, eq.longitude))
+                return@map options
+            }
+            markerOptionsLiveData.postValue(l)
+        }
+
+        viewModelScope.async(Dispatchers.Default) {
+            val tp = HeatmapTileProvider.Builder()
+                    .opacity(0.5)
+                    .radius(50)
+                    .data(hashMap.values.map { LatLng(it.latitude, it.longitude) })
+                    .build()
+
+            overlayOptionsLiveData.postValue(TileOverlayOptions().tileProvider(tp))
+        }
+    }
+
+    fun isHeatMode() : Boolean {
+        return heatMode.value ?: true
     }
 
     override fun onCleared() {

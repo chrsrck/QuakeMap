@@ -34,7 +34,7 @@ class NetworkViewModel(application: Application) : AndroidViewModel(application)
     }
 
     private suspend fun getData() = withContext(Dispatchers.Default) {
-        dataSource.fetchJSON()
+        eqLiveData.postValue(dataSource.fetchJSON())
     }
 
     private fun isOnline(): Boolean {

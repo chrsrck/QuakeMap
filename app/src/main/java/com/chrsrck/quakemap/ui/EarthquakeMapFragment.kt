@@ -23,6 +23,8 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.TileOverlay
 
 
 // binding adapter must be static method
@@ -42,11 +44,13 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var viewModel: EarthquakeMapFragmentViewModel
     private lateinit var networkViewModel : NetworkViewModel
     private var mapView : MapView? = null
-//    private var quakeMap : EarthquakeMap? = null
     private lateinit var googleMap : GoogleMap
+    private var heatMapOverlay : TileOverlay? = null
+    private var markers : List<Marker>? = null
 
-    private val heatObs = Observer<Boolean> {
-
+    private val heatObs = Observer<Boolean> { isHeatMode ->
+        heatMapOverlay?.isVisible = isHeatMode
+        markers?.forEach { it.isVisible = !isHeatMode }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -84,7 +88,22 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
             googleMap?.setMapStyle(it)
         })
 
+        viewModel.markerOptionsLiveData.observe(this, Observer {
+            markers = it.map { option ->
+                val marker = googleMap.addMarker(option)
+                marker.isVisible = !viewModel.isHeatMode()
+                return@map marker
+            }
+        })
+
+        viewModel.overlayOptionsLiveData.observe(this, Observer {
+            heatMapOverlay = googleMap.addTileOverlay(it)
+            heatMapOverlay?.isVisible = viewModel.isHeatMode()
+            heatMapOverlay?.fadeIn = true
+        })
+
         viewModel.heatMode.observe(this, heatObs)
+
 
         this.googleMap = googleMap
     }

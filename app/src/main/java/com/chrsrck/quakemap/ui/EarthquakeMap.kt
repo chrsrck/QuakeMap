@@ -1,9 +1,9 @@
-package com.chrsrck.quakemap.ui
-
+//package com.chrsrck.quakemap.ui
+//
 //import kotlinx.coroutines.CommonPool
 //import kotlinx.coroutines.android.UI
-
-
+//
+//
 //class EarthquakeMap(googleMap: GoogleMap,
 //                    resources: Resources, cameraPosition: CameraPosition,
 //                    vmEQ : EarthquakeViewModel,
@@ -138,7 +138,7 @@ package com.chrsrck.quakemap.ui
 //    private fun toggleMarkerVisibility(isVisible: Boolean) {
 //        markerList?.forEach { marker -> marker.isVisible = isVisible }
 //    }
-
+//
 //    private fun loadPlateBoundaries(context: Context) {
 //        GlobalScope.launch(Dispatchers.Main) {
 //            val plates = loadPlates(context)
@@ -161,5 +161,5 @@ package com.chrsrck.quakemap.ui
 //            googleMap.setMapStyle(style)
 //        }
 //    }
-
+//
 //}
