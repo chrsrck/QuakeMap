@@ -1,23 +1,7 @@
 package com.chrsrck.quakemap.ui
 
-import androidx.lifecycle.Observer
-import android.content.Context
-import android.content.res.Configuration
-import android.content.res.Resources
-import android.graphics.Color
-import com.chrsrck.quakemap.R
-import com.chrsrck.quakemap.model.Earthquake
-import com.chrsrck.quakemap.viewmodel.EarthquakeViewModel
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.*
-import com.google.maps.android.data.geojson.GeoJsonLayer
-import com.google.maps.android.heatmaps.HeatmapTileProvider
-import kotlinx.coroutines.*
 //import kotlinx.coroutines.CommonPool
 //import kotlinx.coroutines.android.UI
-import org.json.JSONException
-import java.util.*
 
 
 //class EarthquakeMap(googleMap: GoogleMap,

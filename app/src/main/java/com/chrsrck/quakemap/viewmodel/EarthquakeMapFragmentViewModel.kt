@@ -4,12 +4,15 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Color
+import android.preference.PreferenceManager
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.model.Earthquake
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import kotlinx.coroutines.Dispatchers
@@ -19,16 +22,23 @@ import kotlinx.coroutines.withContext
 // Shared view model between MapFragment and List Fragment
 // See google documentation for canonical shared view models that present the same data
 // https://developer.android.com/topic/libraries/architecture/viewmodel#lifecycle
-class EarthquakeViewModel(application: Application) : AndroidViewModel(application) {
+class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewModel(application) {
 
     val heatMode : MutableLiveData<Boolean> = MutableLiveData()
     var eqHashMap : HashMap<String, Earthquake>?
 
     val styleLiveData = MutableLiveData<MapStyleOptions>()
+    val camPos : CameraPosition
+
+    private val latKey = "latitude"
+    private val longKey = "longitude"
+    private val zoomKey = "zoom"
+    private val tiltKey = "tilt"
+    private val bearingKey = "bearing"
+    private val heatModeKey = "heatMode"
 
     init {
-        heatMode.value = false
-        eqHashMap = null
+        val sp = PreferenceManager.getDefaultSharedPreferences(application)
 
         val mode = application.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         val styleId = when (mode) {
@@ -41,6 +51,14 @@ class EarthquakeViewModel(application: Application) : AndroidViewModel(applicati
             styleLiveData.postValue(loadStyle(styleId, application))
         }
 
+        heatMode.value = sp.getBoolean(heatModeKey, false)
+        val latitude  = sp.getFloat(latKey, 0.0f).toDouble()
+        val longitude = sp.getFloat(longKey, 0.0f).toDouble()
+        val zoom = sp.getFloat(zoomKey, 0f)
+        val tilt = sp.getFloat(tiltKey, 0f)
+        val bearing = sp.getFloat(bearingKey, 0f)
+        camPos = CameraPosition(LatLng(latitude, longitude), zoom, tilt, bearing)
+        eqHashMap = null
     }
 
     fun heatMapToggled() {
