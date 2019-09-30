@@ -78,7 +78,10 @@ class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewMode
         return@withContext MapStyleOptions.loadRawResourceStyle(context, styleId)
     }
 
-    fun saveCameraPosToPreferences(pos : CameraPosition) {
+    fun saveCameraPosToPreferences(pos : CameraPosition?) {
+        if (pos == null)
+            return
+
         val preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplication())
         if (pos != null) {
             preferences.edit().putFloat(latKey, pos.target.latitude.toFloat()).apply()

@@ -44,9 +44,9 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var viewModel: EarthquakeMapFragmentViewModel
     private lateinit var networkViewModel : NetworkViewModel
     private var mapView : MapView? = null
-    private lateinit var googleMap : GoogleMap
+    private var googleMap : GoogleMap? = null
     private var heatMapOverlay : TileOverlay? = null
-    private var markers : List<Marker>? = null
+    private var markers : MutableList<Marker>? = null
 
     private val heatObs = Observer<Boolean> { isHeatMode ->
         heatMapOverlay?.isVisible = isHeatMode
@@ -89,17 +89,26 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         })
 
         viewModel.markerOptionsLiveData.observe(this, Observer {
+
+            if (markers != null) {
+                markers?.forEach { it.remove()}
+                markers?.clear()
+            }
+
             markers = it.map { option ->
                 val marker = googleMap.addMarker(option)
                 marker.isVisible = !viewModel.isHeatMode()
                 return@map marker
-            }
+            }.toMutableList()
         })
 
         viewModel.overlayOptionsLiveData.observe(this, Observer {
+
+            if (heatMapOverlay != null)
+                heatMapOverlay?.remove()
+
             heatMapOverlay = googleMap.addTileOverlay(it)
             heatMapOverlay?.isVisible = viewModel.isHeatMode()
-            heatMapOverlay?.fadeIn = true
         })
 
         viewModel.heatMode.observe(this, heatObs)
@@ -115,7 +124,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onPause() {
-        viewModel.saveCameraPosToPreferences(googleMap.cameraPosition)
+        viewModel.saveCameraPosToPreferences(googleMap?.cameraPosition)
         super.onPause()
         mapView?.onPause()
     }
