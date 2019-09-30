@@ -56,7 +56,6 @@ class EarthquakeListFragment : Fragment() {
 
         networkViewModel =
                 ViewModelProviders.of((activity as MainActivity)).get(NetworkViewModel::class.java)
-        networkViewModel.observeEarthquakes(this, eqObserver)
 
         listViewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)
         val binding : FragmentEarthquakeListBinding

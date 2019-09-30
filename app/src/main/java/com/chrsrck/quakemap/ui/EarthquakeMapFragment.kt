@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.lifecycle.Observer
 import com.chrsrck.quakemap.MainActivity
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.databinding.EarthquakeMapFragmentBinding
@@ -38,7 +39,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var viewModel: EarthquakeViewModel
     private lateinit var networkViewModel : NetworkViewModel
     private var mapView : MapView? = null
-    private var quakeMap : EarthquakeMap? = null
+//    private var quakeMap : EarthquakeMap? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -75,11 +76,13 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         val pos = CameraPosition(LatLng(latitude, longitude), zoom, tilt, bearing)
 
 
-        quakeMap = EarthquakeMap(googleMap!!, resources, pos, viewModel, networkViewModel.getEarthquakeData(), context)
+//        quakeMap = EarthquakeMap(googleMap!!, resources, pos, viewModel, networkViewModel(), context)
 
-        networkViewModel.observeEarthquakes(frag, quakeMap?.quakeObserver!!)
-
-        viewModel.heatMode.observe(frag, quakeMap?.heatObserver!!)
+//        networkViewModel.eqLiveData.observe(frag, quakeMap?.quakeObserver!!)
+        viewModel.styleLiveData.observe(frag,  Observer {
+            googleMap?.setMapStyle(it)
+        })
+//        viewModel.heatMode.observe(frag, quakeMap?.heatObserver!!)
     }
 
     // Must call lifecycle methods on map view to prevent memory leaks
@@ -89,18 +92,18 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onPause() {
-        val preferences = (activity as MainActivity).sharedPreferences
-        val camPos = quakeMap?.googleMap?.cameraPosition
-        if (camPos != null) {
-            preferences.edit().putFloat("latitude",
-                    camPos.target.latitude.toFloat()).apply()
-            preferences.edit().putFloat("longitude",
-                    camPos.target.longitude.toFloat()).apply()
-            preferences.edit().putFloat("bearing", camPos.bearing).apply()
-            preferences.edit().putFloat("zoom", camPos.zoom).apply()
-            preferences.edit().putFloat("tilt", camPos.tilt).apply()
-        }
-        preferences.edit().putBoolean("heatMode", viewModel.heatMode.value as Boolean).apply()
+//        val preferences = (activity as MainActivity).sharedPreferences
+//        val camPos = quakeMap?.googleMap?.cameraPosition
+//        if (camPos != null) {
+//            preferences.edit().putFloat("latitude",
+//                    camPos.target.latitude.toFloat()).apply()
+//            preferences.edit().putFloat("longitude",
+//                    camPos.target.longitude.toFloat()).apply()
+//            preferences.edit().putFloat("bearing", camPos.bearing).apply()
+//            preferences.edit().putFloat("zoom", camPos.zoom).apply()
+//            preferences.edit().putFloat("tilt", camPos.tilt).apply()
+//        }
+//        preferences.edit().putBoolean("heatMode", viewModel.heatMode.value as Boolean).apply()
 
         super.onPause()
         mapView?.onPause()
