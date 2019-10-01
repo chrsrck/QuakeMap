@@ -34,7 +34,7 @@ class MyEarthquakeRecyclerViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        binding = DataBindingUtil.inflate<EarthquakeListViewholderBinding>(inflater, R.layout.earthquake_list_viewholder, parent, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.earthquake_list_viewholder, parent, false)
         return ViewHolder(binding.root, parent.context)
     }
 
@@ -45,7 +45,6 @@ class MyEarthquakeRecyclerViewAdapter(
 
         with(holder.mView) {
             holder.bindView(item)
-
         }
     }
 
@@ -66,22 +65,14 @@ class MyEarthquakeRecyclerViewAdapter(
         val mapView : MapView
         var googleMap : GoogleMap?
 
-        val magText : TextView
-        val placeText : TextView
         val timeText : TextView
-        val latText : TextView
-        val longText : TextView
         val onMapClickListener : GoogleMap.OnMapClickListener = GoogleMap.OnMapClickListener {  }
 
 
         init {
             layout = mView
             mapView = layout.findViewById(R.id.map_card)
-            magText = mView.mag_text
-            placeText = mView.place_text
             timeText = mView.time_text
-            latText = mView.lat_text
-            longText = mView.long_text
 
             googleMap = null
             if (mapView != null) {
@@ -93,12 +84,7 @@ class MyEarthquakeRecyclerViewAdapter(
         fun bindView(item : Earthquake) {
             layout.tag = this
             mapView.tag = item
-            magText.text = item.magnitude.toString()
-            placeText.text = item.place
             timeText.text = dateFormater.format(Date(item.time))
-            latText.text = item.latitude.toString()
-            longText.text = item.longitude.toString()
-
             configureMap(item)
         }
 
