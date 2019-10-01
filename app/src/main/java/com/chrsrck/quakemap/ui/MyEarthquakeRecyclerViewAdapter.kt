@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
+import com.chrsrck.quakemap.BR
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.databinding.EarthquakeListViewholderBinding
 import com.chrsrck.quakemap.model.Earthquake
@@ -19,13 +20,16 @@ import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.earthquake_list_viewholder.view.*
 import java.text.SimpleDateFormat
 import java.util.*
+import com.chrsrck.quakemap.databinding.ActivityMainBinding
+import androidx.databinding.OnRebindCallback
+
+
 
 class MyEarthquakeRecyclerViewAdapter(
         private val mValues: List<Earthquake>)
     : androidx.recyclerview.widget.RecyclerView.Adapter<MyEarthquakeRecyclerViewAdapter.ViewHolder>() {
 
     private val dateFormater : SimpleDateFormat
-    private lateinit var binding: EarthquakeListViewholderBinding
 
     init {
         dateFormater = SimpleDateFormat("MMM-dd-yyyy h:mm:ss a z", Locale.US)
@@ -34,18 +38,14 @@ class MyEarthquakeRecyclerViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        binding = DataBindingUtil.inflate(inflater, R.layout.earthquake_list_viewholder, parent, false)
-        return ViewHolder(binding.root, parent.context)
+        val binding = DataBindingUtil.inflate<EarthquakeListViewholderBinding>(inflater, R.layout.earthquake_list_viewholder, parent, false)
+        return ViewHolder(binding, parent.context)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
-        binding.eq = item
-        binding.executePendingBindings()
+        holder.bindView(item)
 
-        with(holder.mView) {
-            holder.bindView(item)
-        }
     }
 
     override fun onViewRecycled(holder: ViewHolder) {
@@ -59,21 +59,17 @@ class MyEarthquakeRecyclerViewAdapter(
 
     override fun getItemCount(): Int = mValues.size
 
-    inner class ViewHolder(val mView: View, val context: Context) : androidx.recyclerview.widget.RecyclerView.ViewHolder(mView), OnMapReadyCallback {
+    inner class ViewHolder(private val binding: EarthquakeListViewholderBinding, private val context: Context)
+        : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root), OnMapReadyCallback {
 
-        val layout : View
-        val mapView : MapView
+        private val mapView : MapView = binding.mapCard
         var googleMap : GoogleMap?
 
-        val timeText : TextView
-        val onMapClickListener : GoogleMap.OnMapClickListener = GoogleMap.OnMapClickListener {  }
+        private val timeText : TextView = binding.timeText
+        private val onMapClickListener : GoogleMap.OnMapClickListener = GoogleMap.OnMapClickListener {  }
 
 
         init {
-            layout = mView
-            mapView = layout.findViewById(R.id.map_card)
-            timeText = mView.time_text
-
             googleMap = null
             if (mapView != null) {
                 mapView.onCreate(null) // forces the actual map to appear in a card
@@ -82,7 +78,9 @@ class MyEarthquakeRecyclerViewAdapter(
         }
 
         fun bindView(item : Earthquake) {
-            layout.tag = this
+            binding.eq = item
+            binding.executePendingBindings()
+
             mapView.tag = item
             timeText.text = dateFormater.format(Date(item.time))
             configureMap(item)
@@ -104,7 +102,6 @@ class MyEarthquakeRecyclerViewAdapter(
                 googleMap?.mapType = GoogleMap.MAP_TYPE_TERRAIN
             }
             googleMap?.addMarker(opt)
-//            googleMap?.moveCamera(CameraUpdateFactory.newLatLng(pos))
             googleMap?.uiSettings?.isMapToolbarEnabled = false
             googleMap?.setOnMapClickListener(onMapClickListener)
         }
