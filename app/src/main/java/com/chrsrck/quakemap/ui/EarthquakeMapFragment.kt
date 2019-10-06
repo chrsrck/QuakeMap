@@ -9,16 +9,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.preference.PreferenceManager
 import com.chrsrck.quakemap.MainActivity
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.databinding.EarthquakeMapFragmentBinding
-import com.chrsrck.quakemap.viewmodel.EarthquakeViewModel
+import com.chrsrck.quakemap.viewmodel.EarthquakeMapFragmentViewModel
 import com.chrsrck.quakemap.viewmodel.NetworkViewModel
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.TileOverlay
 
 
 // binding adapter must be static method
@@ -35,16 +41,23 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         fun newInstance() = EarthquakeMapFragment()
     }
 
-    private lateinit var viewModel: EarthquakeViewModel
+    private lateinit var viewModel: EarthquakeMapFragmentViewModel
     private lateinit var networkViewModel : NetworkViewModel
     private var mapView : MapView? = null
-    private var quakeMap : EarthquakeMap? = null
+    private var googleMap : GoogleMap? = null
+    private var heatMapOverlay : TileOverlay? = null
+    private var markers : MutableList<Marker>? = null
+
+    private val heatObs = Observer<Boolean> { isHeatMode ->
+        heatMapOverlay?.isVisible = isHeatMode
+        markers?.forEach { it.isVisible = !isHeatMode }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Creating the binding and inflating the layout
         // don't use DataBindingUtil since the layout binding is known in advance
-        viewModel = ViewModelProviders.of(this).get(EarthquakeViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(EarthquakeMapFragmentViewModel::class.java)
         val binding: EarthquakeMapFragmentBinding =
                 EarthquakeMapFragmentBinding.inflate(inflater)
 
@@ -62,24 +75,46 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
-        val frag : EarthquakeMapFragment = this
+        if (googleMap == null) return
+
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(viewModel.camPos))
+        googleMap.uiSettings.isMapToolbarEnabled = false
+
+        networkViewModel.eqLiveData.observe(this, Observer {
+            viewModel.eqHashMap = it
+        })
+
+        viewModel.styleLiveData.observe(this,  Observer {
+            googleMap?.setMapStyle(it)
+        })
+
+        viewModel.markerOptionsLiveData.observe(this, Observer {
+
+            if (markers != null) {
+                markers?.forEach { it.remove()}
+                markers?.clear()
+            }
+
+            markers = it.map { option ->
+                val marker = googleMap.addMarker(option)
+                marker.isVisible = !viewModel.isHeatMode()
+                return@map marker
+            }.toMutableList()
+        })
+
+        viewModel.overlayOptionsLiveData.observe(this, Observer {
+
+            if (heatMapOverlay != null)
+                heatMapOverlay?.remove()
+
+            heatMapOverlay = googleMap.addTileOverlay(it)
+            heatMapOverlay?.isVisible = viewModel.isHeatMode()
+        })
+
+        viewModel.heatMode.observe(this, heatObs)
 
 
-        val preferences = (activity as MainActivity).sharedPreferences
-        val latitude  = preferences.getFloat("latitude", 0.0f).toDouble()
-        val longitude = preferences.getFloat("longitude", 0.0f).toDouble()
-        val zoom = preferences.getFloat("zoom", 0f)
-        val tilt = preferences.getFloat("tilt", 0f)
-        val bearing = preferences.getFloat("bearing", 0f)
-        viewModel.heatMode.value = preferences.getBoolean("heatMode", false)
-        val pos = CameraPosition(LatLng(latitude, longitude), zoom, tilt, bearing)
-
-
-        quakeMap = EarthquakeMap(googleMap!!, resources, pos, viewModel, networkViewModel.getEarthquakeData(), context)
-
-        networkViewModel.observeEarthquakes(frag, quakeMap?.quakeObserver!!)
-
-        viewModel.heatMode.observe(frag, quakeMap?.heatObserver!!)
+        this.googleMap = googleMap
     }
 
     // Must call lifecycle methods on map view to prevent memory leaks
@@ -89,19 +124,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onPause() {
-        val preferences = (activity as MainActivity).sharedPreferences
-        val camPos = quakeMap?.googleMap?.cameraPosition
-        if (camPos != null) {
-            preferences.edit().putFloat("latitude",
-                    camPos.target.latitude.toFloat()).apply()
-            preferences.edit().putFloat("longitude",
-                    camPos.target.longitude.toFloat()).apply()
-            preferences.edit().putFloat("bearing", camPos.bearing).apply()
-            preferences.edit().putFloat("zoom", camPos.zoom).apply()
-            preferences.edit().putFloat("tilt", camPos.tilt).apply()
-        }
-        preferences.edit().putBoolean("heatMode", viewModel.heatMode.value as Boolean).apply()
-
+        viewModel.saveCameraPosToPreferences(googleMap?.cameraPosition)
         super.onPause()
         mapView?.onPause()
     }

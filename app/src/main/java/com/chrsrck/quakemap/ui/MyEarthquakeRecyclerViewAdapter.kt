@@ -2,54 +2,50 @@ package com.chrsrck.quakemap.ui
 
 
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
+import com.chrsrck.quakemap.BR
 import com.chrsrck.quakemap.R
+import com.chrsrck.quakemap.databinding.EarthquakeListViewholderBinding
 import com.chrsrck.quakemap.model.Earthquake
-import com.chrsrck.quakemap.ui.EarthquakeListFragment.OnListFragmentInteractionListener
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.main.fragment_earthquake.view.*
+import kotlinx.android.synthetic.main.earthquake_list_viewholder.view.*
 import java.text.SimpleDateFormat
 import java.util.*
+import com.chrsrck.quakemap.databinding.ActivityMainBinding
+import androidx.databinding.OnRebindCallback
+
+
 
 class MyEarthquakeRecyclerViewAdapter(
-        private val mValues: List<Earthquake>,
-        private val mListener: OnListFragmentInteractionListener?)
+        private val mValues: List<Earthquake>)
     : androidx.recyclerview.widget.RecyclerView.Adapter<MyEarthquakeRecyclerViewAdapter.ViewHolder>() {
 
-    private val mOnClickListener: View.OnClickListener
     private val dateFormater : SimpleDateFormat
 
     init {
-        mOnClickListener = View.OnClickListener { _ ->
-            // Notify the active callbacks interface (the activity, if the fragment is attached to
-            // one) that an item has been selected.
-        }
         dateFormater = SimpleDateFormat("MMM-dd-yyyy h:mm:ss a z", Locale.US)
         dateFormater.timeZone = TimeZone.getDefault()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.fragment_earthquake, parent, false)
-        return ViewHolder(view, parent.context)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = DataBindingUtil.inflate<EarthquakeListViewholderBinding>(inflater, R.layout.earthquake_list_viewholder, parent, false)
+        return ViewHolder(binding, parent.context)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
+        holder.bindView(item)
 
-        with(holder.mView) {
-            holder.bindView(item)
-            setOnClickListener(mOnClickListener)
-        }
     }
 
     override fun onViewRecycled(holder: ViewHolder) {
@@ -63,31 +59,17 @@ class MyEarthquakeRecyclerViewAdapter(
 
     override fun getItemCount(): Int = mValues.size
 
-    inner class ViewHolder(val mView: View, val context: Context) : androidx.recyclerview.widget.RecyclerView.ViewHolder(mView), OnMapReadyCallback {
+    inner class ViewHolder(private val binding: EarthquakeListViewholderBinding, private val context: Context)
+        : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root), OnMapReadyCallback {
 
-        val layout : View
-        val mapView : MapView
+        private val mapView : MapView = binding.mapCard
         var googleMap : GoogleMap?
 
-        val titleText : TextView
-        val magText : TextView
-        val placeText : TextView
-        val timeText : TextView
-        val latText : TextView
-        val longText : TextView
-        val onMapClickListener : GoogleMap.OnMapClickListener = GoogleMap.OnMapClickListener {  }
+        private val timeText : TextView = binding.timeText
+        private val onMapClickListener : GoogleMap.OnMapClickListener = GoogleMap.OnMapClickListener {  }
 
 
         init {
-            layout = mView
-            mapView = layout.findViewById(R.id.map_card)
-            titleText = mView.findViewById(R.id.title_text)
-            magText = mView.mag_text
-            placeText = mView.place_text
-            timeText = mView.time_text
-            latText = mView.lat_text
-            longText = mView.long_text
-
             googleMap = null
             if (mapView != null) {
                 mapView.onCreate(null) // forces the actual map to appear in a card
@@ -96,15 +78,11 @@ class MyEarthquakeRecyclerViewAdapter(
         }
 
         fun bindView(item : Earthquake) {
-            layout.tag = this
-            mapView.tag = item
-            titleText.text = item.id
-            magText.text = item.magnitude.toString()
-            placeText.text = item.place
-            timeText.text = dateFormater.format(Date(item.time))
-            latText.text = item.latitude.toString()
-            longText.text = item.longitude.toString()
+            binding.eq = item
+            binding.executePendingBindings()
 
+            mapView.tag = item
+            timeText.text = dateFormater.format(Date(item.time))
             configureMap(item)
         }
 
@@ -124,7 +102,6 @@ class MyEarthquakeRecyclerViewAdapter(
                 googleMap?.mapType = GoogleMap.MAP_TYPE_TERRAIN
             }
             googleMap?.addMarker(opt)
-//            googleMap?.moveCamera(CameraUpdateFactory.newLatLng(pos))
             googleMap?.uiSettings?.isMapToolbarEnabled = false
             googleMap?.setOnMapClickListener(onMapClickListener)
         }

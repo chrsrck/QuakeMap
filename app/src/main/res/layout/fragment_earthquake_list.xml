@@ -31,12 +31,9 @@
             android:name="com.chrsrck.quakemap.EarthquakeListFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:context=".ui.EarthquakeListFragment"
-            tools:listitem="@layout/fragment_earthquake"
+            tools:listitem="@layout/earthquake_list_viewholder"
             android:visibility="@{viewModel.emptyQuakeList ? View.GONE : View.VISIBLE}"/>
 
     </android.widget.LinearLayout>

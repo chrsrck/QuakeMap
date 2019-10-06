@@ -12,10 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.chrsrck.quakemap.MainActivity
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.databinding.FragmentEarthquakeListBinding
 import com.chrsrck.quakemap.model.Earthquake
+import com.chrsrck.quakemap.utilities.VerticalDecorator
 import com.chrsrck.quakemap.viewmodel.ListViewModel
 import com.chrsrck.quakemap.viewmodel.NetworkViewModel
 import com.google.android.gms.maps.GoogleMap
@@ -27,36 +29,22 @@ import com.google.android.gms.maps.GoogleMap
  */
 class EarthquakeListFragment : Fragment() {
 
-    // TODO: Customize parameters
-    private var columnCount = 1
-
-    private var listener: OnListFragmentInteractionListener? = null
     private lateinit var networkViewModel : NetworkViewModel
     private lateinit var listViewModel : ListViewModel
     private lateinit var recyclerView : androidx.recyclerview.widget.RecyclerView
 
     private val eqObserver = Observer<HashMap<String, Earthquake>> { hashMap ->
         listViewModel.updateQuakeList(hashMap)
-        // TODO: notify recycler view of data change
         recyclerView.adapter?.notifyDataSetChanged()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
-
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-//        val view = inflater.inflate(R.layout.fragment_earthquake_list, container, false)
 
         networkViewModel =
                 ViewModelProviders.of((activity as MainActivity)).get(NetworkViewModel::class.java)
-        networkViewModel.observeEarthquakes(this, eqObserver)
+        networkViewModel.eqLiveData.observe(this, eqObserver)
 
         listViewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)
         val binding : FragmentEarthquakeListBinding
@@ -65,59 +53,22 @@ class EarthquakeListFragment : Fragment() {
         binding.setLifecycleOwner(this)
         val view = binding.root
         recyclerView = view.findViewById(R.id.list)
-//        recyclerView?.setRecyclerListener( onRecyclerListener)
+
 
         with(recyclerView) {
-            layoutManager = when {
-                columnCount <= 1 -> androidx.recyclerview.widget.LinearLayoutManager(context)
-                else -> androidx.recyclerview.widget.GridLayoutManager(context, columnCount)
-            }
-//            recyclerView.setItemViewCacheSize(5)
-            recyclerView.setHasFixedSize(true)
-
-            adapter =
-                    MyEarthquakeRecyclerViewAdapter(
-                            listViewModel.getQuakeList(),
-                            listener)
+            layoutManager = LinearLayoutManager(context)
+            val margin = resources.getDimension(R.dimen.card_viewholder_vert_margin).toInt()
+            addItemDecoration(VerticalDecorator(margin))
+            adapter = MyEarthquakeRecyclerViewAdapter(listViewModel.getQuakeList())
         }
 
         return view
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson
-     * [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: Earthquake?)
-    }
-
     companion object {
-
-        // TODO: Customize parameter argument names
-        const val ARG_COLUMN_COUNT = "column-count"
-
-        // TODO: Customize parameter initialization
         @JvmStatic
-        fun newInstance(columnCount: Int) =
-                EarthquakeListFragment().apply {
-                    arguments = Bundle().apply {
-                        putInt(ARG_COLUMN_COUNT, columnCount)
-                    }
-                }
+        fun newInstance() {
+
+        }
     }
 }
