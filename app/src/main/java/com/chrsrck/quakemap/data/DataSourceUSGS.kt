@@ -58,7 +58,7 @@ class DataSourceUSGS {
             val json: JSONObject = if (response.isSuccessful) {
                 JSONObject(response.body()?.string())
             } else {
-                JSONObject("")
+                JSONObject("{}")
             }
             return parser.parseQuakes(json)
     }

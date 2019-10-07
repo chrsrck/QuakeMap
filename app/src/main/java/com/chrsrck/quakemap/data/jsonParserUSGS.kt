@@ -1,6 +1,7 @@
 package com.chrsrck.quakemap.data
 
 import com.chrsrck.quakemap.model.Earthquake
+import org.json.JSONException
 import org.json.JSONObject
 
 
@@ -33,30 +34,35 @@ class jsonParserUSGS() {
 
     fun parseQuakes(root : JSONObject) : HashMap<String, Earthquake> {
         val hashMap : HashMap<String, Earthquake> = HashMap()
-        val earthquakes = root.getJSONArray(features_key)
-        val numQuakes = earthquakes.length()
+        try {
+            val earthquakes = root.getJSONArray(features_key)
+            val numQuakes = earthquakes.length()
 
-        // sanitize security check to prevent overflow
-        if (numQuakes > 1000) {
-            return hashMap
+            // sanitize security check to prevent overflow
+            if (numQuakes > 1000) {
+                return hashMap
+            }
+
+            for (i in 0..numQuakes - 1) {
+
+                val item = earthquakes.getJSONObject(i)
+                val id = item.getString(ID_key)
+
+                val properties = item.getJSONObject(properties_key)
+                val coordirnates = item.getJSONObject(geometry_key).getJSONArray(coordinates_key)
+
+                val mag = properties.getDouble(mag_key)
+                val place = properties.getString(place_key)
+                val time = properties.getLong(time_key)
+                val type = properties.getString(type_key)
+
+                val quake = Earthquake(id, mag, place, time, type,
+                        coordirnates.getDouble(0), coordirnates.getDouble(1))
+                hashMap.put(quake.id, quake)
+            }
         }
-
-        for (i in 0..numQuakes - 1) {
-
-            val item = earthquakes.getJSONObject(i)
-            val id = item.getString(ID_key)
-
-            val properties = item.getJSONObject(properties_key)
-            val coordirnates = item.getJSONObject(geometry_key).getJSONArray(coordinates_key)
-
-            val mag = properties.getDouble(mag_key)
-            val place = properties.getString(place_key)
-            val time = properties.getLong(time_key)
-            val type = properties.getString(type_key)
-
-            val quake = Earthquake(id, mag, place, time, type,
-                    coordirnates.getDouble(0), coordirnates.getDouble(1))
-            hashMap.put(quake.id, quake)
+        catch (e : JSONException) {
+            return hashMap
         }
         return hashMap
     }
