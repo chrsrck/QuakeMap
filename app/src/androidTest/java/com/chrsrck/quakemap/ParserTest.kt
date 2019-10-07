@@ -8,6 +8,7 @@ import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Parser is instrumented test due to relying on
@@ -22,7 +23,15 @@ class ParserTest {
 //        val appContext = InstrumentationRegistry.getInstrumentation().getTargetContext()
 //        assertEquals("com.chrsrck.quakemap", appContext.packageName)
 //    }
-    val parser : jsonParserUSGS = jsonParserUSGS()
+    private val parser : jsonParserUSGS = jsonParserUSGS()
+    private val delta = 0.01 // double precision errors means cannot be direct equal
+
+
+    @Test
+    fun test_error_parse() {
+        val hashMap = parser.parseQuakes(JSONObject("{abc: 123}"))
+        assertTrue(hashMap.isEmpty())
+    }
 
     @Test
     fun empty_parse() {
@@ -36,6 +45,45 @@ class ParserTest {
         val json = JSONObject(readTestDataFile(name))
         val hashMap = parser.parseQuakes(json)
         assertTrue(hashMap.isEmpty())
+    }
+
+    @Test
+    fun test_one_quake() {
+        val name = "just_one_quake.json"
+        val json = JSONObject(readTestDataFile(name))
+        val hashMap = parser.parseQuakes(json)
+        assertFalse(hashMap.isEmpty())
+        assertEquals(1, hashMap.size)
+        val l = ArrayList(hashMap.values)
+        val quake = l[0]
+
+        assertEquals("us70005rgt", quake.id)
+        assertEquals(4.5999999999999996, quake.magnitude, delta)
+        assertEquals("131km N of Road Town, British Virgin Islands", quake.place)
+        assertEquals(1570410134234, quake.time)
+        assertEquals("earthquake", quake.type)
+        assertEquals(-64.521500000000003, quake.longitude, delta)
+        assertEquals(19.597200000000001, quake.latitude, delta)
+    }
+
+    @Test
+    fun test_multiple_quakes() {
+        val name = "above_four_half_mag_eight_quakes.json"
+        val json = JSONObject(readTestDataFile(name))
+        val hashMap = parser.parseQuakes(json)
+        assertFalse(hashMap.isEmpty())
+        assertEquals(8, hashMap.size)
+
+        val l = ArrayList(hashMap.values)
+        val quake = l[5]
+
+        assertEquals("us70005r81", quake.id)
+        assertEquals(4.5999999999999996, quake.magnitude, delta)
+        assertEquals("91km E of Namie, Japan", quake.place)
+        assertEquals(1570341795505, quake.time)
+        assertEquals("earthquake", quake.type)
+        assertEquals(142.02889999999999, quake.longitude, delta)
+        assertEquals(37.4039, quake.latitude, delta)
     }
 
     private fun readTestDataFile(filename : String) : String {
