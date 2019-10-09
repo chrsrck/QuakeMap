@@ -3,16 +3,12 @@ package com.chrsrck.quakemap.ui
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.chrsrck.quakemap.MainActivity
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.databinding.FragmentEarthquakeListBinding
@@ -20,7 +16,6 @@ import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.utilities.VerticalDecorator
 import com.chrsrck.quakemap.viewmodel.ListViewModel
 import com.chrsrck.quakemap.viewmodel.NetworkViewModel
-import com.google.android.gms.maps.GoogleMap
 
 /**
  * A fragment representing a list of Items.
@@ -59,7 +54,7 @@ class EarthquakeListFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             val margin = resources.getDimension(R.dimen.card_viewholder_vert_margin).toInt()
             addItemDecoration(VerticalDecorator(margin))
-            adapter = MyEarthquakeRecyclerViewAdapter(listViewModel.getQuakeList())
+            adapter = EarthquakeRecyclerViewAdapter(listViewModel.getQuakeList())
         }
 
         return view

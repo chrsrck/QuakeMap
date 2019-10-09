@@ -1,4 +1,4 @@
-package com.chrsrck.quakemap.data
+package com.chrsrck.quakemap.data.network
 
 import com.chrsrck.quakemap.model.Earthquake
 import org.json.JSONException
@@ -8,7 +8,7 @@ import org.json.JSONObject
 /*
 Based on https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php
  */
-class jsonParserUSGS() {
+class JsonParserUSGS() {
 
     // specified in top level json
     private val features_key = "features"
