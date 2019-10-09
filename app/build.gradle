@@ -26,6 +26,12 @@ android {
 //        }
 //    }
 
+    sourceSets {
+        androidTest {
+            resources.srcDirs += ['/src/androidTest/resources']
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
