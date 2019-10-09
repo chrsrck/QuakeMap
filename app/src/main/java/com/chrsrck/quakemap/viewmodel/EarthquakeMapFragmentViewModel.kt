@@ -114,7 +114,7 @@ class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewMode
                     }
                 }
                 options
-                        .title(magStr + eq.magnitude.toString())
+                        .title(magStr + ", " + eq.magnitude.toString())
                         .snippet(eq.place)
                         .position(LatLng(eq.latitude, eq.longitude))
                 return@map options
