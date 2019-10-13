@@ -1,0 +1,341 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "generated": 1570406064000,
+    "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_day.geojson",
+    "title": "USGS Magnitude 4.5+ Earthquakes, Past Day",
+    "status": 200,
+    "api": "1.8.1",
+    "count": 8
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.5999999999999996,
+        "place": "21km SE of Yanai, Japan",
+        "time": 1570402951426,
+        "updated": 1570405439878,
+        "tz": 540,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us70005rfp",
+        "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us70005rfp.geojson",
+        "felt": 4,
+        "cdi": 4.0999999999999996,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 327,
+        "net": "us",
+        "code": "70005rfp",
+        "ids": ",us70005rfp,",
+        "sources": ",us,",
+        "types": ",dyfi,geoserve,origin,phase-data,",
+        "nst": null,
+        "dmin": 1.341,
+        "rms": 0.63,
+        "gap": 64,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 4.6 - 21km SE of Yanai, Japan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.26900000000001,
+          33.814900000000002,
+          50.170000000000002
+        ]
+      },
+      "id": "us70005rfp"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.7000000000000002,
+        "place": "12km NNE of Farallon de Pajaros, Northern Mariana Islands",
+        "time": 1570396860867,
+        "updated": 1570397790040,
+        "tz": 600,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us70005rf2",
+        "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us70005rf2.geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 340,
+        "net": "us",
+        "code": "70005rf2",
+        "ids": ",us70005rf2,",
+        "sources": ",us,",
+        "types": ",geoserve,origin,phase-data,",
+        "nst": null,
+        "dmin": 5.4299999999999997,
+        "rms": 0.64000000000000001,
+        "gap": 144,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 4.7 - 12km NNE of Farallon de Pajaros, Northern Mariana Islands"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          144.9436,
+          20.640499999999999,
+          119.94
+        ]
+      },
+      "id": "us70005rf2"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.9000000000000004,
+        "place": "146km W of Merizo Village, Guam",
+        "time": 1570383646029,
+        "updated": 1570393201779,
+        "tz": 600,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us70005rd5",
+        "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us70005rd5.geojson",
+        "felt": 1,
+        "cdi": 1,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 369,
+        "net": "us",
+        "code": "70005rd5",
+        "ids": ",us70005rd5,",
+        "sources": ",us,",
+        "types": ",dyfi,geoserve,origin,phase-data,",
+        "nst": null,
+        "dmin": 1.5760000000000001,
+        "rms": 0.78000000000000003,
+        "gap": 72,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 4.9 - 146km W of Merizo Village, Guam"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          143.3253,
+          13.107699999999999,
+          206.83000000000001
+        ]
+      },
+      "id": "us70005rd5"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 5,
+        "place": "19km SE of Bristol Island, South Sandwich Islands",
+        "time": 1570382020048,
+        "updated": 1570383167040,
+        "tz": -120,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us70005rcr",
+        "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us70005rcr.geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 385,
+        "net": "us",
+        "code": "70005rcr",
+        "ids": ",us70005rcr,",
+        "sources": ",us,",
+        "types": ",geoserve,origin,phase-data,",
+        "nst": null,
+        "dmin": 7.4409999999999998,
+        "rms": 0.56999999999999995,
+        "gap": 83,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 5.0 - 19km SE of Bristol Island, South Sandwich Islands"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -26.2563,
+          -59.144500000000001,
+          130.28
+        ]
+      },
+      "id": "us70005rcr"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.5999999999999996,
+        "place": "81km WNW of Kota Ternate, Indonesia",
+        "time": 1570377034749,
+        "updated": 1570378212040,
+        "tz": 480,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us70005rc7",
+        "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us70005rc7.geojson",
+        "felt": null,
+        "cdi": null,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 326,
+        "net": "us",
+        "code": "70005rc7",
+        "ids": ",us70005rc7,",
+        "sources": ",us,",
+        "types": ",geoserve,origin,phase-data,",
+        "nst": null,
+        "dmin": 0.73199999999999998,
+        "rms": 0.57999999999999996,
+        "gap": 80,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 4.6 - 81km WNW of Kota Ternate, Indonesia"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          126.6651,
+          0.98340000000000005,
+          46.159999999999997
+        ]
+      },
+      "id": "us70005rc7"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.96,
+        "place": "113km N of Road Town, British Virgin Islands",
+        "time": 1570374644220,
+        "updated": 1570385537040,
+        "tz": -240,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr2019279014",
+        "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/pr2019279014.geojson",
+        "felt": 3,
+        "cdi": 2.7000000000000002,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 379,
+        "net": "pr",
+        "code": "2019279014",
+        "ids": ",pt19279050,us70005rbn,pr2019279014,",
+        "sources": ",pt,us,pr,",
+        "types": ",dyfi,geoserve,origin,phase-data,",
+        "nst": 29,
+        "dmin": 2.0566,
+        "rms": 0.44,
+        "gap": 228,
+        "magType": "md",
+        "type": "earthquake",
+        "title": "M 5.0 - 113km N of Road Town, British Virgin Islands"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -64.5655,
+          19.6966,
+          15
+        ]
+      },
+      "id": "pr2019279014"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 5.9000000000000004,
+        "place": "73km NNE of Calama, Chile",
+        "time": 1570358455830,
+        "updated": 1570365833687,
+        "tz": -240,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us70005r9l",
+        "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us70005r9l.geojson",
+        "felt": 16,
+        "cdi": 5.4000000000000004,
+        "mmi": 4.1500000000000004,
+        "alert": "green",
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 544,
+        "net": "us",
+        "code": "70005r9l",
+        "ids": ",us70005r9l,",
+        "sources": ",us,",
+        "types": ",dyfi,geoserve,losspager,origin,phase-data,shakemap,",
+        "nst": null,
+        "dmin": 0.63500000000000001,
+        "rms": 1.02,
+        "gap": 67,
+        "magType": "mww",
+        "type": "earthquake",
+        "title": "M 5.9 - 73km NNE of Calama, Chile"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.567700000000002,
+          -21.901700000000002,
+          112.38
+        ]
+      },
+      "id": "us70005r9l"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 4.5999999999999996,
+        "place": "91km E of Namie, Japan",
+        "time": 1570341795505,
+        "updated": 1570347230653,
+        "tz": 540,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us70005r81",
+        "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us70005r81.geojson",
+        "felt": 1,
+        "cdi": 1,
+        "mmi": null,
+        "alert": null,
+        "status": "reviewed",
+        "tsunami": 0,
+        "sig": 326,
+        "net": "us",
+        "code": "70005r81",
+        "ids": ",us70005r81,",
+        "sources": ",us,",
+        "types": ",dyfi,geoserve,origin,phase-data,",
+        "nst": null,
+        "dmin": 1.087,
+        "rms": 0.63,
+        "gap": 146,
+        "magType": "mb",
+        "type": "earthquake",
+        "title": "M 4.6 - 91km E of Namie, Japan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          142.02889999999999,
+          37.4039,
+          34.890000000000001
+        ]
+      },
+      "id": "us70005r81"
+    }
+  ],
+  "bbox": [
+    -68.5677,
+    -59.1445,
+    15,
+    144.9436,
+    37.4039,
+    206.83
+  ]
+}

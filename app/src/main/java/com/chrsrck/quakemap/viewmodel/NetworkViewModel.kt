@@ -1,48 +1,43 @@
 package com.chrsrck.quakemap.viewmodel
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import com.chrsrck.quakemap.data.DataSourceUSGS
+import androidx.lifecycle.*
+import com.chrsrck.quakemap.data.network.DataSourceUSGS
 import com.chrsrck.quakemap.model.Earthquake
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 
 class NetworkViewModel(application: Application) : AndroidViewModel(application) {
 
+
     private val dataSource : DataSourceUSGS
-    val connMgr : ConnectivityManager
-    val context : Context
+    private val connMgr : ConnectivityManager
+    val eqLiveData = MutableLiveData<HashMap<String, Earthquake>>()
 
     init {
         dataSource = DataSourceUSGS()
-        context = application.applicationContext
-        connMgr =
-                application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    }
-
-    fun getEarthquakeData() : HashMap<String, Earthquake>? {
-        return dataSource.hashMap.value
+        connMgr = application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 
     fun fetchEarthquakeData(feedKey: String?) {
         dataSource.setFeed(feedKey)
         if (isOnline()) {
-            dataSource.fetchJSON()
+            viewModelScope.async {
+                getData()
+            }
         }
     }
 
+    private suspend fun getData() = withContext(Dispatchers.Default) {
+        eqLiveData.postValue(dataSource.fetchJSON())
+    }
 
-    fun isOnline(): Boolean {
+    private fun isOnline(): Boolean {
         val networkInfo: NetworkInfo? = connMgr.activeNetworkInfo
         return networkInfo?.isConnected == true
     }
-
-    fun observeEarthquakes(lifecycleOwner: LifecycleOwner, observer: Observer<HashMap<String, Earthquake>>) {
-        dataSource.hashMap.observe(lifecycleOwner, observer)
-    }
-    
-
 }

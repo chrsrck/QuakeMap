@@ -7,7 +7,7 @@
             name="viewModel"
             type="com.chrsrck.quakemap.viewmodel.MainActivityViewModel"/>
     </data>
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/activity_main"
@@ -16,18 +16,17 @@
         tools:context=".MainActivity">
 
 
-        <fragment
+        <FrameLayout
             android:id="@+id/my_nav_host_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:defaultNavHost="true"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/bottom_nav_menu"
             app:layout_constraintLeft_toRightOf="parent"
-            app:navGraph="@navigation/nav_graph" />
+            />
 
-        <android.support.design.widget.BottomNavigationView
+        <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav_menu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -40,5 +39,5 @@
             app:itemIconTint="@drawable/bottom_nav_selector"
             />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

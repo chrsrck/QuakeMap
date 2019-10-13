@@ -1,10 +1,9 @@
-package com.chrsrck.quakemap.data
+package com.chrsrck.quakemap.data.network
 
-import android.arch.lifecycle.MutableLiveData
 import com.chrsrck.quakemap.model.Earthquake
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.CoroutineExceptionHandler
-import kotlinx.coroutines.experimental.launch
+//import kotlinx.coroutines.experimental.CommonPool
+//import kotlinx.coroutines.experimental.CoroutineExceptionHandler
+//import kotlinx.coroutines.experimental.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
@@ -20,8 +19,8 @@ class DataSourceUSGS {
     val MAG_ALL_HOUR_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson"
     val MAG_2_HALF_DAY_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson"
     val MAG_4_HALF_WEEK_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson"
-    val exceptionHandler : CoroutineExceptionHandler
-            = CoroutineExceptionHandler({_, e -> })
+//    val exceptionHandler : CoroutineExceptionHandler
+//            = CoroutineExceptionHandler({_, e -> })
 
     /*
     LiveData uses a version counter to see if the data changes.
@@ -33,36 +32,33 @@ class DataSourceUSGS {
     counter by reassigning the LiveData's HashMap to the existing
     HashMap
      */
-    val hashMap : MutableLiveData<HashMap<String, Earthquake>> = MutableLiveData()
-    private val parser : jsonParserUSGS
+    private val parser : JsonParserUSGS
 
     init {
         activeFeed = MAG_SIGNIFICANT_MONTH_URL
         client = OkHttpClient()
-        parser = jsonParserUSGS()
+        parser = JsonParserUSGS()
     }
 
     fun setFeed(key : String?) {
-        when(key) {
-            "all" -> activeFeed = MAG_ALL_HOUR_URL
-            "2.5+" -> activeFeed = MAG_2_HALF_DAY_URL
-            "4.5+" -> activeFeed = MAG_4_HALF_WEEK_URL
-            else -> { activeFeed = MAG_SIGNIFICANT_MONTH_URL }
+        activeFeed = when(key) {
+            "all" -> MAG_ALL_HOUR_URL
+            "2.5+" -> MAG_2_HALF_DAY_URL
+            "4.5+" -> MAG_4_HALF_WEEK_URL
+            else -> {
+                MAG_SIGNIFICANT_MONTH_URL
+            }
         }
     }
 
-    fun fetchJSON() {
-        launch(CommonPool + exceptionHandler) {
+    fun fetchJSON() : HashMap<String, Earthquake> {
             val request: Request = Request.Builder().url(activeFeed).build()
             val response: Response = client.newCall(request).execute()
             val json: JSONObject = if (response.isSuccessful) {
                 JSONObject(response.body()?.string())
             } else {
-                JSONObject("")
+                JSONObject("{}")
             }
-
-            val parseMap = parser.parseQuakes(json)
-            hashMap.postValue(parseMap)
-        }
+            return parser.parseQuakes(json)
     }
 }
