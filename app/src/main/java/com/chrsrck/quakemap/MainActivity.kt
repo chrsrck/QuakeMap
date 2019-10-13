@@ -8,20 +8,24 @@ import android.preference.PreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
+import androidx.navigation.ui.setupWithNavController
 import com.chrsrck.quakemap.databinding.ActivityMainBinding
 import com.chrsrck.quakemap.viewmodel.MainActivityViewModel
 import com.chrsrck.quakemap.viewmodel.NetworkViewModel
+import com.chrsrck.quakemap.utilities.setupWithNavController
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel : MainActivityViewModel
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var networkViewModel: NetworkViewModel
+    var currentNavController: LiveData<NavController>? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,20 +45,18 @@ class MainActivity : AppCompatActivity() {
 
         restoreNetworkData()
 
-        val navHostFragment =
-                supportFragmentManager.findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment
+        val navGraphIds = listOf(R.navigation.map_nav_graph, R.navigation.list_nav_graph, R.navigation.settings_nav_graph)
 
-        NavigationUI.setupWithNavController(bottomNav, navHostFragment.navController)
-        bottomNav.setOnNavigationItemSelectedListener({ item ->
-                    item.onNavDestinationSelected(navHostFragment.navController)
-                })
+        currentNavController = bottomNav.setupWithNavController(
+                navGraphIds,
+                fragmentManager = supportFragmentManager,
+                containerId = R.id.my_nav_host_fragment,
+                intent = intent
+        )
 
-//        navHostFragment.navController.addOnNavigatedListener(
-//                NavController.OnNavigatedListener(
-//                        fun (_: NavController, _ : NavDestination) {
-//
-//                        }
-//                ))
+        if (intent.hasExtra("fromSettings")) {
+//            currentNavController?.value?.navigate(R.id.action_map_fragment_to_earthquake_settings_fragment)
+        }
     }
 
 
@@ -76,7 +78,10 @@ class MainActivity : AppCompatActivity() {
                 sharedPreferences.getString(resources.getString(R.string.pref_key_feed),
                         resources.getString(R.string.key_sig_eq_feed))
         networkViewModel.fetchEarthquakeData(feed)
+    }
 
+    override fun onSupportNavigateUp(): Boolean {
+        return currentNavController?.value?.navigateUp() ?: false
     }
 
 }

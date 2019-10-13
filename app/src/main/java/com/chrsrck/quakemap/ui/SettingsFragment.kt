@@ -1,5 +1,6 @@
 package com.chrsrck.quakemap.ui
 
+import android.content.Intent
 import androidx.lifecycle.ViewModelProviders
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
@@ -61,7 +62,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 //                sharedPreferences?.edit()?.putBoolean("key_theme_recreate", true)?.apply()
                 activity?.setTheme(R.style.AppTheme)
-                activity?.recreate()
+                val act = (activity as MainActivity)
+                val intent = Intent(act, act::class.java)
+                intent.putExtra("fromSettings", true)
+                startActivity(intent)
+                activity?.finish()
+
             }
             resources.getString(R.string.pref_key_feed) -> {
                 val feedKey = sharedPreferences?.getString(key, resources.getString(R.string.key_sig_eq_feed))
