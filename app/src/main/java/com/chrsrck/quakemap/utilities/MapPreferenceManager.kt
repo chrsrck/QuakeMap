@@ -6,19 +6,19 @@ import android.preference.PreferenceManager
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 
-class MapCameraPreferenceManager private constructor(
+class MapPreferenceManager private constructor(
         private var sp : SharedPreferences
 ) {
     companion object {
-        private var instance : MapCameraPreferenceManager? = null
+        private var instance : MapPreferenceManager? = null
         private val latKey = "latitude"
         private val longKey = "longitude"
         private val zoomKey = "zoom"
         private val tiltKey = "tilt"
         private val bearingKey = "bearing"
         private val heatModeKey = "heatMode"
-        fun getInstance(context: Context?) : MapCameraPreferenceManager {
-            return instance?: MapCameraPreferenceManager(PreferenceManager.getDefaultSharedPreferences(context))
+        fun getInstance(context: Context?) : MapPreferenceManager {
+            return instance?: MapPreferenceManager(PreferenceManager.getDefaultSharedPreferences(context))
         }
     }
 
