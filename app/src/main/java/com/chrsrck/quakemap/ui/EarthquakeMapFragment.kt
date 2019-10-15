@@ -79,9 +79,6 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
 
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(viewModel.camPos))
         googleMap.uiSettings.isMapToolbarEnabled = false
-        googleMap.setOnCameraIdleListener {
-            viewModel.camPos = googleMap.cameraPosition
-        }
 
         networkViewModel.eqLiveData.observe(this, Observer {
             viewModel.eqHashMap = it
@@ -116,6 +113,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
 
         viewModel.heatMode.observe(this, heatObs)
 
+
         this.googleMap = googleMap
     }
 
@@ -126,6 +124,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onPause() {
+        viewModel.saveCameraPosToPreferences(googleMap?.cameraPosition)
         super.onPause()
         mapView?.onPause()
     }

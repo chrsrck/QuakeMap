@@ -11,7 +11,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.model.Earthquake
-import com.chrsrck.quakemap.utilities.MapCameraPreferenceManager
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.heatmaps.HeatmapTileProvider
@@ -30,15 +29,26 @@ class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewMode
             configureMap(value)
         }
 
+
     val styleLiveData = MutableLiveData<MapStyleOptions>()
     val markerOptionsLiveData = MutableLiveData<List<MarkerOptions>>()
     val overlayOptionsLiveData = MutableLiveData<TileOverlayOptions>()
 
-    var camPos : CameraPosition
-    private val sp : MapCameraPreferenceManager
+
+    val camPos : CameraPosition
+
+    private val latKey = "latitude"
+    private val longKey = "longitude"
+    private val zoomKey = "zoom"
+    private val tiltKey = "tilt"
+    private val bearingKey = "bearing"
+    private val heatModeKey = "heatMode"
+
     private var magStr : String
 
     init {
+        val sp = PreferenceManager.getDefaultSharedPreferences(application)
+
         val mode = application.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         val styleId = when (mode) {
             Configuration.UI_MODE_NIGHT_YES -> R.raw.dark_mode_style
@@ -50,9 +60,13 @@ class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewMode
             styleLiveData.postValue(loadStyle(styleId, application))
         }
 
-        sp = MapCameraPreferenceManager.getInstance(application)
-        heatMode.value = sp.getIsHeatMode()
-        camPos = sp.getCameraPosition()
+        heatMode.value = sp.getBoolean(heatModeKey, false)
+        val latitude  = sp.getFloat(latKey, 0.0f).toDouble()
+        val longitude = sp.getFloat(longKey, 0.0f).toDouble()
+        val zoom = sp.getFloat(zoomKey, 0f)
+        val tilt = sp.getFloat(tiltKey, 0f)
+        val bearing = sp.getFloat(bearingKey, 0f)
+        camPos = CameraPosition(LatLng(latitude, longitude), zoom, tilt, bearing)
         magStr = application.resources.getString(R.string.magnitude_snippet_title)
     }
 
@@ -63,6 +77,25 @@ class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewMode
     private suspend fun loadStyle(styleId : Int, context: Context?) = withContext(Dispatchers.IO) {
         return@withContext MapStyleOptions.loadRawResourceStyle(context, styleId)
     }
+
+    fun saveCameraPosToPreferences(pos : CameraPosition?) {
+        if (pos == null)
+            return
+
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplication())
+        if (pos != null) {
+            preferences.edit().putFloat(latKey, pos.target.latitude.toFloat()).apply()
+            preferences.edit().putFloat(longKey,
+                    pos.target.longitude.toFloat()).apply()
+            preferences.edit().putFloat(bearingKey, pos.bearing).apply()
+            preferences.edit().putFloat(zoomKey, pos.zoom).apply()
+            preferences.edit().putFloat(tiltKey, pos.tilt).apply()
+        }
+
+        val saveHeat = heatMode.value ?: false
+        preferences.edit().putBoolean(heatModeKey, saveHeat).apply()
+    }
+
 
     private fun configureMap(hashMap : HashMap<String, Earthquake>?) {
         if (hashMap == null)
@@ -105,8 +138,6 @@ class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewMode
     }
 
     override fun onCleared() {
-        sp.saveCameraPosition(camPos)
-        sp.saveHeatMode(isHeatMode())
         super.onCleared()
     }
 }
