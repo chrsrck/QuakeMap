@@ -3,11 +3,9 @@ package com.chrsrck.quakemap.ui
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
-import com.chrsrck.quakemap.BR
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.databinding.EarthquakeListViewholderBinding
 import com.chrsrck.quakemap.model.Earthquake
@@ -17,17 +15,13 @@ import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.main.earthquake_list_viewholder.view.*
 import java.text.SimpleDateFormat
 import java.util.*
-import com.chrsrck.quakemap.databinding.ActivityMainBinding
-import androidx.databinding.OnRebindCallback
 
 
-
-class MyEarthquakeRecyclerViewAdapter(
+class EarthquakeRecyclerViewAdapter(
         private val mValues: List<Earthquake>)
-    : androidx.recyclerview.widget.RecyclerView.Adapter<MyEarthquakeRecyclerViewAdapter.ViewHolder>() {
+    : androidx.recyclerview.widget.RecyclerView.Adapter<EarthquakeRecyclerViewAdapter.ViewHolder>() {
 
     private val dateFormater : SimpleDateFormat
 

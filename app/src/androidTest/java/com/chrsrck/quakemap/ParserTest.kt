@@ -1,8 +1,7 @@
 package com.chrsrck.quakemap
 
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.chrsrck.quakemap.data.jsonParserUSGS
+import com.chrsrck.quakemap.data.network.JsonParserUSGS
 import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Test
@@ -23,7 +22,7 @@ class ParserTest {
 //        val appContext = InstrumentationRegistry.getInstrumentation().getTargetContext()
 //        assertEquals("com.chrsrck.quakemap", appContext.packageName)
 //    }
-    private val parser : jsonParserUSGS = jsonParserUSGS()
+    private val parser : JsonParserUSGS = JsonParserUSGS()
     private val delta = 0.01 // double precision errors means cannot be direct equal
 
 

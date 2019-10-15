@@ -1,6 +1,5 @@
-package com.chrsrck.quakemap.data
+package com.chrsrck.quakemap.data.network
 
-import androidx.lifecycle.MutableLiveData
 import com.chrsrck.quakemap.model.Earthquake
 //import kotlinx.coroutines.experimental.CommonPool
 //import kotlinx.coroutines.experimental.CoroutineExceptionHandler
@@ -33,12 +32,12 @@ class DataSourceUSGS {
     counter by reassigning the LiveData's HashMap to the existing
     HashMap
      */
-    private val parser : jsonParserUSGS
+    private val parser : JsonParserUSGS
 
     init {
         activeFeed = MAG_SIGNIFICANT_MONTH_URL
         client = OkHttpClient()
-        parser = jsonParserUSGS()
+        parser = JsonParserUSGS()
     }
 
     fun setFeed(key : String?) {
