@@ -119,7 +119,11 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         this.googleMap = googleMap
     }
 
-    // Must call lifecycle methods on map view to prevent memory leaks
+    override fun onStart() {
+        super.onStart()
+        mapView?.onStart()
+    }
+
     override fun onResume() {
         super.onResume()
         mapView?.onResume()
@@ -130,7 +134,18 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         mapView?.onPause()
     }
 
+    /*
+    Purpose of shared preference code is to setup map
+    in previous spot after cold start.
+
+    Calls shared preference code here since the navigation component
+    does not have the onDestroy / viewmodel
+    onCleared() lifecycle methods work properly. This is with or without
+    the bottom nav extensions with multiple nav graphs.
+    https://github.com/android/architecture-components-samples/blob/master/NavigationAdvancedSample/app/src/main/java/com/example/android/navigationadvancedsample/NavigationExtensions.kt
+     */
     override fun onStop() {
+        viewModel.saveMapSetUp()
         super.onStop()
         mapView?.onStop()
     }

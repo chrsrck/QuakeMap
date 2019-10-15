@@ -3,17 +3,13 @@ package com.chrsrck.quakemap.viewmodel
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
-import android.graphics.Color
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.preference.PreferenceManager
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.model.Earthquake
-import com.chrsrck.quakemap.utilities.MapCameraPreferenceManager
+import com.chrsrck.quakemap.utilities.MapPreferenceManager
 import com.google.android.gms.maps.model.*
-import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.heatmaps.HeatmapTileProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -30,15 +26,17 @@ class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewMode
             configureMap(value)
         }
 
+
     val styleLiveData = MutableLiveData<MapStyleOptions>()
     val markerOptionsLiveData = MutableLiveData<List<MarkerOptions>>()
     val overlayOptionsLiveData = MutableLiveData<TileOverlayOptions>()
 
     var camPos : CameraPosition
-    private val sp : MapCameraPreferenceManager
     private var magStr : String
+    private val pm : MapPreferenceManager
 
     init {
+
         val mode = application.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         val styleId = when (mode) {
             Configuration.UI_MODE_NIGHT_YES -> R.raw.dark_mode_style
@@ -50,10 +48,15 @@ class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewMode
             styleLiveData.postValue(loadStyle(styleId, application))
         }
 
-        sp = MapCameraPreferenceManager.getInstance(application)
-        heatMode.value = sp.getIsHeatMode()
-        camPos = sp.getCameraPosition()
+        pm = MapPreferenceManager.getInstance(application)
+        heatMode.value = pm.getIsHeatMode()
+        camPos = pm.getCameraPosition()
         magStr = application.resources.getString(R.string.magnitude_snippet_title)
+    }
+
+    fun saveMapSetUp() {
+        pm.saveHeatMode(isHeatMode())
+        pm.saveCameraPosition(camPos)
     }
 
     fun heatMapToggled() {
@@ -105,8 +108,6 @@ class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewMode
     }
 
     override fun onCleared() {
-        sp.saveCameraPosition(camPos)
-        sp.saveHeatMode(isHeatMode())
         super.onCleared()
     }
 }
