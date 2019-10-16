@@ -15,9 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
-// Shared view model between MapFragment and List Fragment
-// See google documentation for canonical shared view models that present the same data
-// https://developer.android.com/topic/libraries/architecture/viewmodel#lifecycle
 class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewModel(application) {
 
     val heatMode : MutableLiveData<Boolean> = MutableLiveData()

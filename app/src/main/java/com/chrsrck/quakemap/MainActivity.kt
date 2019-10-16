@@ -16,7 +16,9 @@ import androidx.navigation.ui.onNavDestinationSelected
 import com.chrsrck.quakemap.databinding.ActivityMainBinding
 import com.chrsrck.quakemap.viewmodel.MainActivityViewModel
 import com.chrsrck.quakemap.viewmodel.NetworkViewModel
-
+/*
+Single Activity host, multiple fragment architecture for navigation graph
+ */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel : MainActivityViewModel
