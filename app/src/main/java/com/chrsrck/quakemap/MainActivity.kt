@@ -48,13 +48,6 @@ class MainActivity : AppCompatActivity() {
         bottomNav.setOnNavigationItemSelectedListener({ item ->
                     item.onNavDestinationSelected(navHostFragment.navController)
                 })
-
-//        navHostFragment.navController.addOnNavigatedListener(
-//                NavController.OnNavigatedListener(
-//                        fun (_: NavController, _ : NavDestination) {
-//
-//                        }
-//                ))
     }
 
 

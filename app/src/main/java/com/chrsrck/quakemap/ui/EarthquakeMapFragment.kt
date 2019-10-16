@@ -9,9 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.preference.PreferenceManager
 import com.chrsrck.quakemap.MainActivity
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.databinding.EarthquakeMapFragmentBinding
@@ -21,8 +19,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.TileOverlay
 
@@ -119,7 +115,12 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         this.googleMap = googleMap
     }
 
+    /*
+    For restoration when system dark theme changed with
+    app in background
+     */
     override fun onStart() {
+        viewModel.setUpMapStyle(this.context)
         super.onStart()
         mapView?.onStart()
     }
