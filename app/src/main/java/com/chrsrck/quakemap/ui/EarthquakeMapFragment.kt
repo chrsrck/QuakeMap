@@ -9,9 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.preference.PreferenceManager
 import com.chrsrck.quakemap.MainActivity
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.databinding.EarthquakeMapFragmentBinding
@@ -21,8 +19,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.TileOverlay
 
@@ -119,7 +115,16 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         this.googleMap = googleMap
     }
 
-    // Must call lifecycle methods on map view to prevent memory leaks
+    /*
+    For restoration when system dark theme changed with
+    app in background
+     */
+    override fun onStart() {
+        viewModel.setUpMapStyle(this.context)
+        super.onStart()
+        mapView?.onStart()
+    }
+
     override fun onResume() {
         super.onResume()
         mapView?.onResume()
@@ -131,11 +136,14 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
     }
 
     /*
-    For when system style is changed while
-    app is in background
+    Calls shared preference code here since the navigation component
+    does not have the onDestroy / viewmodel
+    onCleared() lifecycle methods work properly. This is with or without
+    the bottom nav extensions with multiple nav graphs.
+    https://github.com/android/architecture-components-samples/blob/master/NavigationAdvancedSample/app/src/main/java/com/example/android/navigationadvancedsample/NavigationExtensions.kt
      */
     override fun onStop() {
-        viewModel.setupMapStyle(this.context)
+        viewModel.saveMapSetUp()
         super.onStop()
         mapView?.onStop()
     }
