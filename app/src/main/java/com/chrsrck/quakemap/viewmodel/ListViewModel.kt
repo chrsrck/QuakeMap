@@ -2,7 +2,9 @@ package com.chrsrck.quakemap.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.chrsrck.quakemap.model.Earthquake
-
+/*
+For EarthquakeListFragment
+ */
 class ListViewModel() : ViewModel() {
 
     private var quakeList :  ArrayList<Earthquake>

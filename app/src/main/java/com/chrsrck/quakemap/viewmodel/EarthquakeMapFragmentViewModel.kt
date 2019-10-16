@@ -15,9 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
-// Shared view model between MapFragment and List Fragment
-// See google documentation for canonical shared view models that present the same data
-// https://developer.android.com/topic/libraries/architecture/viewmodel#lifecycle
 class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewModel(application) {
 
     val heatMode : MutableLiveData<Boolean> = MutableLiveData()
@@ -36,8 +33,17 @@ class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewMode
     private val pm : MapPreferenceManager
 
     init {
+        pm = MapPreferenceManager.getInstance(application)
+        heatMode.value = pm.getIsHeatMode()
+        camPos = pm.getCameraPosition()
+        magStr = application.resources.getString(R.string.magnitude_snippet_title)
+    }
 
-        val mode = application.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+    fun setUpMapStyle(context: Context?) {
+        if (context == null)
+            return
+
+        val mode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         val styleId = when (mode) {
             Configuration.UI_MODE_NIGHT_YES -> R.raw.dark_mode_style
             Configuration.UI_MODE_NIGHT_NO -> R.raw.light_mode_style
@@ -45,13 +51,8 @@ class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewMode
         }
 
         viewModelScope.async {
-            styleLiveData.postValue(loadStyle(styleId, application))
+            styleLiveData.postValue(loadStyle(styleId, context))
         }
-
-        pm = MapPreferenceManager.getInstance(application)
-        heatMode.value = pm.getIsHeatMode()
-        camPos = pm.getCameraPosition()
-        magStr = application.resources.getString(R.string.magnitude_snippet_title)
     }
 
     fun saveMapSetUp() {

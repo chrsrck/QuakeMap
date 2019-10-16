@@ -11,8 +11,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
+// Shared view model between MapFragment, List Fragment, and Settings Fragment
+// See google documentation for canonical shared view models that present the same data
+// https://developer.android.com/topic/libraries/architecture/viewmodel#lifecycle
 class NetworkViewModel(application: Application) : AndroidViewModel(application) {
-
 
     private val dataSource : DataSourceUSGS
     private val connMgr : ConnectivityManager
