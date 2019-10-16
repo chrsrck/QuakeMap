@@ -130,7 +130,12 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         mapView?.onPause()
     }
 
+    /*
+    For when system style is changed while
+    app is in background
+     */
     override fun onStop() {
+        viewModel.setupMapStyle(this.context)
         super.onStop()
         mapView?.onStop()
     }

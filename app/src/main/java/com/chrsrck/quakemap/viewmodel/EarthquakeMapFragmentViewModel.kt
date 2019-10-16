@@ -39,7 +39,17 @@ class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewMode
     private var magStr : String
 
     init {
-        val mode = application.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        sp = MapCameraPreferenceManager.getInstance(application)
+        heatMode.value = sp.getIsHeatMode()
+        camPos = sp.getCameraPosition()
+        magStr = application.resources.getString(R.string.magnitude_snippet_title)
+    }
+
+    fun setupMapStyle(context: Context?) {
+        if (context == null)
+            return
+
+        val mode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         val styleId = when (mode) {
             Configuration.UI_MODE_NIGHT_YES -> R.raw.dark_mode_style
             Configuration.UI_MODE_NIGHT_NO -> R.raw.light_mode_style
@@ -47,13 +57,8 @@ class EarthquakeMapFragmentViewModel(application: Application) : AndroidViewMode
         }
 
         viewModelScope.async {
-            styleLiveData.postValue(loadStyle(styleId, application))
+            styleLiveData.postValue(loadStyle(styleId, context))
         }
-
-        sp = MapCameraPreferenceManager.getInstance(application)
-        heatMode.value = sp.getIsHeatMode()
-        camPos = sp.getCameraPosition()
-        magStr = application.resources.getString(R.string.magnitude_snippet_title)
     }
 
     fun heatMapToggled() {
