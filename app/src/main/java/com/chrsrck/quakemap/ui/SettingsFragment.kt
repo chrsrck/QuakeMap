@@ -12,12 +12,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.chrsrck.quakemap.MainActivity
 import com.chrsrck.quakemap.R
-import com.chrsrck.quakemap.viewmodel.NetworkViewModel
 
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
-    private lateinit var networkViewModel : NetworkViewModel
 
     companion object {
         fun newInstance() = SettingsFragment()
@@ -33,7 +31,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
-        networkViewModel = ViewModelProviders.of((activity as MainActivity)).get(NetworkViewModel::class.java)
         return view
     }
 
@@ -65,7 +62,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
             resources.getString(R.string.pref_key_feed) -> {
                 val feedKey = sharedPreferences?.getString(key, resources.getString(R.string.key_sig_eq_feed))
-                networkViewModel.fetchEarthquakeData(feedKey)
             }
 
 

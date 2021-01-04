@@ -15,7 +15,6 @@ import com.chrsrck.quakemap.databinding.FragmentEarthquakeListBinding
 import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.utilities.VerticalDecorator
 import com.chrsrck.quakemap.viewmodel.ListViewModel
-import com.chrsrck.quakemap.viewmodel.NetworkViewModel
 
 /**
  * A fragment representing a list of Items.
@@ -24,7 +23,6 @@ import com.chrsrck.quakemap.viewmodel.NetworkViewModel
  */
 class EarthquakeListFragment : Fragment() {
 
-    private lateinit var networkViewModel : NetworkViewModel
     private lateinit var listViewModel : ListViewModel
     private lateinit var recyclerView : androidx.recyclerview.widget.RecyclerView
 
@@ -37,9 +35,7 @@ class EarthquakeListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        networkViewModel =
-                ViewModelProviders.of((activity as MainActivity)).get(NetworkViewModel::class.java)
-        networkViewModel.eqLiveData.observe(this, eqObserver)
+//        networkViewModel.eqLiveData.observe(this, eqObserver)
 
         listViewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)
         val binding : FragmentEarthquakeListBinding

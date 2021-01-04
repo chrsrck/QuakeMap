@@ -5,17 +5,14 @@ import android.content.SharedPreferences
 import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import android.preference.PreferenceManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
 import com.chrsrck.quakemap.databinding.ActivityMainBinding
 import com.chrsrck.quakemap.viewmodel.MainActivityViewModel
-import com.chrsrck.quakemap.viewmodel.NetworkViewModel
+
 /*
 Single Activity host, multiple fragment architecture for navigation graph
  */
@@ -23,7 +20,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel : MainActivityViewModel
     lateinit var sharedPreferences: SharedPreferences
-    private lateinit var networkViewModel: NetworkViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +35,6 @@ class MainActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         val bottomNav = binding.bottomNavMenu
 
-        networkViewModel = ViewModelProviders.of(this).get(NetworkViewModel::class.java)
 
         restoreNetworkData()
 
@@ -70,8 +65,6 @@ class MainActivity : AppCompatActivity() {
         val feed =
                 sharedPreferences.getString(resources.getString(R.string.pref_key_feed),
                         resources.getString(R.string.key_sig_eq_feed))
-        networkViewModel.fetchEarthquakeData(feed)
-
     }
 
 }

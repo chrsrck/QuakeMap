@@ -8,57 +8,53 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import org.json.JSONObject
+import retrofit2.Retrofit
+import retrofit2.http.GET
+import retrofit2.converter.moshi.MoshiConverterFactory
 
-class DataSourceUSGS {
 
-    private val client : OkHttpClient
+interface ServiceUSGS {
+//    @GET("all_hour.geojson")
+//    suspend fun getEarthquakesHour(): List<Earthquake>
+//
+//    @GET("2.5_day.geojson")
+//    suspend fun getEarthquakesHour(): List<Earthquake>
+//
+//    @GET("4.5_week.geojson")
+//    suspend fun getEarthquakesHour(): List<Earthquake>
+
+    @GET("significant_month.geojson")
+    suspend fun getEarthquakesSig(): List<Earthquake>
+}
+
+
+// https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/
+object DataSourceUSGS {
+
+
+        val activeFeed = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson"
+        val client = OkHttpClient()
+        val parser = JsonParserUSGS()
+
     private val TAG : String = this.javaClass.simpleName
 
-    private var activeFeed : String
-    private val MAG_SIGNIFICANT_MONTH_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson"
-    val MAG_ALL_HOUR_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson"
-    val MAG_2_HALF_DAY_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson"
-    val MAG_4_HALF_WEEK_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson"
-//    val exceptionHandler : CoroutineExceptionHandler
-//            = CoroutineExceptionHandler({_, e -> })
 
-    /*
-    LiveData uses a version counter to see if the data changes.
-    Adding an item to the list doesn't cause the observer to activate
-    since the underlying data structure object is the same.
-    setValue(T t) causes the version counter to update. To have
-    the observer activate after putting in a new element into
-    the HashMap, you need to increment the LiveData's version
-    counter by reassigning the LiveData's HashMap to the existing
-    HashMap
-     */
-    private val parser : JsonParserUSGS
+    private val retrofit = Retrofit.Builder()
+            .baseUrl("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/")
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build()
 
-    init {
-        activeFeed = MAG_SIGNIFICANT_MONTH_URL
-        client = OkHttpClient()
-        parser = JsonParserUSGS()
-    }
-
-    fun setFeed(key : String?) {
-        activeFeed = when(key) {
-            "all" -> MAG_ALL_HOUR_URL
-            "2.5+" -> MAG_2_HALF_DAY_URL
-            "4.5+" -> MAG_4_HALF_WEEK_URL
-            else -> {
-                MAG_SIGNIFICANT_MONTH_URL
-            }
-        }
-    }
+    val source = retrofit.create(ServiceUSGS::class.java)
 
     fun fetchJSON() : HashMap<String, Earthquake> {
-            val request: Request = Request.Builder().url(activeFeed).build()
-            val response: Response = client.newCall(request).execute()
-            val json: JSONObject = if (response.isSuccessful) {
-                JSONObject(response.body()?.string())
-            } else {
-                JSONObject("{}")
-            }
-            return parser.parseQuakes(json)
+        val request: Request = Request.Builder().url(activeFeed).build()
+        val response: Response = client.newCall(request).execute()
+        val json: JSONObject = if (response.isSuccessful) {
+            JSONObject(response.body()?.string())
+        } else {
+            JSONObject("{}")
+        }
+        return parser.parseQuakes(json)
     }
+
 }

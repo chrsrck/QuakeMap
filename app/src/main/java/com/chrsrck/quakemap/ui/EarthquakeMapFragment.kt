@@ -10,11 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.chrsrck.quakemap.MainActivity
 import com.chrsrck.quakemap.R
 import com.chrsrck.quakemap.databinding.EarthquakeMapFragmentBinding
+import com.chrsrck.quakemap.model.Earthquake
 import com.chrsrck.quakemap.viewmodel.EarthquakeMapFragmentViewModel
-import com.chrsrck.quakemap.viewmodel.NetworkViewModel
+import com.chrsrck.quakemap.viewmodel.MainActivityViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
@@ -37,8 +39,13 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         fun newInstance() = EarthquakeMapFragment()
     }
 
+    private val activityVM : MainActivityViewModel by lazy {
+        val activity = requireNotNull(this.activity) {
+            ""
+        }
+        ViewModelProvider(this, MainActivityViewModel.Factory(activity.application)).get(MainActivityViewModel::class.java)
+    }
     private lateinit var viewModel: EarthquakeMapFragmentViewModel
-    private lateinit var networkViewModel : NetworkViewModel
     private var mapView : MapView? = null
     private var googleMap : GoogleMap? = null
     private var heatMapOverlay : TileOverlay? = null
@@ -53,6 +60,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
                               savedInstanceState: Bundle?): View? {
         // Creating the binding and inflating the layout
         // don't use DataBindingUtil since the layout binding is known in advance
+
         viewModel = ViewModelProviders.of(this).get(EarthquakeMapFragmentViewModel::class.java)
         val binding: EarthquakeMapFragmentBinding =
                 EarthquakeMapFragmentBinding.inflate(inflater)
@@ -61,8 +69,7 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
         binding.setLifecycleOwner(this)
         val view = binding.root
 
-        networkViewModel =
-                ViewModelProviders.of((activity as MainActivity)).get(NetworkViewModel::class.java)
+
 
         mapView = view.findViewById(R.id.mapView) as MapView
         mapView?.onCreate(savedInstanceState) // lifecycle method for memory leak prevention
@@ -79,8 +86,12 @@ class EarthquakeMapFragment : Fragment(), OnMapReadyCallback {
             viewModel.camPos = googleMap.cameraPosition
         }
 
-        networkViewModel.eqLiveData.observe(this, Observer {
-            viewModel.eqHashMap = it
+        activityVM.earthquakes.observe(this, Observer {
+            val map = HashMap<String, Earthquake>()
+            for (item in it) {
+                map.put(item.id, item)
+            }
+            viewModel.eqHashMap = map
         })
 
         viewModel.styleLiveData.observe(this,  Observer {
